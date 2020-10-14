@@ -203,7 +203,7 @@ export default function Home({ navigation }) {
             <TouchableOpacity style={[styles.sizeBtnsizeBtn, { backgroundColor: "purple" }]}></TouchableOpacity>
           </View>
         </View>
-        <View>
+        {/* <View>
           <Text style={styles.sectionTitle}>Customer feedbacks</Text>
           <View style={styles.commentList}>
             <View style={styles.comment}>
@@ -238,9 +238,10 @@ export default function Home({ navigation }) {
             </View>
           </View>
         </View>
+       */}
       </Modalize>
-      <TouchableOpacity style={styles.addBtn}>
-        <Text style={styles.addBtnText}>Buy now</Text>
+      <TouchableOpacity style={styles.nextBtn} onPress={() => navigation.push("Checkout")}>
+        <Text style={styles.nextBtnText}>Buy now</Text>
       </TouchableOpacity>
     </View>
   );
@@ -252,7 +253,6 @@ const styles = StyleSheet.create({
   },
   navbar: {
     padding: 10,
-    paddingTop: Constants.statusBarHeight + 20,
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  addBtn: {
+  nextBtn: {
     position: "absolute",
     zIndex: 100000,
     bottom: 0,
@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     padding: 15,
   },
-  addBtnText: {
+  nextBtnText: {
     fontWeight: "bold",
     fontSize: 20,
     color: "#fff",

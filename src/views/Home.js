@@ -1,5 +1,5 @@
-import React from "react";
-import { Image, Text, View, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
+import React, { useEffect } from "react";
+import { Image, Text, View, StyleSheet, TouchableOpacity, Dimensions, BackHandler } from "react-native";
 import Constants from "expo-constants";
 import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
 import StickyParallaxHeader from "react-native-sticky-parallax-header";
@@ -38,6 +38,24 @@ const product = [
 ];
 
 export default function Home({ navigation }) {
+  useEffect(() => {
+    const backAction = () => {
+      // Alert.alert("Hold on!", "Are you sure you want to go back?", [
+      //   {
+      //     text: "Cancel",
+      //     onPress: () => null,
+      //     style: "cancel",
+      //   },
+      //   { text: "YES", onPress: () => BackHandler.exitApp() },
+      // ]);
+      navigation.goBack(null);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
+
+    return () => backHandler.remove();
+  }, []);
   return (
     <ScrollView style={[StyleSheet.absoluteFill, styles.home]}>
       <View style={styles.navbar}>
@@ -220,7 +238,6 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   navbar: {
-    paddingTop: Constants.statusBarHeight,
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
