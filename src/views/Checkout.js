@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   },
   nextBtnText: {
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: 18,
     color: "#fff",
     textTransform: "uppercase",
   },
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   shippingAddress: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "100",
     color: "#282C40",
     opacity: 0.41,
@@ -278,12 +278,12 @@ const styles = StyleSheet.create({
   priceName: {
     color: "#282C40",
     opacity: 0.4,
-    fontSize: 16,
+    fontSize: 13,
   },
   priceNumber: {
     color: "#282C40",
     opacity: 1,
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "bold",
   },
   priceTotal: {
@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
   priceTotalNumber: {
     color: "#282C40",
     opacity: 1,
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: "bold",
     borderTopWidth: 1,
     paddingVertical: 10,
@@ -324,6 +324,7 @@ const styles = StyleSheet.create({
     color: "#696C79",
     width: "70%",
     fontWeight: "bold",
+    fontSize: 13,
   },
   couponInput: {
     flexDirection: "row",

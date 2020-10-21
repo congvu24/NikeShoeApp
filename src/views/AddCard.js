@@ -70,57 +70,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     textTransform: "uppercase",
   },
-  sectionTitle: {
-    color: "#282C40",
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
-  section: {
-    paddingVertical: 20,
-    marginHorizontal: 10,
-    borderBottomColor: "#7070701A",
-    borderBottomWidth: 1,
-  },
-  price: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 10,
-  },
-  priceName: {
-    color: "#282C40",
-    opacity: 0.4,
-    fontSize: 13,
-  },
-  priceNumber: {
-    color: "#282C40",
-    opacity: 1,
-    fontSize: 14,
-    fontWeight: "bold",
-  },
-  priceTotal: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    marginTop: 10,
-  },
-  priceTotalText: {
-    color: "#696C79",
-    fontSize: 14,
-    marginRight: 10,
-    paddingVertical: 10,
-    fontWeight: "bold",
-  },
-  priceTotalNumber: {
-    color: "#282C40",
-    opacity: 1,
-    fontSize: 18,
-    fontWeight: "bold",
-    borderTopWidth: 1,
-    paddingVertical: 10,
-    paddingLeft: 10,
-    borderTopColor: "#70707029",
-  },
   card: {
     flexDirection: "row",
     width: width - 40,
@@ -167,9 +116,35 @@ const styles = StyleSheet.create({
     color: "#fff",
     letterSpacing: 5,
   },
+  input: {
+    marginHorizontal: 30,
+    marginVertical: 10,
+  },
+  inputLabel: {
+    color: "#C6C6C6",
+    fontSize: 14,
+  },
+  inputField: {
+    paddingVertical: 10,
+    borderBottomColor: "#7070704D",
+    borderBottomWidth: 1,
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#696C79",
+  },
+  inputHalf: {
+    width: "35%",
+  },
+  inputGroup: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  cardInput: {
+    marginBottom: 50,
+  },
 });
 
-const PaymentMethod = ({ navigation }) => {
+const AddCard = ({ navigation }) => {
   return (
     <View style={[StyleSheet.absoluteFill, styles.home]}>
       <View style={{ paddingBottom: 50 }}>
@@ -179,7 +154,7 @@ const PaymentMethod = ({ navigation }) => {
               <Image source={require("../images/back-button.png")} />
             </TouchableOpacity>
           </View>
-          <Text style={styles.pageTitle}>Payment method</Text>
+          <Text style={styles.pageTitle}>Add card</Text>
           <View style={styles.card} elevation={5}>
             <Image
               style={[StyleSheet.absoluteFillObject, { resizeMode: "contain" }, styles.cardBackground]}
@@ -202,37 +177,37 @@ const PaymentMethod = ({ navigation }) => {
               </View>
             </View>
           </View>
-          <TouchableOpacity style={styles.addBtn} onPress={() => navigation.push("AddCard")}>
-            <Text style={styles.addBtnText}>+ Add new card</Text>
-          </TouchableOpacity>
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Price details</Text>
-            <View style={styles.priceList}>
-              <View style={styles.price}>
-                <Text style={styles.priceName}>Nike Air Max</Text>
-                <Text style={styles.priceNumber}>$45</Text>
+          <View style={styles.cardInput}>
+            <View style={styles.input}>
+              <Text style={styles.inputLabel}>Card holder</Text>
+              <TextInput style={styles.inputField} placeholder="Elayamanik" />
+            </View>
+            <View style={styles.input}>
+              <Text style={styles.inputLabel}>Card number</Text>
+              <TextInput style={styles.inputField} placeholder="8976 - 6789 - 8796 - 3421" />
+            </View>
+            <View style={styles.inputGroup}>
+              <View style={[styles.input, styles.inputHalf]}>
+                <Text style={styles.inputLabel}>Expires</Text>
+                <TextInput style={styles.inputField} placeholder="5 March" />
               </View>
-              <View style={styles.price}>
-                <Text style={styles.priceName}>Nike Air Max</Text>
-                <Text style={styles.priceNumber}>$45</Text>
-              </View>
-              <View style={styles.price}>
-                <Text style={styles.priceName}>Coupon</Text>
-                <Text style={styles.priceNumber}>-$45</Text>
+              <View style={[styles.input, styles.inputHalf]}>
+                <Text style={styles.inputLabel}>Cvv</Text>
+                <TextInput style={styles.inputField} placeholder="223" />
               </View>
             </View>
-            <View style={styles.priceTotal}>
-              <Text style={styles.priceTotalText}>Total</Text>
-              <Text style={styles.priceTotalNumber}>$69</Text>
+            <View style={styles.input}>
+              <Text style={styles.inputLabel}>City</Text>
+              <TextInput style={styles.inputField} placeholder="Ha Noi" />
             </View>
           </View>
         </ScrollView>
       </View>
-      <TouchableOpacity style={styles.nextBtn} onPress={() => navigation.push("CheckoutResult")}>
-        <Text style={styles.nextBtnText}>Pay</Text>
+      <TouchableOpacity style={styles.nextBtn}>
+        <Text style={styles.nextBtnText}>Add</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default PaymentMethod;
+export default AddCard;
