@@ -3,248 +3,138 @@ import { Image, Text, View, StyleSheet, TouchableOpacity, Dimensions } from "rea
 import Constants from "expo-constants";
 import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
 import StickyParallaxHeader from "react-native-sticky-parallax-header";
+import BackButton from "../component/BackButton";
 import { Modalize } from "react-native-modalize";
+import category from "../data/categories";
+import collection from "../data/collections";
+import product from "../data/products";
 
 const { width, height } = Dimensions.get("window");
 
-const data = [
-  { url: require("../images/icon-type-1.png"), name: "Basketball" },
-  { url: require("../images/icon-type-2.png"), name: "Soccer" },
-  { url: require("../images/icon-type-3.png"), name: "Boots" },
-  { url: require("../images/icon-type-4.png"), name: "Sandal" },
-  { url: require("../images/icon-type-5.png"), name: "Walking" },
-  { url: require("../images/icon-type-6.png"), name: "Old School" },
-  { url: require("../images/icon-type-7.png"), name: "Climing" },
-  { url: require("../images/icon-type-8.png"), name: "Sneaker" },
-];
-const group = [
-  { url: require("../images/group-1.jpg"), text: "Man" },
-  { url: require("../images/group-2.jpg"), text: "Women" },
-  { url: require("../images/group-3.jpg"), text: "Young" },
-  { url: require("../images/group-4.jpg"), text: "Unisex" },
-  { url: require("../images/group-4.jpg"), text: "Unisex" },
-  { url: require("../images/group-4.jpg"), text: "Unisex" },
-  { url: require("../images/group-4.jpg"), text: "Unisex" },
-  { url: require("../images/group-4.jpg"), text: "Unisex" },
-];
+export default class Detail extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    const { product } = this.props.route.params;
+    this.state = {
+      product,
+      selectedType: product.variety[0],
+      selectedSize: product.size[0],
+      selectedColor: product.colors[0],
+    };
+  }
+  selectType = (selection) => {
+    this.setState({
+      selectedType: selection,
+    });
+  };
+  selectSize = (selection) => {
+    this.setState({
+      selectedSize: selection,
+    });
+  };
+  selectColor = (selection) => {
+    this.setState({
+      selectedColor: selection,
+    });
+  };
 
-const product = [
-  {
-    name: "Nike Air 19",
-    picture: require("../images/product3.png"),
-    price: "80",
-    description: "lorem isurem halo unamwlo asdjasda ajsida asd a asd as",
-    varity: [
-      { name: "XL", value: "xl" },
-      { name: "XS", value: "xs" },
-      { name: "M", value: "m" },
-    ],
-    rating: 3,
-  },
-  {
-    name: "Nike Air 19",
-    picture: require("../images/product1.png"),
-    price: "80",
-    description: "lorem isurem halo unamwlo asdjasda ajsida asd a asd as",
-    varity: [
-      { name: "XL", value: "xl" },
-      { name: "XS", value: "xs" },
-      { name: "M", value: "m" },
-    ],
-    rating: 3,
-  },
-  {
-    name: "Nike Air 19",
-    picture: require("../images/product1.png"),
-    price: "80",
-    description: "lorem isurem halo unamwlo asdjasda ajsida asd a asd as",
-    varity: [
-      { name: "XL", value: "xl" },
-      { name: "XS", value: "xs" },
-      { name: "M", value: "m" },
-    ],
-    rating: 3,
-  },
-  {
-    name: "Nike Air 19",
-    picture: require("../images/product1.png"),
-    price: "80",
-    description: "lorem isurem halo unamwlo asdjasda ajsida asd a asd as",
-    varity: [
-      { name: "XL", value: "xl" },
-      { name: "XS", value: "xs" },
-      { name: "M", value: "m" },
-    ],
-    rating: 3,
-  },
-  {
-    name: "Nike Air 19",
-    picture: require("../images/product1.png"),
-    price: "80",
-    description: "lorem isurem halo unamwlo asdjasda ajsida asd a asd as",
-    varity: [
-      { name: "XL", value: "xl" },
-      { name: "XS", value: "xs" },
-      { name: "M", value: "m" },
-    ],
-    rating: 3,
-  },
-  {
-    name: "Nike Air 19",
-    picture: require("../images/product1.png"),
-    price: "80",
-    description: "lorem isurem halo unamwlo asdjasda ajsida asd a asd as",
-    varity: [
-      { name: "XL", value: "xl" },
-      { name: "XS", value: "xs" },
-      { name: "M", value: "m" },
-    ],
-    rating: 3,
-  },
-  {
-    name: "Nike Air 19",
-    picture: require("../images/product1.png"),
-    price: "80",
-    description: "lorem isurem halo unamwlo asdjasda ajsida asd a asd as",
-    varity: [
-      { name: "XL", value: "xl" },
-      { name: "XS", value: "xs" },
-      { name: "M", value: "m" },
-    ],
-    rating: 3,
-  },
-];
-
-export default function Home({ navigation }) {
-  return (
-    <View style={[StyleSheet.absoluteFill, styles.home]}>
-      <View style={styles.navbar}>
-        <TouchableOpacity style={styles.navbarButton} onPress={() => navigation.goBack()}>
-          <Image source={require("../images/back-button.png")} />
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.navbarButton, styles.navbarButtonMargin]}>
-          <Image source={require("../images/bookmark.png")} />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.product}>
-        <Image style={styles.productBackground} source={require("../images/circle.png")} />
-        <View style={styles.productPictureWrap}>
-          <Image style={styles.productPicture} source={require("../images/product1.png")} />
-        </View>
-        <View style={styles.productPrice}>
-          <Text style={styles.productPriceText}>$45</Text>
-        </View>
-      </View>
-      <Modalize alwaysOpen={height * 0.4} modalStyle={styles.modal}>
-        <View style={styles.name}>
-          <Text style={styles.nameText}>Nick Air Max</Text>
-          <TouchableOpacity style={styles.addCart}>
-            <Text style={styles.addCartText}>ADD TO BAG</Text>
-            <Image source={require("../images/small-bag.png")} />
+  render() {
+    const { product } = this.state;
+    return (
+      <View style={[StyleSheet.absoluteFill, styles.home]}>
+        <View style={styles.navbar}>
+          <BackButton />
+          <TouchableOpacity style={[styles.navbarButton, styles.navbarButtonMargin]}>
+            <Image source={require("../images/bookmark.png")} />
           </TouchableOpacity>
         </View>
-        <View style={styles.rating}>
-          <View style={styles.ratingList}>
-            <Image source={require("../images/good-star.png")} />
-            <Image source={require("../images/good-star.png")} />
-            <Image source={require("../images/good-star.png")} />
-            <Image source={require("../images/good-star.png")} />
-            <Image source={require("../images/bad-star.png")} />
+        <View style={styles.product}>
+          <Image style={styles.productBackground} source={require("../images/circle.png")} />
+          <View style={styles.productPictureWrap}>
+            <Image style={styles.productPicture} source={product.picture} />
           </View>
-          <View style={styles.ratingDetail}>
-            <Text style={styles.ratingDetailText}>4.1</Text>
-            <Image source={require("../images/start.png")} />
-            <Text style={styles.ratingDetailGap}></Text>
-            <Text style={styles.ratingDetailText}>(340)</Text>
+          <View style={styles.productPrice}>
+            <Text style={styles.productPriceText}>${product.price}</Text>
           </View>
         </View>
+        <Modalize alwaysOpen={height * 0.4} modalStyle={styles.modal}>
+          <View style={styles.name}>
+            <Text style={styles.nameText}>{product.name}</Text>
+            <TouchableOpacity style={styles.addCart}>
+              <Text style={styles.addCartText}>ADD TO BAG</Text>
+              <Image source={require("../images/small-bag.png")} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.rating}>
+            <View style={styles.ratingList}>
+              <Image source={require("../images/good-star.png")} />
+              <Image source={require("../images/good-star.png")} />
+              <Image source={require("../images/good-star.png")} />
+              <Image source={require("../images/good-star.png")} />
+              <Image source={require("../images/bad-star.png")} />
+            </View>
+            <View style={styles.ratingDetail}>
+              <Text style={styles.ratingDetailText}>4.1</Text>
+              <Image source={require("../images/start.png")} />
+              <Text style={styles.ratingDetailGap}></Text>
+              <Text style={styles.ratingDetailText}>(340)</Text>
+            </View>
+          </View>
 
-        <View>
-          <Text style={styles.description}>The Nike GTX shoe borrows design lines from The heritage runners the Nike React tech.</Text>
-        </View>
-        <View>
-          <Text style={styles.sectionTitle}>Varity</Text>
-          <View style={styles.size}>
-            <TouchableOpacity style={[styles.varityBtn, styles.varityBtnSelected]}>
-              <Text style={[styles.varityBtnText, styles.varityBtnSelectedText]}>Unlimited</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.varityBtn}>
-              <Text style={styles.varityBtnText}>Warrios</Text>
-            </TouchableOpacity>
+          <View>
+            <Text style={styles.description}>{product.description}</Text>
           </View>
-        </View>
-        <View>
-          <Text style={styles.sectionTitle}>Size</Text>
-          <View style={styles.size}>
-            <TouchableOpacity style={styles.sizeBtnsizeBtn}>
-              <Text style={styles.sizeBtnTextsizeBtnText}>5.5</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.sizeBtnsizeBtn, styles.sizeBtnsizeBtnSelected]}>
-              <Text style={[styles.sizeBtnTextsizeBtnText, styles.sizeBtnTextsizeBtnTextSelected]}>5.5</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.sizeBtnsizeBtn}>
-              <Text style={styles.sizeBtnTextsizeBtnText}>5.5</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.sizeBtnsizeBtn}>
-              <Text style={styles.sizeBtnTextsizeBtnText}>5.5</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View>
-          <Text style={styles.sectionTitle}>Color</Text>
-          <View style={styles.size}>
-            <TouchableOpacity style={[styles.sizeBtnsizeBtn, styles.sizeBtncolorBtnSelected, { backgroundColor: "blue" }]}>
-              <Image source={require("../images/check.png")} />
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.sizeBtnsizeBtn, { backgroundColor: "red" }]}></TouchableOpacity>
-            <TouchableOpacity style={[styles.sizeBtnsizeBtn, { backgroundColor: "green" }]}></TouchableOpacity>
-            <TouchableOpacity style={[styles.sizeBtnsizeBtn, { backgroundColor: "yellow" }]}></TouchableOpacity>
-            <TouchableOpacity style={[styles.sizeBtnsizeBtn, { backgroundColor: "black" }]}></TouchableOpacity>
-            <TouchableOpacity style={[styles.sizeBtnsizeBtn, { backgroundColor: "purple" }]}></TouchableOpacity>
-          </View>
-        </View>
-        {/* <View>
-          <Text style={styles.sectionTitle}>Customer feedbacks</Text>
-          <View style={styles.commentList}>
-            <View style={styles.comment}>
-              <View style={styles.commentHeader}>
-                <Image style={styles.commentAvatar} source={require("../images/avatar.png")} />
-                <View style={styles.commentOwner}>
-                  <Text style={styles.commentName}>Jonh Wicks</Text>
-                  <Text style={styles.commentTime}>21 hours ago</Text>
-                </View>
-              </View>
-              <Text style={styles.commentDetail}>Thank you so much Thank you so much Thank you so much Thank you so much</Text>
-            </View>
-            <View style={styles.comment}>
-              <View style={styles.commentHeader}>
-                <Image style={styles.commentAvatar} source={require("../images/avatar.png")} />
-                <View style={styles.commentOwner}>
-                  <Text style={styles.commentName}>Jonh Wicks</Text>
-                  <Text style={styles.commentTime}>21 hours ago</Text>
-                </View>
-              </View>
-              <Text style={styles.commentDetail}>Thank you so much Thank you so much Thank you so much Thank you so much</Text>
-            </View>
-            <View style={styles.comment}>
-              <View style={styles.commentHeader}>
-                <Image style={styles.commentAvatar} source={require("../images/avatar.png")} />
-                <View style={styles.commentOwner}>
-                  <Text style={styles.commentName}>Jonh Wicks</Text>
-                  <Text style={styles.commentTime}>21 hours ago</Text>
-                </View>
-              </View>
-              <Text style={styles.commentDetail}>Thank you so much Thank you so much Thank you so much Thank you so much</Text>
+          <View>
+            <Text style={styles.sectionTitle}>Varity</Text>
+            <View style={styles.size}>
+              {product.variety.map((item) => (
+                <TouchableOpacity
+                  key={item}
+                  onPress={() => this.selectType(item)}
+                  style={[styles.varityBtn, item == this.state.selectedType ? styles.varityBtnSelected : {}]}
+                >
+                  <Text style={[styles.varityBtnText, item == this.state.selectedType ? styles.varityBtnSelectedText : {}]}>{item}</Text>
+                </TouchableOpacity>
+              ))}
             </View>
           </View>
-        </View>
-       */}
-      </Modalize>
-      <TouchableOpacity style={styles.nextBtn} onPress={() => navigation.push("Checkout")}>
-        <Text style={styles.nextBtnText}>Buy now</Text>
-      </TouchableOpacity>
-    </View>
-  );
+          <View>
+            <Text style={styles.sectionTitle}>Size</Text>
+            <View style={styles.size}>
+              {product.size.map((item) => (
+                <TouchableOpacity
+                  key={item}
+                  onPress={() => this.selectSize(item)}
+                  style={[styles.sizeBtnsizeBtn, item == this.state.selectedSize ? styles.sizeBtnsizeBtnSelected : {}]}
+                >
+                  <Text style={[styles.sizeBtnTextsizeBtnText, item == this.state.selectedSize ? styles.sizeBtnTextsizeBtnTextSelected : {}]}>
+                    {item}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+          <View>
+            <Text style={styles.sectionTitle}>Color</Text>
+            <View style={styles.size}>
+              {product.colors.map((item) => (
+                <TouchableOpacity
+                  key={item}
+                  onPress={() => this.selectColor(item)}
+                  style={[styles.sizeBtnsizeBtn, item == this.state.selectedColor ? styles.sizeBtncolorBtnSelected : {}, { backgroundColor: item }]}
+                >
+                  {item == this.state.selectedColor && <Image source={require("../images/check.png")} />}
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+        </Modalize>
+        <TouchableOpacity style={styles.nextBtn} onPress={() => navigation.push("Checkout")}>
+          <Text style={styles.nextBtnText}>Buy now</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -406,8 +296,8 @@ const styles = StyleSheet.create({
   sizeBtnsizeBtn: {
     padding: 5,
     marginRight: 15,
-    borderWidth: 1,
-    borderColor: "#7070701e",
+    borderWidth: 0.5,
+    borderColor: "#707070",
     borderRadius: 5,
     backgroundColor: "#FFFFFF",
     width: 40,

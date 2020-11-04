@@ -4,116 +4,9 @@ import Constants from "expo-constants";
 import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
 import StickyParallaxHeader from "react-native-sticky-parallax-header";
 import { Modalize } from "react-native-modalize";
+import BackButton from "../component/BackButton";
 
 const { width, height } = Dimensions.get("window");
-
-const data = [
-  { url: require("../images/icon-type-1.png"), name: "Basketball" },
-  { url: require("../images/icon-type-2.png"), name: "Soccer" },
-  { url: require("../images/icon-type-3.png"), name: "Boots" },
-  { url: require("../images/icon-type-4.png"), name: "Sandal" },
-  { url: require("../images/icon-type-5.png"), name: "Walking" },
-  { url: require("../images/icon-type-6.png"), name: "Old School" },
-  { url: require("../images/icon-type-7.png"), name: "Climing" },
-  { url: require("../images/icon-type-8.png"), name: "Sneaker" },
-];
-const group = [
-  { url: require("../images/group-1.jpg"), text: "Man" },
-  { url: require("../images/group-2.jpg"), text: "Women" },
-  { url: require("../images/group-3.jpg"), text: "Young" },
-  { url: require("../images/group-4.jpg"), text: "Unisex" },
-  { url: require("../images/group-4.jpg"), text: "Unisex" },
-  { url: require("../images/group-4.jpg"), text: "Unisex" },
-  { url: require("../images/group-4.jpg"), text: "Unisex" },
-  { url: require("../images/group-4.jpg"), text: "Unisex" },
-];
-
-const product = [
-  {
-    name: "Nike Air 19",
-    picture: require("../images/product3.png"),
-    price: "80",
-    description: "lorem isurem halo unamwlo asdjasda ajsida asd a asd as",
-    varity: [
-      { name: "XL", value: "xl" },
-      { name: "XS", value: "xs" },
-      { name: "M", value: "m" },
-    ],
-    rating: 3,
-  },
-  {
-    name: "Nike Air 19",
-    picture: require("../images/product1.png"),
-    price: "80",
-    description: "lorem isurem halo unamwlo asdjasda ajsida asd a asd as",
-    varity: [
-      { name: "XL", value: "xl" },
-      { name: "XS", value: "xs" },
-      { name: "M", value: "m" },
-    ],
-    rating: 3,
-  },
-  {
-    name: "Nike Air 19",
-    picture: require("../images/product1.png"),
-    price: "80",
-    description: "lorem isurem halo unamwlo asdjasda ajsida asd a asd as",
-    varity: [
-      { name: "XL", value: "xl" },
-      { name: "XS", value: "xs" },
-      { name: "M", value: "m" },
-    ],
-    rating: 3,
-  },
-  {
-    name: "Nike Air 19",
-    picture: require("../images/product1.png"),
-    price: "80",
-    description: "lorem isurem halo unamwlo asdjasda ajsida asd a asd as",
-    varity: [
-      { name: "XL", value: "xl" },
-      { name: "XS", value: "xs" },
-      { name: "M", value: "m" },
-    ],
-    rating: 3,
-  },
-  {
-    name: "Nike Air 19",
-    picture: require("../images/product1.png"),
-    price: "80",
-    description: "lorem isurem halo unamwlo asdjasda ajsida asd a asd as",
-    varity: [
-      { name: "XL", value: "xl" },
-      { name: "XS", value: "xs" },
-      { name: "M", value: "m" },
-    ],
-    rating: 3,
-  },
-  {
-    name: "Nike Air 19",
-    picture: require("../images/product1.png"),
-    price: "80",
-    description: "lorem isurem halo unamwlo asdjasda ajsida asd a asd as",
-    varity: [
-      { name: "XL", value: "xl" },
-      { name: "XS", value: "xs" },
-      { name: "M", value: "m" },
-    ],
-    rating: 3,
-  },
-  {
-    name: "Nike Air 19",
-    picture: require("../images/product1.png"),
-    price: "80",
-    description: "lorem isurem halo unamwlo asdjasda ajsida asd a asd as",
-    varity: [
-      { name: "XL", value: "xl" },
-      { name: "XS", value: "xs" },
-      { name: "M", value: "m" },
-    ],
-    rating: 3,
-  },
-];
 
 const styles = StyleSheet.create({
   home: {
@@ -164,21 +57,33 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   product: {
-    backgroundColor: "#E8EBF2",
     flexDirection: "row",
     alignItems: "center",
     marginVertical: 10,
   },
+  productContent: {
+    backgroundColor: "#E8EBF2",
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+    transform: [{ translateX: -100 }],
+  },
+  productNav: {
+    backgroundColor: "#D9576D",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    flexDirection: "row",
+  },
   productBackground: {
     position: "absolute",
     width: 150,
-    height: 150,
+    height: 130,
     left: "-25%",
     top: 0,
   },
   productPicture: {
     width: 150,
-    height: 150,
+    height: 120,
     resizeMode: "contain",
   },
   productName: {
@@ -401,44 +306,52 @@ const Checkout = ({ navigation }) => {
       <View style={{ paddingBottom: 50 }}>
         <ScrollView>
           <View style={styles.navbar}>
-            <TouchableOpacity style={styles.navbarButton} onPress={() => navigation.push("Home")}>
-              <Image source={require("../images/back-button.png")} />
-            </TouchableOpacity>
+            <BackButton />
           </View>
           <Text style={styles.pageTitle}>Checkout</Text>
           <View style={styles.productList}>
             <View style={styles.product}>
-              <Image style={styles.productBackground} source={require("../images/checkout-circle.png")} />
-              <Image style={styles.productPicture} source={require("../images/product1.png")} />
-              <View style={styles.productDetail}>
-                <Text style={styles.productName}>Nike air max 2019</Text>
-                <Text style={styles.productPrice}>$45</Text>
+              <View style={[styles.productNav, StyleSheet.absoluteFill]}>
+                <Image source={require("../images/delete.png")} style={{ marginRight: 30 }} />
               </View>
-              <View style={styles.edit}>
-                <TouchableOpacity style={styles.editSubtract}>
-                  <Text style={styles.editBtnText}>-</Text>
-                </TouchableOpacity>
-                <Text style={styles.editText}>1</Text>
-                <TouchableOpacity style={styles.editAdd}>
-                  <Text style={styles.editBtnText}>+</Text>
-                </TouchableOpacity>
+              <View style={styles.productContent}>
+                <Image style={styles.productBackground} source={require("../images/checkout-circle.png")} />
+                <Image style={styles.productPicture} source={require("../images/product1.png")} />
+                <View style={styles.productDetail}>
+                  <Text style={styles.productName}>Nike air max 2019</Text>
+                  <Text style={styles.productPrice}>$45</Text>
+                </View>
+                <View style={styles.edit}>
+                  <TouchableOpacity style={styles.editSubtract}>
+                    <Text style={styles.editBtnText}>-</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.editText}>1</Text>
+                  <TouchableOpacity style={styles.editAdd}>
+                    <Text style={styles.editBtnText}>+</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
             <View style={styles.product}>
-              <Image style={styles.productBackground} source={require("../images/checkout-circle.png")} />
-              <Image style={styles.productPicture} source={require("../images/product2.png")} />
-              <View style={styles.productDetail}>
-                <Text style={styles.productName}>Nike air max 2019</Text>
-                <Text style={styles.productPrice}>$45</Text>
+              <View style={[styles.productNav, StyleSheet.absoluteFill]}>
+                <Image source={require("../images/delete.png")} style={{ marginRight: 30 }} />
               </View>
-              <View style={styles.edit}>
-                <TouchableOpacity style={styles.editSubtract}>
-                  <Text style={styles.editBtnText}>-</Text>
-                </TouchableOpacity>
-                <Text style={styles.editText}>1</Text>
-                <TouchableOpacity style={styles.editAdd}>
-                  <Text style={styles.editBtnText}>+</Text>
-                </TouchableOpacity>
+              <View style={styles.productContent}>
+                <Image style={styles.productBackground} source={require("../images/checkout-circle.png")} />
+                <Image style={styles.productPicture} source={require("../images/product1.png")} />
+                <View style={styles.productDetail}>
+                  <Text style={styles.productName}>Nike air max 2019</Text>
+                  <Text style={styles.productPrice}>$45</Text>
+                </View>
+                <View style={styles.edit}>
+                  <TouchableOpacity style={styles.editSubtract}>
+                    <Text style={styles.editBtnText}>-</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.editText}>1</Text>
+                  <TouchableOpacity style={styles.editAdd}>
+                    <Text style={styles.editBtnText}>+</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </View>

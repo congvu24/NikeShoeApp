@@ -1,13 +1,12 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity, Image, Text } from "react-native";
+import BackButton from "../component/BackButton";
 
 export default function Profile() {
   return (
     <View style={styles.home}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backArrow}>
-          <Image source={require("../images/back.png")} />
-        </TouchableOpacity>
+        <BackButton />
 
         <View style={styles.headerUser}>
           <View style={styles.user}>

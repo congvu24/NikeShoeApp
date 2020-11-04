@@ -4,6 +4,7 @@ import Constants from "expo-constants";
 import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
 import StickyParallaxHeader from "react-native-sticky-parallax-header";
 import { Modalize } from "react-native-modalize";
+import Backbutton from "../component/BackButton";
 
 const { width, height } = Dimensions.get("window");
 
@@ -124,9 +125,7 @@ const AddressManage = ({ navigation }) => {
       <View style={{ paddingBottom: 50 }}>
         <ScrollView>
           <View style={styles.navbar}>
-            <TouchableOpacity style={styles.navbarButton} onPress={() => navigation.push("Home")}>
-              <Image source={require("../images/back-button.png")} />
-            </TouchableOpacity>
+            <Backbutton />
           </View>
           <Text style={styles.pageTitle}>Shipping Address</Text>
           <TouchableOpacity style={styles.address}>
