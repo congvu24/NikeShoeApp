@@ -3,6 +3,8 @@ import { Image, View, TextInput, Text, StyleSheet, TouchableOpacity, Dimensions,
 import Constants from "expo-constants";
 import { ScrollView } from "react-native-gesture-handler";
 import BackButton from "../component/BackButton";
+import { useRoute } from "@react-navigation/native";
+import { SharedElement } from "react-navigation-shared-element";
 
 const { width, height } = Dimensions.get("window");
 
@@ -17,11 +19,22 @@ const product = [
 ];
 
 export default function CategoryDetail() {
+  const route = useRoute();
+  const { collection } = route.params;
+
   return (
     <ScrollView style={styles.home}>
-      <View style={styles.banner}>
-        <Image source={require("../images/group-3.jpg")} style={styles.bannerImage} />
-        <BackButton style={{ position: "absolute", top: 10, left: 10 }} />
+      <View style={[styles.banner]}>
+        <SharedElement id={`collection.${collection.name}.picture`}>
+          <Image
+            source={collection.picture}
+            style={[{ width: width, height: 200, position: "absolute", top: 0, left: 0 }, styles.bannerImage]}
+            resizeMode="cover"
+          />
+        </SharedElement>
+        <SharedElement id={`collection.${collection.name}.text`} style={{ fontSize: 40, color: "#fff", alignSelf: "center", fontWeight: "bold" }}>
+          <Text style={{ fontSize: 40, color: "#fff", alignSelf: "center", fontWeight: "bold" }}>{collection.name}</Text>
+        </SharedElement>
       </View>
       <View style={styles.header}>
         <View style={styles.search}>
@@ -38,7 +51,6 @@ export default function CategoryDetail() {
       </View>
       <FlatList
         data={product}
-        // style={{ backgroundColor: "red", justifyContent: "space-between" }}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={[styles.productWrap, { width: width / 2 - 20, margin: 5, marginRight: 5 }]}
@@ -73,9 +85,6 @@ const styles = StyleSheet.create({
     height: 200,
   },
   bannerImage: {
-    width: null,
-    height: null,
-    flex: 1,
     opacity: 0.8,
   },
   header: {

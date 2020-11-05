@@ -5,6 +5,8 @@ import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
 import StickyParallaxHeader from "react-native-sticky-parallax-header";
 import DrawerHome from "../component/DrawerHome";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { SharedElement } from "react-navigation-shared-element";
+
 import Product, { Product1 } from "./Product";
 import Animated from "react-native-reanimated";
 import category from "../data/categories";
@@ -12,6 +14,160 @@ import collection from "../data/collections";
 import product from "../data/products";
 
 const { width, height } = Dimensions.get("window");
+
+export default function HomeTab({ handleClickDrawer, isOpenDrawer }) {
+  const navigation = useNavigation();
+  return (
+    <View>
+      <ScrollView showsVerticalScrollIndicator={false} scrollEnabled={isOpenDrawer == true ? false : true}>
+        <View style={styles.navbar}>
+          <TouchableOpacity style={styles.navbarButton} onPress={handleClickDrawer}>
+            <Image source={require("../images/menu.png")} />
+          </TouchableOpacity>
+          <Image source={require("../images/logo.png")} style={[styles.navbarButton, styles.navbarLogo]} />
+          <View style={styles.navbarGroup}>
+            <TouchableOpacity style={[styles.navbarButton, styles.navbarButtonMargin]}>
+              <Image source={require("../images/bookmark.png")} />
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.navbarButton, styles.navbarButtonMargin]}>
+              <Image source={require("../images/bag1.png")} />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View pointerEvents={!isOpenDrawer == true ? "auto" : "none"}>
+          <View style={styles.search}>
+            <Text style={styles.searchTextBig}>Discovery your</Text>
+            <Text style={styles.searchText}>Favourite Outfit</Text>
+            <View style={styles.searchBar}>
+              <TouchableOpacity style={styles.searchButton}>
+                <Image source={require("../images/search.png")} />
+              </TouchableOpacity>
+              <TextInput placeholder='"New autumn jacket..."' style={styles.searchInput} />
+            </View>
+          </View>
+          <View>
+            <View style={styles.slide}>
+              <Image source={require("../images/slideBackground.png")} style={[StyleSheet.absoluteFillObject, styles.slideImage]} />
+              <Text style={styles.slideText}>Year end promotion</Text>
+              <Text style={styles.slideTextLight}>All goods are for your winter</Text>
+              <Text style={styles.slideTextLight}>your winter</Text>
+              <Image source={require("../images/shoe1.png")} style={styles.slideItem} />
+              <TouchableOpacity style={styles.slideButton}>
+                <Image source={require("../images/nextSlide.png")} />
+              </TouchableOpacity>
+              <View style={styles.slideNavWrap}>
+                <View style={styles.slideNav}></View>
+                <View style={[styles.slideNav, styles.slideNavActive]}></View>
+                <View style={styles.slideNav}></View>
+              </View>
+            </View>
+          </View>
+          <View style={styles.listType}>
+            {category.slice(0, 8).map((item, index) => (
+              <TouchableOpacity style={styles.listTypeBox} key={index}>
+                <Image source={item.picture} style={styles.listTypeImage} />
+                <Text style={styles.listTypeText}>{item.name}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+          <View style={styles.group}>
+            <View style={styles.groupHeader}>
+              <Text style={styles.groupHeaderText}>Collection</Text>
+              <TouchableOpacity style={styles.groupHeaderButton}>
+                <Text>See all</Text>
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={collection}
+              renderItem={({ item }) => {
+                return (
+                  <View style={styles.groupWrap} key={item.id}>
+                    <TouchableOpacity onPress={() => navigation.push("CategoryDetail", { collection: item })} style={styles.groupWrap}>
+                      <SharedElement id={`collection.${item.name}.picture`} style={[StyleSheet.absoluteFillObject, { resizeMode: "cover" }]}>
+                        <Image
+                          source={item.picture}
+                          style={[StyleSheet.absoluteFillObject, { resizeMode: "cover" }, styles.groupImage]}
+                          resizeMode="cover"
+                        />
+                      </SharedElement>
+                      <SharedElement id={`collection.${item.name}.text`}>
+                        <Text style={styles.groupText}>{item.name}</Text>
+                      </SharedElement>
+                    </TouchableOpacity>
+                  </View>
+                );
+              }}
+              keyExtractor={(item) => item.id}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              snapToInterval={width * 0.8 + 20}
+              decelerationRate="fast"
+              bouncesZoom={true}
+              alwaysBounceHorizontal={true}
+            />
+          </View>
+          <View style={styles.group}>
+            <View style={styles.groupHeader}>
+              <Text style={styles.groupHeaderText}>Popular</Text>
+              <TouchableOpacity style={styles.groupHeaderButton}>
+                <Text>See all</Text>
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={product}
+              renderItem={({ item }) => <Product item={item} />}
+              keyExtractor={(item) => item.id}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              decelerationRate="fast"
+            />
+          </View>
+          <View style={styles.group}>
+            <View style={styles.groupHeader}>
+              <Text style={styles.groupHeaderText}>Popular</Text>
+              <TouchableOpacity style={styles.groupHeaderButton}>
+                <Text>See all</Text>
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={product}
+              renderItem={({ item }) => <Product item={item} />}
+              keyExtractor={(item) => item.id}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              decelerationRate="fast"
+            />
+          </View>
+          <View>
+            <View style={styles.slide}>
+              <Image source={require("../images/slideBackground.png")} style={[StyleSheet.absoluteFillObject, styles.slideImage]} />
+              <Text style={styles.slideText}>Year end promotion</Text>
+              <Text style={styles.slideTextLight}>All goods are for your winter</Text>
+              <Text style={styles.slideTextLight}>your winter</Text>
+              <Image source={require("../images/shoe1.png")} style={styles.slideItem} />
+              <TouchableOpacity style={styles.slideButton}>
+                <Image source={require("../images/nextSlide.png")} />
+              </TouchableOpacity>
+              <View style={styles.slideNavWrap}>
+                <View style={styles.slideNav}></View>
+                <View style={[styles.slideNav, styles.slideNavActive]}></View>
+                <View style={styles.slideNav}></View>
+              </View>
+            </View>
+          </View>
+          <FlatList
+            data={product}
+            renderItem={({ item }) => <Product1 item={item} />}
+            keyExtractor={(item) => item.id}
+            horizontal={false}
+            numColumns={2}
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
+      </ScrollView>
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
   navbar: {
@@ -151,8 +307,8 @@ const styles = StyleSheet.create({
     height: 150,
     marginRight: 10,
     marginVertical: 10,
-    borderRadius: 10,
-    backgroundColor: "red",
+    // borderRadius: 10,
+    // backgroundColor: "red",
     justifyContent: "center",
     overflow: "hidden",
   },
@@ -160,6 +316,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     position: "absolute",
+    opacity: 0.8,
   },
   group: {
     paddingBottom: 20,
@@ -197,147 +354,3 @@ const styles = StyleSheet.create({
     left: 0,
   },
 });
-
-export default function HomeTab({ handleClickDrawer, isOpenDrawer }) {
-  return (
-    <View>
-      <ScrollView showsVerticalScrollIndicator={false} scrollEnabled={isOpenDrawer == true ? false : true}>
-        <View style={styles.navbar}>
-          <TouchableOpacity style={styles.navbarButton} onPress={handleClickDrawer}>
-            <Image source={require("../images/menu.png")} />
-          </TouchableOpacity>
-          <Image source={require("../images/logo.png")} style={[styles.navbarButton, styles.navbarLogo]} />
-          <View style={styles.navbarGroup}>
-            <TouchableOpacity style={[styles.navbarButton, styles.navbarButtonMargin]}>
-              <Image source={require("../images/bookmark.png")} />
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.navbarButton, styles.navbarButtonMargin]}>
-              <Image source={require("../images/bag1.png")} />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View pointerEvents={!isOpenDrawer == true ? "auto" : "none"}>
-          <View style={styles.search}>
-            <Text style={styles.searchTextBig}>Discovery your</Text>
-            <Text style={styles.searchText}>Favourite Outfit</Text>
-            <View style={styles.searchBar}>
-              <TouchableOpacity style={styles.searchButton}>
-                <Image source={require("../images/search.png")} />
-              </TouchableOpacity>
-              <TextInput placeholder='"New autumn jacket..."' style={styles.searchInput} />
-            </View>
-          </View>
-          <View>
-            <View style={styles.slide}>
-              <Image source={require("../images/slideBackground.png")} style={[StyleSheet.absoluteFillObject, styles.slideImage]} />
-              <Text style={styles.slideText}>Year end promotion</Text>
-              <Text style={styles.slideTextLight}>All goods are for your winter</Text>
-              <Text style={styles.slideTextLight}>your winter</Text>
-              <Image source={require("../images/shoe1.png")} style={styles.slideItem} />
-              <TouchableOpacity style={styles.slideButton}>
-                <Image source={require("../images/nextSlide.png")} />
-              </TouchableOpacity>
-              <View style={styles.slideNavWrap}>
-                <View style={styles.slideNav}></View>
-                <View style={[styles.slideNav, styles.slideNavActive]}></View>
-                <View style={styles.slideNav}></View>
-              </View>
-            </View>
-          </View>
-          <View style={styles.listType}>
-            {category.slice(0, 8).map((item, index) => (
-              <TouchableOpacity style={styles.listTypeBox} key={index}>
-                <Image source={item.picture} style={styles.listTypeImage} />
-                <Text style={styles.listTypeText}>{item.name}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-          <View style={styles.group}>
-            <View style={styles.groupHeader}>
-              <Text style={styles.groupHeaderText}>Collection</Text>
-              <TouchableOpacity style={styles.groupHeaderButton}>
-                <Text>See all</Text>
-              </TouchableOpacity>
-            </View>
-            <FlatList
-              data={collection}
-              renderItem={({ item }) => {
-                return (
-                  <View style={styles.groupWrap} key={item.id}>
-                    <Image style={[StyleSheet.absoluteFillObject, { resizeMode: "cover" }, styles.groupImage]} source={item.picture} />
-                    <View style={[StyleSheet.absoluteFillObject, styles.groupTopLayer]}></View>
-                    <Text style={styles.groupText}>{item.name}</Text>
-                  </View>
-                );
-              }}
-              keyExtractor={(item) => item.id}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              snapToInterval={width * 0.8 + 20}
-              decelerationRate="fast"
-              bouncesZoom={true}
-              alwaysBounceHorizontal={true}
-            />
-          </View>
-          <View style={styles.group}>
-            <View style={styles.groupHeader}>
-              <Text style={styles.groupHeaderText}>Popular</Text>
-              <TouchableOpacity style={styles.groupHeaderButton}>
-                <Text>See all</Text>
-              </TouchableOpacity>
-            </View>
-            <FlatList
-              data={product}
-              renderItem={({ item }) => <Product item={item} />}
-              keyExtractor={(item) => item.id}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              decelerationRate="fast"
-            />
-          </View>
-          <View style={styles.group}>
-            <View style={styles.groupHeader}>
-              <Text style={styles.groupHeaderText}>Popular</Text>
-              <TouchableOpacity style={styles.groupHeaderButton}>
-                <Text>See all</Text>
-              </TouchableOpacity>
-            </View>
-            <FlatList
-              data={product}
-              renderItem={({ item }) => <Product item={item} />}
-              keyExtractor={(item) => item.id}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              decelerationRate="fast"
-            />
-          </View>
-          <View>
-            <View style={styles.slide}>
-              <Image source={require("../images/slideBackground.png")} style={[StyleSheet.absoluteFillObject, styles.slideImage]} />
-              <Text style={styles.slideText}>Year end promotion</Text>
-              <Text style={styles.slideTextLight}>All goods are for your winter</Text>
-              <Text style={styles.slideTextLight}>your winter</Text>
-              <Image source={require("../images/shoe1.png")} style={styles.slideItem} />
-              <TouchableOpacity style={styles.slideButton}>
-                <Image source={require("../images/nextSlide.png")} />
-              </TouchableOpacity>
-              <View style={styles.slideNavWrap}>
-                <View style={styles.slideNav}></View>
-                <View style={[styles.slideNav, styles.slideNavActive]}></View>
-                <View style={styles.slideNav}></View>
-              </View>
-            </View>
-          </View>
-          <FlatList
-            data={product}
-            renderItem={({ item }) => <Product1 item={item} />}
-            keyExtractor={(item) => item.id}
-            horizontal={false}
-            numColumns={2}
-            showsHorizontalScrollIndicator={false}
-          />
-        </View>
-      </ScrollView>
-    </View>
-  );
-}

@@ -1,4 +1,4 @@
-export default allCategories = [
+const allCategories = [
   {
     id: 1,
     name: "Guy",
@@ -64,3 +64,5 @@ export default allCategories = [
       "Suspendisse potenti. Cras in purus eu magna vulputate luctus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus vestibulum sagittis sapien. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
   },
 ];
+
+export default allCategories;

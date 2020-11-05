@@ -2,7 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
 import RNBootSplash from "react-native-bootsplash";
 import { Alert, BackHandler, StyleSheet, Text, View } from "react-native";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import AnimatedSplash from "react-native-animated-splash-screen";
 
@@ -19,9 +19,12 @@ import Search from "./src/views/Search";
 import Splash from "./src/views/Splash";
 import Login from "./src/views/Login";
 import CategoryDetail from "./src/views/CategoryDetail";
-import Test from "./src/views/Test";
+import { NavigationContainer } from "@react-navigation/native";
+import { createSharedElementStackNavigator } from "react-navigation-shared-element";
+import { useScreens as enableScreens } from "react-native-screens";
 
-const Stack = createStackNavigator();
+enableScreens();
+const Stack = createSharedElementStackNavigator();
 
 export default class Wrap extends React.Component {
   state = {
@@ -64,7 +67,7 @@ function App() {
 const Navigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Home"
+      initialRouteName="AddCard"
       headerMode="none"
       screenOptions={{
         gestureEnabled: true,
@@ -95,8 +98,7 @@ const Navigator = () => {
       }}
     >
       <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="Detail" component={Detail} />
-      {/* <Stack.Screen name="Checkout" component={Checkout} />
+      <Stack.Screen name="Checkout" component={Checkout} />
       <Stack.Screen name="Address" component={AddressManage} />
       <Stack.Screen name="AddressEdit" component={AddressEdit} />
       <Stack.Screen name="PaymentMethod" component={PaymentMethod} />
@@ -106,8 +108,27 @@ const Navigator = () => {
       <Stack.Screen name="Search" component={Search} />
       <Stack.Screen name="Splash" component={Splash} />
       <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="CategoryDetail" component={CategoryDetail} />
-      <Stack.Screen name="Test" component={Test} /> */}
+      <Stack.Screen
+        name="CategoryDetail"
+        component={CategoryDetail}
+        sharedElementsConfig={(route, otherRoute, showing) => {
+          const { collection } = route.params;
+          return [
+            {
+              id: `collection.${collection.name}.picture`,
+              animation: "move",
+              resize: "clip",
+              align: "center-top",
+            },
+            {
+              id: `collection.${collection.name}.text`,
+              animation: "move",
+              resize: "clip",
+              align: "center-top",
+            },
+          ];
+        }}
+      />
     </Stack.Navigator>
   );
 };

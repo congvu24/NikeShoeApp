@@ -1,4 +1,4 @@
-export default allProduct = [
+const allProduct = [
   {
     id: 1,
     name: "Cthrine",
@@ -114,3 +114,4 @@ export default allProduct = [
     variety: ["Street", "Warrios"],
   },
 ];
+export default allProduct;
