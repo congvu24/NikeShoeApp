@@ -1,9 +1,5 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
-import RNBootSplash from "react-native-bootsplash";
-import { Alert, BackHandler, StyleSheet, Text, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 import AnimatedSplash from "react-native-animated-splash-screen";
 
 import Home from "./src/views/Home";
@@ -19,9 +15,14 @@ import Search from "./src/views/Search";
 import Splash from "./src/views/Splash";
 import Login from "./src/views/Login";
 import CategoryDetail from "./src/views/CategoryDetail";
+import CollectionDetail from "./src/views/CollectionDetail";
 import { NavigationContainer } from "@react-navigation/native";
 import { createSharedElementStackNavigator } from "react-navigation-shared-element";
 import { useScreens as enableScreens } from "react-native-screens";
+import BigProductDetail from "./src/views/BigProductDetail";
+import Test from "./src/views/Test";
+import { Easing } from "react-native";
+import allCategories from "./src/data/categories";
 
 enableScreens();
 const Stack = createSharedElementStackNavigator();
@@ -34,7 +35,7 @@ export default class Wrap extends React.Component {
   async componentDidMount() {
     await setTimeout(() => {
       this.setState({ isLoaded: true });
-    }, 2000);
+    }, 0);
   }
   render() {
     return (
@@ -45,7 +46,6 @@ export default class Wrap extends React.Component {
         backgroundColor={"#2A5CC8"}
         logoHeight={150}
         logoWidth={150}
-        // customComponent={() => <Text>Hello</Text>}
       >
         <App />
       </AnimatedSplash>
@@ -64,10 +64,31 @@ function App() {
   );
 }
 
+const option = () => ({
+  gestureEnabled: false,
+  transitionSpec: {
+    open: {
+      animation: "timing",
+      config: { duration: 800, easing: Easing.inOut(Easing.sin) },
+    },
+    close: {
+      animation: "timing",
+      config: { duration: 500, easing: Easing.inOut(Easing.ease) },
+    },
+  },
+  cardStyleInterpolator: ({ current, next, layouts }) => {
+    return {
+      cardStyle: {
+        opacity: current.progress,
+      },
+    };
+  },
+});
+
 const Navigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName="AddCard"
+      initialRouteName="Home"
       headerMode="none"
       screenOptions={{
         gestureEnabled: true,
@@ -77,27 +98,32 @@ const Navigator = () => {
         },
         cardStyleInterpolator: ({ current, next, layouts }) => {
           return {
+            // cardStyle: {
+            //   transform: [
+            //     {
+            //       translateX: current.progress.interpolate({
+            //         inputRange: [0, 1],
+            //         outputRange: [layouts.screen.width, 0],
+            //       }),
+            //     },
+            //   ],
+            //   // opacity: current.progress,
+            // },
             cardStyle: {
-              transform: [
-                {
-                  translateX: current.progress.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [layouts.screen.width, 0],
-                  }),
-                },
-              ],
+              opacity: current.progress,
             },
-            overlayStyle: {
-              opacity: current.progress.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, 0.5],
-              }),
-            },
+            // overlayStyle: {
+            //   opacity: current.progress.interpolate({
+            //     inputRange: [0, 1],
+            //     outputRange: [0, 0.5],
+            //   }),
+            // },
           };
         },
       }}
     >
       <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Detail" component={Detail} />
       <Stack.Screen name="Checkout" component={Checkout} />
       <Stack.Screen name="Address" component={AddressManage} />
       <Stack.Screen name="AddressEdit" component={AddressEdit} />
@@ -111,20 +137,30 @@ const Navigator = () => {
       <Stack.Screen
         name="CategoryDetail"
         component={CategoryDetail}
-        sharedElementsConfig={(route, otherRoute, showing) => {
-          const { collection } = route.params;
+        options={option}
+        sharedElementsConfig={(route) => {
+          return allCategories.map((item) => ({ id: `type.${item.id}.name`, animation: "fade", align: "center-center" }));
+        }}
+      />
+      <Stack.Screen name="CollectionDetail" component={CollectionDetail} />
+      <Stack.Screen
+        name="BigProductDetail"
+        component={BigProductDetail}
+        options={option}
+        sharedElementsConfig={(route) => {
+          const { item } = route.params;
           return [
             {
-              id: `collection.${collection.name}.picture`,
-              animation: "move",
-              resize: "clip",
-              align: "center-top",
+              id: `item.${item.name}.bg`,
             },
             {
-              id: `collection.${collection.name}.text`,
-              animation: "move",
-              resize: "clip",
-              align: "center-top",
+              id: `item.${item.name}.name`,
+            },
+            {
+              id: `item.${item.name}.price`,
+            },
+            {
+              id: `item.${item.name}.picture`,
             },
           ];
         }}

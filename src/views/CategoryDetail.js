@@ -1,181 +1,206 @@
-import React from "react";
-import { Image, View, TextInput, Text, StyleSheet, TouchableOpacity, Dimensions, FlatList } from "react-native";
-import Constants from "expo-constants";
-import { ScrollView } from "react-native-gesture-handler";
-import BackButton from "../component/BackButton";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
+import React, { useState } from "react";
+import { View, Text, SafeAreaView, FlatList, TouchableOpacity, StyleSheet, Image, Dimensions, ScrollView } from "react-native";
 import { SharedElement } from "react-navigation-shared-element";
+import allCategories from "../data/categories";
+import collections from "../data/collections";
+import allProduct from "../data/products";
+
+function getProductOfCategory(categoryId) {
+  //   return allProduct.filter((product) => product.category == categoryId);
+  return allProduct.filter((product) => product);
+}
+
+const listColor = ["#fcf876", "#cee397", "#8bcdcd", "#3797a4"];
 
 const { width, height } = Dimensions.get("window");
 
-const product = [
-  { name: "Nike Air 19", picture: require("../images/product3.png"), price: "80" },
-  { name: "Nike Air 19", picture: require("../images/product1.png"), price: "80" },
-  { name: "Nike Air 19", picture: require("../images/product1.png"), price: "80" },
-  { name: "Nike Air 19", picture: require("../images/product1.png"), price: "80" },
-  { name: "Nike Air 19", picture: require("../images/product1.png"), price: "80" },
-  { name: "Nike Air 19", picture: require("../images/product1.png"), price: "80" },
-  { name: "Nike Air 19", picture: require("../images/product1.png"), price: "80" },
-];
-
-export default function CategoryDetail() {
-  const route = useRoute();
-  const { collection } = route.params;
-
+export default function CategoryDetail({ route }) {
+  const navigation = useNavigation();
+  const { item } = route.params;
+  const [tab, setTab] = useState(item.id);
   return (
-    <ScrollView style={styles.home}>
-      <View style={[styles.banner]}>
-        <SharedElement id={`collection.${collection.name}.picture`}>
-          <Image
-            source={collection.picture}
-            style={[{ width: width, height: 200, position: "absolute", top: 0, left: 0 }, styles.bannerImage]}
-            resizeMode="cover"
-          />
-        </SharedElement>
-        <SharedElement id={`collection.${collection.name}.text`} style={{ fontSize: 40, color: "#fff", alignSelf: "center", fontWeight: "bold" }}>
-          <Text style={{ fontSize: 40, color: "#fff", alignSelf: "center", fontWeight: "bold" }}>{collection.name}</Text>
-        </SharedElement>
-      </View>
-      <View style={styles.header}>
-        <View style={styles.search}>
-          <Image source={require("../images/search.png")} />
-          <TextInput placeholder="Search shoes" style={styles.searchInput} />
-        </View>
-        <View style={styles.category}>
-          <Text style={styles.categoryName}>Man shoes</Text>
-          <TouchableOpacity style={styles.filter}>
-            <Image source={require("../images/settings.png")} />
-            <Text style={styles.filterText}>Filter</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-      <FlatList
-        data={product}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={[styles.productWrap, { width: width / 2 - 20, margin: 5, marginRight: 5 }]}
-            onPress={() => navigation.push("Detail")}
-          >
-            <TouchableOpacity style={styles.productSave}>
-              <Image source={require("../images/bookmark.png")} />
+    <SafeAreaView>
+      {/* <ScrollView> */}
+      {/* <View> */}
+      <View>
+        <FlatList
+          data={allCategories}
+          keyExtractor={(item) => `category.${item.id}`}
+          showsHorizontalScrollIndicator={false}
+          horizontal={true}
+          // style={{ backgroundColor: "red" }}
+          contentContainerStyle={{ padding: 10 }}
+          renderItem={({ item, index }) => (
+            <TouchableOpacity onPress={() => setTab(item.name)} key={`tab.${index}`}>
+              <View style={[styles.tab, { backgroundColor: tab == item.id ? "#5780D9" : "transparent" }]}>
+                <SharedElement id={`type.${item.id}.name`}>
+                  <Text style={[styles.tabName, { color: tab == item.id ? "white" : "black" }]}>{item.name}</Text>
+                </SharedElement>
+              </View>
             </TouchableOpacity>
-            <Image source={item.picture} style={[styles.productImage, { width: "90%" }]} />
-            <Text style={styles.productName}>{item.name}</Text>
-            <Text style={styles.productPrice}>${item.price}</Text>
-            <TouchableOpacity style={styles.productBuy}>
-              <Image source={require("../images/addcart.png")} />
-            </TouchableOpacity>
+          )}
+        />
+      </View>
+
+      <View>
+        <FlatList
+          data={allProduct}
+          renderItem={({ item, index }) => {
+            return (
+              <TouchableOpacity
+                key={`bigProduct.${index}`}
+                onPress={() => navigation.navigate("BigProductDetail", { item, color: listColor[index % listColor.length] })}
+              >
+                <View style={[styles.bigProduct, { backgroundColor: listColor[index % listColor.length] }]}>
+                  <SharedElement id={`item.${item.name}.bg`} style={[StyleSheet.absoluteFillObject]}>
+                    <View
+                      style={[StyleSheet.absoluteFillObject, { backgroundColor: listColor[index % listColor.length] }, { borderRadius: 16 }]}
+                    ></View>
+                  </SharedElement>
+                  <SharedElement id={`item.${item.name}.name`} style={[styles.bigProductName]}>
+                    <Text style={{ fontSize: 18, fontWeight: "700", color: "#060930" }} adjustsFontSizeToFit numberOfLines={1}>
+                      {item.name}
+                    </Text>
+                  </SharedElement>
+                  <SharedElement id={`item.${item.name}.price`} style={[styles.bigProductPrice]}>
+                    <Text style={{ fontSize: 18, fontWeight: "700", color: "#060930" }}>${item.price}</Text>
+                  </SharedElement>
+                  <View style={{ width: "100%", height: height * 0.3, justifyContent: "center", alignItems: "center" }}>
+                    <SharedElement
+                      id={`item.${item.name}.picture`}
+                      style={[StyleSheet.absoluteFillObject, { justifyContent: "center", alignItems: "center" }]}
+                    >
+                      <Image source={item.picture} style={[{ resizeMode: "contain", alignSelf: "center", position: "absolute" }]} />
+                    </SharedElement>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            );
+          }}
+          keyExtractor={(item) => item.id}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          snapToInterval={width * 0.8 + 20}
+          decelerationRate="fast"
+          bouncesZoom={true}
+          alwaysBounceHorizontal={true}
+        />
+      </View>
+      <ScrollView>
+        {allProduct.map((item) => (
+          <TouchableOpacity>
+            <View style={styles.moreItem}>
+              <View style={{ width: width * 0.2, height: "100%", justifyContent: "center", alignItems: "center" }}>
+                <Image source={item.picture} resizeMode="center" style={{ alignSelf: "center" }} />
+              </View>
+              <View style={{ flex: 1, justifyContent: "center" }}>
+                <Text style={{ fontWeight: "700", fontSize: 16 }}>{item.name}</Text>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Image source={require("../images/good-star.png")} />
+                  <Text style={{ fontWeight: "700", fontSize: 14, marginLeft: 5 }}>4.5</Text>
+                </View>
+              </View>
+              <Text style={{ fontWeight: "700", fontSize: 16 }}>${item.price}</Text>
+            </View>
           </TouchableOpacity>
-        )}
-        keyExtractor={(item) => item.title}
-        horizontal={false}
-        numColumns={2}
-        showsHorizontalScrollIndicator={false}
-      />
-    </ScrollView>
+        ))}
+        {/* <FlatList
+          data={allProduct}
+          keyExtractor={(item) => `moreProduct.${item.id}`}
+          contentContainerStyle={{ padding: 10 }}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item }) => (
+            <TouchableOpacity>
+              <View style={styles.moreItem}>
+                <View style={{ width: width * 0.2, height: "100%", justifyContent: "center", alignItems: "center" }}>
+                  <Image source={item.picture} resizeMode="center" />
+                </View>
+                <View style={{ flex: 1, justifyContent: "center" }}>
+                  <Text style={{ fontWeight: "700", fontSize: 16 }}>{item.name}</Text>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Image source={require("../images/good-star.png")} />
+                    <Text style={{ fontWeight: "700", fontSize: 14, marginLeft: 5 }}>4.5</Text>
+                  </View>
+                </View>
+                <Text style={{ fontWeight: "700", fontSize: 16 }}>${item.price}</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        /> */}
+      </ScrollView>
+
+      {/* </View> */}
+      {/* </ScrollView> */}
+    </SafeAreaView>
   );
 }
 
+CategoryDetail.sharedElements = (route, otherRoute, showing) => {
+  const { item } = route.params;
+  return [
+    {
+      id: `type.${item.id}.name`,
+    },
+  ];
+};
+
 const styles = StyleSheet.create({
-  home: {
-    backgroundColor: "#F5F5F5",
+  groupWrap: {
+    width: width * 0.8 + 10,
+    height: 150,
+    marginRight: 10,
+    marginVertical: 10,
+    // borderRadius: 10,
+    // backgroundColor: "red",
+    justifyContent: "center",
+    overflow: "hidden",
   },
-  banner: {
+  groupImage: {
     width: "100%",
-    height: 200,
-  },
-  bannerImage: {
+    height: "100%",
+    position: "absolute",
     opacity: 0.8,
   },
-  header: {
-    padding: 10,
-    borderBottomColor: "#7070701A",
-    borderBottomWidth: 1,
-    paddingBottom: 30,
-    marginBottom: 20,
-  },
-  search: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    paddingVertical: 10,
-    borderRadius: 10,
-    paddingHorizontal: 10,
-  },
-  searchInput: {
-    color: "#8F919B80",
-    fontWeight: "100",
-    marginLeft: 20,
-  },
-  category: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 20,
-  },
-  categoryName: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#282C40",
-  },
-  filter: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderColor: "#D0D0D0",
-    borderRadius: 20,
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-  },
-  filterText: {
-    marginLeft: 5,
-    textTransform: "uppercase",
-    color: "#5780D9",
-    fontWeight: "700",
-    fontSize: 12,
-  },
-  productWrap: {
-    height: 270,
-    marginVertical: 10,
+  tab: {
     marginHorizontal: 10,
-    borderRadius: 5,
-    backgroundColor: "#4D79D720",
-    overflow: "hidden",
-    flexDirection: "column",
-    position: "relative",
+    // backgroundColor: "orange",
+    paddingHorizontal: 10,
+    borderRadius: 10,
   },
-  productImage: {
-    width: "80%",
-    alignSelf: "center",
-    resizeMode: "contain",
+  tabName: {
+    fontSize: 18,
+    fontWeight: "700",
+    opacity: 0.8,
   },
-  productSave: {
+  bigProduct: {
+    width: width * 0.6,
+    height: height * 0.45,
+    margin: 10,
+    padding: 10,
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    // backgroundColor:
+  },
+  bigProductName: {
     position: "absolute",
     top: 10,
-    right: 10,
-  },
-  productName: {
-    position: "absolute",
     left: 10,
-    bottom: 50,
-    color: "#282C40",
-    fontWeight: "700",
-    fontSize: 17,
-    opacity: 0.65,
   },
-  productPrice: {
+  bigProductPrice: {
     position: "absolute",
+    top: 30,
     left: 10,
-    bottom: 10,
-    fontSize: 27,
-    color: "#282C40",
-    fontWeight: "bold",
+    fontSize: 16,
+    fontWeight: "500",
   },
-  productBuy: {
-    position: "absolute",
-    right: 0,
-    bottom: 0,
-    backgroundColor: "#4D79D7",
-    padding: 20,
-    borderTopLeftRadius: 20,
+  moreItem: {
+    flexDirection: "row",
+    // backgroundColor: "red",
+    alignItems: "center",
+    padding: 5,
+    height: 80,
+    marginVertical: 10,
   },
 });

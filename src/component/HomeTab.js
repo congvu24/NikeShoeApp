@@ -64,9 +64,11 @@ export default function HomeTab({ handleClickDrawer, isOpenDrawer }) {
           </View>
           <View style={styles.listType}>
             {category.slice(0, 8).map((item, index) => (
-              <TouchableOpacity style={styles.listTypeBox} key={index}>
+              <TouchableOpacity style={styles.listTypeBox} key={index} onPress={() => navigation.navigate("CategoryDetail", { item })}>
                 <Image source={item.picture} style={styles.listTypeImage} />
-                <Text style={styles.listTypeText}>{item.name}</Text>
+                <SharedElement id={`type.${item.id}.name`}>
+                  <Text style={styles.listTypeText}>{item.name}</Text>
+                </SharedElement>
               </TouchableOpacity>
             ))}
           </View>
@@ -82,7 +84,7 @@ export default function HomeTab({ handleClickDrawer, isOpenDrawer }) {
               renderItem={({ item }) => {
                 return (
                   <View style={styles.groupWrap} key={item.id}>
-                    <TouchableOpacity onPress={() => navigation.push("CategoryDetail", { collection: item })} style={styles.groupWrap}>
+                    <TouchableOpacity onPress={() => navigation.push("CollectionDetail", { collection: item })} style={styles.groupWrap}>
                       <SharedElement id={`collection.${item.name}.picture`} style={[StyleSheet.absoluteFillObject, { resizeMode: "cover" }]}>
                         <Image
                           source={item.picture}
@@ -293,7 +295,8 @@ const styles = StyleSheet.create({
   },
   listTypeText: {
     fontSize: 12,
-    color: "#8F919B",
+    color: "#000000",
+    fontWeight: "700",
   },
   listTypeBox: {
     justifyContent: "center",

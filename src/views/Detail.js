@@ -5,12 +5,36 @@ import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
 import StickyParallaxHeader from "react-native-sticky-parallax-header";
 import BackButton from "../component/BackButton";
 import { Modalize } from "react-native-modalize";
-import category from "../data/categories";
-import collection from "../data/collections";
-import product from "../data/products";
+import { SharedElement } from "react-navigation-shared-element";
+import * as Animateable from "react-native-animatable";
 
 const { width, height } = Dimensions.get("window");
+const flip360 = {
+  0: {
+    opacity: 0,
+    transform: [{ rotateY: "0deg" }],
+  },
+  0.5: {
+    opacity: 0.7,
+    transform: [{ rotateY: "180deg" }],
+  },
+  1: {
+    opacity: 1,
+    transform: [{ rotateY: "360deg" }],
+  },
+};
+const upAndDown = {
+  0: {
+    transform: [{ translateY: 0 }],
+  },
 
+  0.5: {
+    transform: [{ translateY: 10 }],
+  },
+  1: {
+    transform: [{ translateY: 0 }],
+  },
+};
 export default class Detail extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -40,6 +64,7 @@ export default class Detail extends React.PureComponent {
 
   render() {
     const { product } = this.state;
+
     return (
       <View style={[StyleSheet.absoluteFill, styles.home]}>
         <View style={styles.navbar}>
@@ -49,13 +74,23 @@ export default class Detail extends React.PureComponent {
           </TouchableOpacity>
         </View>
         <View style={styles.product}>
-          <Image style={styles.productBackground} source={require("../images/circle.png")} />
-          <View style={styles.productPictureWrap}>
-            <Image style={styles.productPicture} source={product.picture} />
-          </View>
-          <View style={styles.productPrice}>
+          <Animateable.Image animation="fadeInLeft" style={styles.productBackground} source={require("../images/circle.png")} />
+          <Animateable.View animation="fadeInUp" duration={1000} style={styles.productPictureWrap}>
+            <Animateable.Image
+              animation={upAndDown}
+              delay={1010}
+              duration={2000}
+              easing="linear"
+              direction="alternate"
+              iterationCount="infinite"
+              style={styles.productPicture}
+              source={product.picture}
+            />
+          </Animateable.View>
+
+          <Animateable.View animation={flip360} delay={500} duration={1000} iterationCount={1} direction="alternate" style={[styles.productPrice]}>
             <Text style={styles.productPriceText}>${product.price}</Text>
-          </View>
+          </Animateable.View>
         </View>
         <Modalize alwaysOpen={height * 0.4} modalStyle={styles.modal}>
           <View style={styles.name}>
@@ -136,6 +171,19 @@ export default class Detail extends React.PureComponent {
     );
   }
 }
+
+// Detail.sharedElements = (route, otherRoute, showing) => {
+//   const { product } = route.params;
+//   console.log(product);
+//   return [
+//     {
+//       id: `product.${product.name}.picture`,
+//       animation: "move",
+//       resize: "clip",
+//       align: "center-top",
+//     },
+//   ];
+// };
 
 const styles = StyleSheet.create({
   home: {

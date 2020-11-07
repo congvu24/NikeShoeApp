@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useEffect } from "react";
 import { render } from "react-dom";
 import { Dimensions, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Image, Text, View, Animated } from "react-native";
+import { SharedElement } from "react-navigation-shared-element";
 
 const { width, height } = Dimensions.get("window");
 
@@ -12,7 +13,9 @@ export default function Product({ item }) {
       <TouchableOpacity style={styles.productSave}>
         <Image source={require("../images/bookmark.png")} />
       </TouchableOpacity>
-      <Image source={item.picture} style={styles.productImage} />
+      <SharedElement id={`product.${item.name}.picture`}>
+        <Image source={item.picture} style={styles.productImage} />
+      </SharedElement>
       <Text style={styles.productName}>{item.name}</Text>
       <Text style={styles.productPrice}>${item.price}</Text>
       <TouchableOpacity style={styles.productBuy}>
@@ -30,7 +33,9 @@ export function Product1({ item }) {
       <TouchableOpacity style={styles.productSave}>
         <Image source={require("../images/bookmark.png")} />
       </TouchableOpacity>
-      <Image source={item.picture} style={[styles.productImage, { width: "90%" }]} />
+      <SharedElement id={`product.${item.name}.picture`}>
+        <Image source={item.picture} style={[styles.productImage, { width: "90%" }]} />
+      </SharedElement>
       <Text style={styles.productName}>{item.name}</Text>
       <Text style={styles.productPrice}>${item.price}</Text>
       <TouchableOpacity style={styles.productBuy}>
@@ -62,7 +67,9 @@ export function WishlistProduct({ item, y, index }) {
   return (
     <TouchableOpacityAnimated onPress={() => navigation.push("Detail", { product })}>
       <Animated.View style={[styles.productWishlistWrap, { margin: 5 }, { transform: [{ translateX }] }, { opacity }]}>
-        <Image source={item.picture} style={[styles.productWishlistImage]} />
+        <SharedElement id={`product.${item.name}.picture`}>
+          <Image source={item.picture} style={[styles.productWishlistImage]} />
+        </SharedElement>
         <View>
           <Text style={styles.productName}>
             {item.name}
@@ -113,6 +120,8 @@ const styles = StyleSheet.create({
     width: "80%",
     alignSelf: "center",
     resizeMode: "contain",
+    position: "absolute",
+    top: 50,
   },
   productSave: {
     position: "absolute",
