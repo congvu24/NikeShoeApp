@@ -1,6 +1,5 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
-// import AnimatedSplash from "react-native-animated-splash-screen";
 
 import Home from "./src/views/Home";
 import Detail from "./src/views/Detail";
@@ -19,36 +18,49 @@ import CategoryDetail from "./src/views/CategoryDetail";
 import CollectionDetail from "./src/views/CollectionDetail";
 import { NavigationContainer } from "@react-navigation/native";
 import { createSharedElementStackNavigator } from "react-navigation-shared-element";
-import { useScreens as enableScreens } from "react-native-screens";
+import { enableScreens } from "react-native-screens";
 import BigProductDetail from "./src/views/BigProductDetail";
-import Test from "./src/views/Test";
 import { Easing, View, Text } from "react-native";
 import allCategories from "./src/data/categories";
 import { checkLogined } from "./src/utils/utils";
 import AnimatedSplash from "react-native-animated-splash-screen";
 import { connect, Provider } from "react-redux";
-import store from "./src/redux/setup";
-import { changeCount } from "./src/redux/action";
+import store from "./src/redux/store";
+import * as actions from "./src/redux/index";
 
 enableScreens();
 const Stack = createSharedElementStackNavigator();
-// const store = config();
 
 export default class Wrap extends React.Component {
   state = {
     isLoaded: false,
   };
 
-  async componentDidMount() {
-    // console.log(this.props.TEST);
-    // const isLogined = await checkLogined();
-    await setTimeout(() => {
-      this.setState({ isLoaded: true });
-    }, 0);
-  }
+  async componentDidMount() {}
   render() {
     return (
       <Provider store={store}>
+        <AppWithRedux />
+      </Provider>
+    );
+  }
+}
+
+class App extends React.Component {
+  state = {
+    isLoaded: false,
+  };
+  async componentDidMount() {
+    console.log(this.props);
+    this.props.counterIncrease();
+
+    await setTimeout(() => {
+      this.setState({ isLoaded: true });
+    }, 500);
+  }
+  render() {
+    return (
+      <>
         <AnimatedSplash
           translucent={true}
           isLoaded={this.state.isLoaded}
@@ -57,39 +69,24 @@ export default class Wrap extends React.Component {
           logoHeight={150}
           logoWidth={150}
         >
-          <App2 />
+          <StatusBar hidden />
+          <NavigationContainer>
+            <Loading visible={this.props.isLoading} text="Logging in..." />
+            <Navigator />
+          </NavigationContainer>
         </AnimatedSplash>
-      </Provider>
+      </>
     );
   }
-}
-
-function mapDispatchToProps() {
-  return {
-    changeCount,
-  };
 }
 
 const mapStateToProps = (state) => {
   return state;
 };
 
-const App2 = connect(mapStateToProps, mapDispatchToProps)(App);
+const mapDispatchToProps = { ...actions };
 
-function App(props) {
-  console.log(props);
-  return (
-    <>
-      <StatusBar hidden />
-      {/* <Text>hello</Text> */}
-      <NavigationContainer>
-        <Loading visible={false} text="Logging in..." />
-
-        <Navigator />
-      </NavigationContainer>
-    </>
-  );
-}
+const AppWithRedux = connect(mapStateToProps, mapDispatchToProps)(App);
 
 const option = () => ({
   gestureEnabled: false,

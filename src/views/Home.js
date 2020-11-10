@@ -30,12 +30,13 @@ export default function Home({ navigation }) {
   //   return () => backHandler.remove();
   // }, []);
   // const navigation = useNavigation();
-  // useEffect(async () => {
-  //   // const isLogin = await checkLogined();
-  //   // const isLogin = await getData("user");
-  //   // console.log(isLogin);
-  //   // if (!isLogin) navigation.navigate("Login");
-  // }, []);
+  useEffect(() => {
+    async function check() {
+      const isLogin = await checkLogined();
+      if (!isLogin) navigation.navigate("Login");
+    }
+    check();
+  }, []);
   return (
     <>
       <DrawerHome />

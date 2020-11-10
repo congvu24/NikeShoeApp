@@ -7,9 +7,8 @@ export async function saveData(key, data) {
 
 export async function getData(key) {
   try {
-    await AsyncStorage.setItem("user", { name: "vu" });
+    // await AsyncStorage.setItem("user", { name: "vu" });
     const value = await AsyncStorage.getItem(key);
-    console.log(value);
     return value != null ? JSON.parse(jsonValue) : null;
   } catch (e) {
     return null;

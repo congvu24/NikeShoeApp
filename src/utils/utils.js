@@ -1,10 +1,14 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getData } from "./storage";
 
 export async function checkLogined() {
   try {
-    const user = await getData("user");
+    // await AsyncStorage.setItem("user", JSON.stringify({ user: "vu" }));
+    const user = await AsyncStorage.getItem("user");
+
+    const objUser = await JSON.parse(user);
     if (user) {
-      return true;
+      return objUser;
     } else return false;
   } catch (e) {
     return false;
