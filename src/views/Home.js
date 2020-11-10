@@ -1,9 +1,12 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect } from "react";
 import { Image, Text, View, StyleSheet, TouchableOpacity, Dimensions, BackHandler, Alert } from "react-native";
 import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
 import StickyParallaxHeader from "react-native-sticky-parallax-header";
 import DrawerHome from "../component/DrawerHome";
 import MainHome from "../component/HomeMain";
+import { getData } from "../utils/storage";
+import { checkLogined } from "../utils/utils";
 
 const { width, height } = Dimensions.get("window");
 
@@ -25,6 +28,13 @@ export default function Home({ navigation }) {
   //   const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
 
   //   return () => backHandler.remove();
+  // }, []);
+  // const navigation = useNavigation();
+  // useEffect(async () => {
+  //   // const isLogin = await checkLogined();
+  //   // const isLogin = await getData("user");
+  //   // console.log(isLogin);
+  //   // if (!isLogin) navigation.navigate("Login");
   // }, []);
   return (
     <>

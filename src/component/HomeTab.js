@@ -64,7 +64,7 @@ export default function HomeTab({ handleClickDrawer, isOpenDrawer }) {
           </View>
           <View style={styles.listType}>
             {category.slice(0, 8).map((item, index) => (
-              <TouchableOpacity style={styles.listTypeBox} key={index} onPress={() => navigation.navigate("CategoryDetail", { item })}>
+              <TouchableOpacity style={styles.listTypeBox} key={`category.${index}`} onPress={() => navigation.navigate("CategoryDetail", { item })}>
                 <Image source={item.picture} style={styles.listTypeImage} />
                 <SharedElement id={`type.${item.id}.name`}>
                   <Text style={styles.listTypeText}>{item.name}</Text>
@@ -81,9 +81,9 @@ export default function HomeTab({ handleClickDrawer, isOpenDrawer }) {
             </View>
             <FlatList
               data={collection}
-              renderItem={({ item }) => {
+              renderItem={({ item, index }) => {
                 return (
-                  <View style={styles.groupWrap} key={item.id}>
+                  <View style={styles.groupWrap} key={`collection.${index}`}>
                     <TouchableOpacity onPress={() => navigation.push("CollectionDetail", { collection: item })} style={styles.groupWrap}>
                       <SharedElement id={`collection.${item.name}.picture`} style={[StyleSheet.absoluteFillObject, { resizeMode: "cover" }]}>
                         <Image
@@ -126,7 +126,7 @@ export default function HomeTab({ handleClickDrawer, isOpenDrawer }) {
           </View>
           <View style={styles.group}>
             <View style={styles.groupHeader}>
-              <Text style={styles.groupHeaderText}>Popular</Text>
+              <Text style={styles.groupHeaderText}>Sale</Text>
               <TouchableOpacity style={styles.groupHeaderButton}>
                 <Text>See all</Text>
               </TouchableOpacity>

@@ -9,11 +9,11 @@ const { width, height } = Dimensions.get("window");
 export default function Product({ item }) {
   const navigation = useNavigation();
   return (
-    <TouchableOpacity style={styles.productWrap} onPress={() => navigation.push("Detail", { product: item })}>
+    <TouchableOpacity style={styles.productWrap} onPress={() => navigation.push("Detail", { item })}>
       <TouchableOpacity style={styles.productSave}>
         <Image source={require("../images/bookmark.png")} />
       </TouchableOpacity>
-      <SharedElement id={`product.${item.name}.picture`}>
+      <SharedElement id={`product.${item.id}.picture`}>
         <Image source={item.picture} style={styles.productImage} />
       </SharedElement>
       <Text style={styles.productName}>{item.name}</Text>
@@ -29,7 +29,10 @@ export function Product1({ item }) {
   const navigation = useNavigation();
 
   return (
-    <TouchableOpacity style={[styles.productWrap, { width: width / 2 - 20, margin: 5, marginRight: 5 }]} onPress={() => navigation.push("Detail")}>
+    <TouchableOpacity
+      style={[styles.productWrap, { width: width / 2 - 20, margin: 5, marginRight: 5 }]}
+      onPress={() => navigation.push("Detail", { item })}
+    >
       <TouchableOpacity style={styles.productSave}>
         <Image source={require("../images/bookmark.png")} />
       </TouchableOpacity>
@@ -44,7 +47,7 @@ export function Product1({ item }) {
     </TouchableOpacity>
   );
 }
-const TouchableOpacityAnimated = Animated.createAnimatedComponent(TouchableWithoutFeedback);
+const TouchableOpacityAnimated = Animated.createAnimatedComponent(TouchableOpacity);
 export function WishlistProduct({ item, y, index }) {
   const navigation = useNavigation();
   const animation = new Animated.Value(0);
@@ -65,10 +68,10 @@ export function WishlistProduct({ item, y, index }) {
   });
   const product = item;
   return (
-    <TouchableOpacityAnimated onPress={() => navigation.push("Detail", { product })}>
+    <TouchableOpacityAnimated onPress={() => navigation.push("Detail", { item })}>
       <Animated.View style={[styles.productWishlistWrap, { margin: 5 }, { transform: [{ translateX }] }, { opacity }]}>
-        <SharedElement id={`product.${item.name}.picture`}>
-          <Image source={item.picture} style={[styles.productWishlistImage]} />
+        <SharedElement id={`product.${item.id}.picture`}>
+          <Image source={item.picture} style={{ resizeMode: "center", alignSelf: "center", width: 100 }} />
         </SharedElement>
         <View>
           <Text style={styles.productName}>

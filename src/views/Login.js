@@ -1,7 +1,204 @@
-import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
-import { ScrollView, TextInput, TouchableOpacity } from "react-native-gesture-handler";
-import BackButton from "../component/BackButton";
+import React, { useState, useEffect, createRef, useRef } from "react";
+import { View, Text, Image, StyleSheet, Animated, TouchableOpacity, TextInput, ScrollView } from "react-native";
+import * as Animateable from "react-native-animatable";
+import { Easing } from "react-native-reanimated";
+import { login } from "../utils/api";
+import api from "../utils/fakeApi";
+
+function UnderLine({ measure, animation }) {
+  // console.log(measure, "ben trong");
+  // console.log(animation, "animation");
+  const translateX = animation.interpolate({
+    inputRange: [0, 1],
+    outputRange: measure.length > 0 ? measure.map((item) => item.x) : [0, 0.01],
+  });
+  const widthNe = animation.interpolate({
+    inputRange: [0, 1],
+    outputRange: measure.length > 0 ? measure.map((item) => item.width) : [0, 0.01],
+  });
+  return (
+    <Animated.View
+      duration={500}
+      style={{
+        position: "absolute",
+        left: 0,
+        top: 40,
+        width: widthNe,
+        height: 4,
+        backgroundColor: "#5780D9",
+        borderRadius: 4,
+        zIndex: 10000000,
+        transform: [{ translateX }],
+      }}
+    ></Animated.View>
+  );
+}
+
+export default function Login() {
+  const [isLogin, setLogin] = useState(true);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const loginRef = createRef(null);
+  const regisRef = createRef(null);
+  const containerRef = useRef();
+  const [measure, setMeasure] = useState([]);
+  const [animation] = useState(new Animated.Value(0));
+
+  useEffect(() => {
+    // console.log(containerRef.current);
+    // if (isWorked == false && containerRef.current != null) {
+    // console.log("vo", measure);
+
+    const m = [];
+    [loginRef, regisRef].forEach((ref) =>
+      ref.current.measureLayout(containerRef.current, (x, y, width, height) => {
+        m.push({ x, y, width, height });
+        if (m.length == 2) {
+          setMeasure(m);
+          // console.log(measure, "mesure ne");
+        }
+      })
+    );
+    // setWorker(true);
+    // }
+  }, []);
+
+  function handleClick(now) {
+    if (now !== isLogin) {
+      setLogin(!isLogin);
+
+      Animated.timing(animation, {
+        toValue: isLogin == true ? 1 : 0,
+        duration: 1000,
+        // easing: Easing.ease,
+        // useNativeDriver: true,
+      }).start();
+    }
+  }
+
+  async function hanndleLogin() {
+    try {
+      if ((username, password)) {
+        const isLogin = login({ username, password });
+        console.log(isLogin);
+        if (isLogin == true) {
+          saveData("user", { username, password });
+          navigation.navigate("Home");
+        }
+
+        // console.log(isLogin);
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+  return (
+    <ScrollView style={styles.home}>
+      <Image source={require("../images/account-image.png")} style={styles.image} />
+      <View style={[styles.tab]} ref={containerRef}>
+        {measure != null && <UnderLine measure={measure} animation={animation} />}
+        <TouchableOpacity style={[styles.tabButton, isLogin == true ? styles.tabButtonActive : {}]} onPress={() => handleClick(true)}>
+          <Text style={[styles.tabText, isLogin == true ? styles.tabTextActive : {}]} ref={loginRef}>
+            Login
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.tabButton, isLogin == false ? styles.tabButtonActive : {}]} onPress={() => handleClick(false)}>
+          <Text style={[styles.tabText, isLogin == false ? styles.tabTextActive : {}]} ref={regisRef}>
+            Sign up
+          </Text>
+        </TouchableOpacity>
+      </View>
+      {isLogin == false ? <SignUpView /> : <LoginView hanndleLogin={hanndleLogin} setUsername={setUsername} setPassword={setPassword} />}
+    </ScrollView>
+  );
+}
+
+const LoginView = ({ hanndleLogin, setPassword, setUsername }) => {
+  return (
+    <View style={styles.form}>
+      <Animateable.View style={styles.input} animation="fadeInUp" delay={0} duration={500}>
+        <Image source={require("../images/email.png")} style={styles.inputLabel} />
+        <TextInput
+          placeholder="Email address"
+          style={styles.inputField}
+          onChangeText={(e) => {
+            setUsername(e);
+          }}
+        />
+      </Animateable.View>
+      <Animateable.View style={styles.input} animation="fadeInUp" delay={100} duration={500}>
+        <Image source={require("../images/lock.png")} style={styles.inputLabel} />
+        <TextInput
+          placeholder="Password"
+          style={styles.inputField}
+          onChangeText={(e) => {
+            setPassword(e);
+          }}
+        />
+      </Animateable.View>
+      <Animateable.View animation="fadeInUp" duration={500} delay={150}>
+        <TouchableOpacity style={styles.submitBtn} onPress={hanndleLogin}>
+          <Text style={styles.submitBtnText}>Login</Text>
+        </TouchableOpacity>
+      </Animateable.View>
+      <Animateable.View style={styles.divider} animation="fadeInUp">
+        <View style={styles.dividerLine}></View>
+        <Text style={styles.dividerText}>or</Text>
+        <View style={styles.dividerLine}></View>
+      </Animateable.View>
+      <Animateable.View style={styles.more} animation="fadeInUp">
+        <TouchableOpacity style={styles.moreBtn}>
+          <Image source={require("../images/google.png")} />
+          <Text style={styles.moreText}>Google</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.moreBtn}>
+          <Image source={require("../images/facebook.png")} />
+          <Text style={styles.moreText}>Facebook</Text>
+        </TouchableOpacity>
+      </Animateable.View>
+    </View>
+  );
+};
+
+const SignUpView = () => {
+  return (
+    <View style={styles.form}>
+      <Animateable.View style={styles.input} animation="fadeInUp" delay={0} duration={500}>
+        <Image source={require("../images/email.png")} style={styles.inputLabel} />
+        <TextInput placeholder="Email address" style={styles.inputField} />
+      </Animateable.View>
+      <Animateable.View style={styles.input} animation="fadeInUp" delay={100} duration={500}>
+        <Image source={require("../images/lock.png")} style={styles.inputLabel} />
+        <TextInput placeholder="Password" style={styles.inputField} />
+      </Animateable.View>
+      <Animateable.View style={styles.input} animation="fadeInUp" delay={150} duration={500}>
+        <Image source={require("../images/lock.png")} style={styles.inputLabel} />
+        <TextInput placeholder="Re password" style={styles.inputField} />
+      </Animateable.View>
+      <Animateable.View animation="fadeInUp" delay={200}>
+        <TouchableOpacity style={styles.submitBtn}>
+          <Text style={styles.submitBtnText}>Sign up</Text>
+        </TouchableOpacity>
+      </Animateable.View>
+      <Animateable.View style={styles.divider} animation="fadeInUp" delay={250}>
+        <View style={styles.dividerLine}></View>
+        <Text style={styles.dividerText}>or</Text>
+        <View style={styles.dividerLine}></View>
+      </Animateable.View>
+      <Animateable.View style={styles.more} animation="fadeInUp" delay={350}>
+        <TouchableOpacity style={styles.moreBtn}>
+          <Image source={require("../images/google.png")} />
+          <Text style={styles.moreText}>Google</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.moreBtn}>
+          <Image source={require("../images/facebook.png")} />
+          <Text style={styles.moreText}>Facebook</Text>
+        </TouchableOpacity>
+      </Animateable.View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   home: {
@@ -119,91 +316,3 @@ const styles = StyleSheet.create({
     color: "#696C79",
   },
 });
-
-export default function Login() {
-  return (
-    <ScrollView style={styles.home}>
-      <Image source={require("../images/account-image.png")} style={styles.image} />
-      <View style={styles.tab}>
-        <TouchableOpacity style={[styles.tabButton, styles.tabButtonActive]}>
-          <Text style={[styles.tabText, styles.tabTextActive]}>Login</Text>
-          <View style={styles.tabLineActive}></View>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.tabButton]}>
-          <Text style={styles.tabText}>Sign up</Text>
-        </TouchableOpacity>
-      </View>
-      <SignUpView />
-    </ScrollView>
-  );
-}
-
-const LoginView = () => {
-  return (
-    <View style={styles.form}>
-      <View style={styles.input}>
-        <Image source={require("../images/email.png")} style={styles.inputLabel} />
-        <TextInput placeholder="Email address" style={styles.inputField} />
-      </View>
-      <View style={styles.input}>
-        <Image source={require("../images/lock.png")} style={styles.inputLabel} />
-        <TextInput placeholder="Password" style={styles.inputField} />
-      </View>
-      <TouchableOpacity style={styles.submitBtn}>
-        <Text style={styles.submitBtnText}>Login</Text>
-      </TouchableOpacity>
-      <View style={styles.divider}>
-        <View style={styles.dividerLine}></View>
-        <Text style={styles.dividerText}>or</Text>
-        <View style={styles.dividerLine}></View>
-      </View>
-      <View style={styles.more}>
-        <TouchableOpacity style={styles.moreBtn}>
-          <Image source={require("../images/google.png")} />
-          <Text style={styles.moreText}>Google</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.moreBtn}>
-          <Image source={require("../images/facebook.png")} />
-          <Text style={styles.moreText}>Facebook</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-};
-
-const SignUpView = () => {
-  return (
-    <View style={styles.form}>
-      <View style={styles.input}>
-        <Image source={require("../images/email.png")} style={styles.inputLabel} />
-        <TextInput placeholder="Email address" style={styles.inputField} />
-      </View>
-      <View style={styles.input}>
-        <Image source={require("../images/lock.png")} style={styles.inputLabel} />
-        <TextInput placeholder="Password" style={styles.inputField} />
-      </View>
-      <View style={styles.input}>
-        <Image source={require("../images/lock.png")} style={styles.inputLabel} />
-        <TextInput placeholder="Re password" style={styles.inputField} />
-      </View>
-      <TouchableOpacity style={styles.submitBtn}>
-        <Text style={styles.submitBtnText}>Sign up</Text>
-      </TouchableOpacity>
-      <View style={styles.divider}>
-        <View style={styles.dividerLine}></View>
-        <Text style={styles.dividerText}>or</Text>
-        <View style={styles.dividerLine}></View>
-      </View>
-      <View style={styles.more}>
-        <TouchableOpacity style={styles.moreBtn}>
-          <Image source={require("../images/google.png")} />
-          <Text style={styles.moreText}>Google</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.moreBtn}>
-          <Image source={require("../images/facebook.png")} />
-          <Text style={styles.moreText}>Facebook</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-};

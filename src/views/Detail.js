@@ -1,8 +1,5 @@
 import React from "react";
 import { Image, Text, View, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
-import Constants from "expo-constants";
-import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
-import StickyParallaxHeader from "react-native-sticky-parallax-header";
 import BackButton from "../component/BackButton";
 import { Modalize } from "react-native-modalize";
 import { SharedElement } from "react-navigation-shared-element";
@@ -38,12 +35,12 @@ const upAndDown = {
 export default class Detail extends React.PureComponent {
   constructor(props) {
     super(props);
-    const { product } = this.props.route.params;
+    const { item } = this.props.route.params;
     this.state = {
-      product,
-      selectedType: product.variety[0],
-      selectedSize: product.size[0],
-      selectedColor: product.colors[0],
+      item,
+      selectedType: item.variety[0],
+      selectedSize: item.size[0],
+      selectedColor: item.colors[0],
     };
   }
   selectType = (selection) => {
@@ -63,7 +60,7 @@ export default class Detail extends React.PureComponent {
   };
 
   render() {
-    const { product } = this.state;
+    const { item: product } = this.state;
 
     return (
       <View style={[StyleSheet.absoluteFill, styles.home]}>

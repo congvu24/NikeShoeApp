@@ -7,7 +7,7 @@ const { width } = Dimensions.get("window");
 const AnimatedSvg = Animated.createAnimatedComponent(Svg);
 const tabs = [
   { name: "clock", text: "Lịch sử", screenName: "HistoryTab" },
-  { name: "search", text: "Tìm kiếm", screenName: "SearchTab" },
+  { name: "search", text: "Tìm kiếm", screenName: "Search" },
   { name: "home", active: true, text: "Trang chủ", screenName: "HomeTab" },
   { name: "bookmark", text: "Bookmark", screenName: "BookMarkTab" },
   { name: "gift", text: "Ưu đãi", screenName: "DealTab" },
@@ -23,45 +23,47 @@ export default class TabBar extends Component {
     animation: new Animated.Value(0),
   };
   changeTab = (name, num, lastTab, screenName) => {
-    this.props.handleTab(screenName);
-    const newTabs = this.state.tabs.map((item) => {
-      if (item.name == name) {
-        return {
-          ...item,
-          active: true,
-        };
-      } else
-        return {
-          ...item,
-          active: false,
-        };
-    });
-    this.setState(
-      {
-        tabs: newTabs,
-        activeTab: num - 2,
-        lastTab,
-        animating: true,
-      },
-      () => {
-        this.state.animation.setValue(0);
-        Animated.timing(this.state.animation, {
-          toValue: 1,
-          duration: 300,
-          useNativeDriver: true,
-        }).start(() => {
-          this.setState({
-            animating: false,
+    if (screenName != "Search") {
+      this.props.handleTab(screenName);
+      const newTabs = this.state.tabs.map((item) => {
+        if (item.name == name) {
+          return {
+            ...item,
+            active: true,
+          };
+        } else
+          return {
+            ...item,
+            active: false,
+          };
+      });
+      this.setState(
+        {
+          tabs: newTabs,
+          activeTab: num - 2,
+          lastTab,
+          animating: true,
+        },
+        () => {
+          this.state.animation.setValue(0);
+          Animated.timing(this.state.animation, {
+            toValue: 1,
+            duration: 300,
+            useNativeDriver: true,
+          }).start(() => {
+            this.setState({
+              animating: false,
+            });
           });
-        });
-      }
-    );
+        }
+      );
+    } else this.props.handleTab(screenName);
   };
   render() {
     return (
       <>
         <View style={styles.wrapper} pointerEvents={!this.state.animating ? "auto" : "none"}>
-          <AnimatedSvg
+          {/* <AnimatedSvg
             height="50"
             width="100%"
             viewBox={`0 0 ${tabWidth} 30`}
@@ -81,16 +83,13 @@ export default class TabBar extends Component {
             ]}
           >
             <Path fill="white" d="M72.8,21.4C59.1,21.4,52,0.8,36.3,0.8C21.4,0.8,12.5,21.4,0,21.4H72.8z" />
-          </AnimatedSvg>
+          </AnimatedSvg> */}
           <View style={styles.list}>
             {this.state.tabs.map((item, index) => (
-              <TouchableOpacity
-                onPress={() => this.changeTab(item.name, index, this.state.activeTab, item.screenName)}
-                style={[styles.tab, item.active ? styles.tabActive : null]}
-              >
+              <TouchableOpacity onPress={() => this.changeTab(item.name, index, this.state.activeTab, item.screenName)} style={[styles.tab]}>
                 <View style={styles.tabContent}>
-                  <Icon name={item.name} size={20} style={{ alignSelf: "center" }} />
-                  {!item.active && <Text style={styles.tabText}>{item.text}</Text>}
+                  <Icon name={item.name} size={20} style={[{ alignSelf: "center" }, styles.tabIcon, item.active ? styles.tabIconActive : {}]} />
+                  <Text style={[styles.tabText, item.active ? styles.tabTextActive : {}]}>{item.text}</Text>
                 </View>
               </TouchableOpacity>
             ))}
@@ -131,10 +130,22 @@ const styles = StyleSheet.create({
   },
   tabActive: {
     backgroundColor: "blue",
-    transform: [{ translateY: -10 }],
+    // transform: [{ translateY: -10 }],
   },
   tabText: {
     fontSize: 8,
     textAlign: "center",
+    color: "black",
+  },
+  tabTextActive: {
+    color: "#5780D9",
+    fontWeight: "700",
+  },
+  tabIconActive: {
+    color: "#5780D9",
+    fontWeight: "700",
+  },
+  tabIcon: {
+    color: "black",
   },
 });

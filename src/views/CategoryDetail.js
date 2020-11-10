@@ -1,9 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { View, Text, SafeAreaView, FlatList, TouchableOpacity, StyleSheet, Image, Dimensions, ScrollView } from "react-native";
 import { SharedElement } from "react-navigation-shared-element";
 import allCategories from "../data/categories";
-import collections from "../data/collections";
 import allProduct from "../data/products";
 
 function getProductOfCategory(categoryId) {
@@ -16,9 +15,19 @@ const listColor = ["#fcf876", "#cee397", "#8bcdcd", "#3797a4"];
 const { width, height } = Dimensions.get("window");
 
 export default function CategoryDetail({ route }) {
+  const flatListRef = useRef();
   const navigation = useNavigation();
   const { item } = route.params;
   const [tab, setTab] = useState(item.id);
+  useEffect(() => {
+    if (flatListRef) {
+      setTimeout(() => {
+        const index = allCategories.findIndex((cate) => item.id == cate.id);
+        flatListRef.current.scrollToIndex({ animated: true, index });
+      }, 900);
+    }
+  }, [flatListRef]);
+
   return (
     <SafeAreaView>
       {/* <ScrollView> */}
@@ -26,13 +35,14 @@ export default function CategoryDetail({ route }) {
       <View>
         <FlatList
           data={allCategories}
+          ref={flatListRef}
           keyExtractor={(item) => `category.${item.id}`}
           showsHorizontalScrollIndicator={false}
           horizontal={true}
-          // style={{ backgroundColor: "red" }}
+          getItemLayout={(data, index) => ({ length: 120, offset: 100 * index, index })}
           contentContainerStyle={{ padding: 10 }}
           renderItem={({ item, index }) => (
-            <TouchableOpacity onPress={() => setTab(item.name)} key={`tab.${index}`}>
+            <TouchableOpacity onPress={() => setTab(item.id)} key={`tab.${index}`}>
               <View style={[styles.tab, { backgroundColor: tab == item.id ? "#5780D9" : "transparent" }]}>
                 <SharedElement id={`type.${item.id}.name`}>
                   <Text style={[styles.tabName, { color: tab == item.id ? "white" : "black" }]}>{item.name}</Text>
@@ -105,29 +115,6 @@ export default function CategoryDetail({ route }) {
             </View>
           </TouchableOpacity>
         ))}
-        {/* <FlatList
-          data={allProduct}
-          keyExtractor={(item) => `moreProduct.${item.id}`}
-          contentContainerStyle={{ padding: 10 }}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <TouchableOpacity>
-              <View style={styles.moreItem}>
-                <View style={{ width: width * 0.2, height: "100%", justifyContent: "center", alignItems: "center" }}>
-                  <Image source={item.picture} resizeMode="center" />
-                </View>
-                <View style={{ flex: 1, justifyContent: "center" }}>
-                  <Text style={{ fontWeight: "700", fontSize: 16 }}>{item.name}</Text>
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Image source={require("../images/good-star.png")} />
-                    <Text style={{ fontWeight: "700", fontSize: 14, marginLeft: 5 }}>4.5</Text>
-                  </View>
-                </View>
-                <Text style={{ fontWeight: "700", fontSize: 16 }}>${item.price}</Text>
-              </View>
-            </TouchableOpacity>
-          )}
-        /> */}
       </ScrollView>
 
       {/* </View> */}
@@ -163,6 +150,7 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   tab: {
+    width: 100,
     marginHorizontal: 10,
     // backgroundColor: "orange",
     paddingHorizontal: 10,
@@ -172,6 +160,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "700",
     opacity: 0.8,
+    textAlign: "center",
   },
   bigProduct: {
     width: width * 0.6,

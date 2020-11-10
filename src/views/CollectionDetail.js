@@ -65,17 +65,6 @@ export default function CollectionDetail({ route }) {
     </ScrollView>
   );
 }
-CollectionDetail.sharedElements = (route, otherRoute, showing) => {
-  const { collection } = route.params;
-  return [
-    {
-      id: `collection.${collection.name}.picture`,
-    },
-    {
-      id: `collection.${collection.name}.text`,
-    },
-  ];
-};
 
 const styles = StyleSheet.create({
   home: {

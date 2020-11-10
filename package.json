@@ -8,6 +8,8 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.13.2",
+    "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^5.10.2",
     "@react-navigation/native": "^5.0.9",
@@ -27,6 +29,7 @@
     "react-native-bootsplash": "^2.2.7",
     "react-native-gesture-handler": "~1.7.0",
     "react-native-modalize": "^2.0.6",
+    "react-native-orientation-loading-overlay": "^0.1.6",
     "react-native-reanimated": "~1.13.0",
     "react-native-safe-area-context": "3.1.4",
     "react-native-screens": "~2.10.1",
@@ -36,7 +39,10 @@
     "react-native-touchable-scale": "^2.1.1",
     "react-native-unimodules": "~0.11.0",
     "react-native-web": "~0.13.12",
-    "react-navigation-shared-element": "^5.0.0-alpha1"
+    "react-navigation-shared-element": "^5.0.0-alpha1",
+    "react-redux": "^7.2.2",
+    "redux": "^4.0.5",
+    "redux-actions": "^2.6.5"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

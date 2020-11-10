@@ -2,15 +2,16 @@ import React from "react";
 import { Image, View, TextInput, Text, StyleSheet, TouchableOpacity, Dimensions, FlatList } from "react-native";
 import Constants from "expo-constants";
 import { ScrollView } from "react-native-gesture-handler";
+import collections from "../data/collections";
 
 const { width, height } = Dimensions.get("window");
 
-const group = [
-  { url: require("../images/group-1.jpg"), text: "Man" },
-  { url: require("../images/group-2.jpg"), text: "Women" },
-  { url: require("../images/group-3.jpg"), text: "Young" },
-  { url: require("../images/group-4.jpg"), text: "Unisex" },
-];
+// const group = [
+//   { url: require("../images/group-1.jpg"), text: "Man" },
+//   { url: require("../images/group-2.jpg"), text: "Women" },
+//   { url: require("../images/group-3.jpg"), text: "Young" },
+//   { url: require("../images/group-4.jpg"), text: "Unisex" },
+// ];
 
 export default function Search() {
   return (
@@ -24,42 +25,18 @@ export default function Search() {
       <View>
         <View style={styles.group}>
           <View style={styles.groupHeader}>
-            <Text style={styles.groupHeaderText}>Men</Text>
+            <Text style={styles.groupHeaderText}>Collection</Text>
           </View>
           <FlatList
-            data={group}
-            renderItem={({ item }) => (
+            data={collections.slice(0, 4)}
+            renderItem={({ item, index }) => (
               <View style={styles.groupWrap}>
-                <Image source={item.url} style={[StyleSheet.absoluteFillObject, { resizeMode: "cover" }, styles.groupImage]} />
+                <Image source={item.picture} style={[StyleSheet.absoluteFillObject, { resizeMode: "cover" }, styles.groupImage]} />
                 <View style={[StyleSheet.absoluteFillObject, styles.groupTopLayer]}></View>
-                <Text style={styles.groupText}>{item.text}</Text>
+                <Text style={styles.groupText}>{item.name}</Text>
               </View>
             )}
-            keyExtractor={(item) => item.title}
-            showsHorizontalScrollIndicator={false}
-            decelerationRate="fast"
-            bouncesZoom={true}
-            alwaysBounceHorizontal={true}
-            numColumns={2}
-            // horizontal={true}
-          />
-        </View>
-      </View>
-      <View>
-        <View style={styles.group}>
-          <View style={styles.groupHeader}>
-            <Text style={styles.groupHeaderText}>Women</Text>
-          </View>
-          <FlatList
-            data={group}
-            renderItem={({ item }) => (
-              <View style={styles.groupWrap}>
-                <Image source={item.url} style={[StyleSheet.absoluteFillObject, { resizeMode: "cover" }, styles.groupImage]} />
-                <View style={[StyleSheet.absoluteFillObject, styles.groupTopLayer]}></View>
-                <Text style={styles.groupText}>{item.text}</Text>
-              </View>
-            )}
-            keyExtractor={(item) => item.title}
+            keyExtractor={(item) => item.id}
             showsHorizontalScrollIndicator={false}
             decelerationRate="fast"
             bouncesZoom={true}
@@ -79,10 +56,10 @@ const styles = StyleSheet.create({
   },
   header: {
     padding: 10,
-    borderBottomColor: "#7070701A",
-    borderBottomWidth: 1,
+    // borderBottomColor: "#7070701A",
+    // borderBottomWidth: 1,
     paddingVertical: 30,
-    marginBottom: 20,
+    // marginBottom: 10,
   },
   search: {
     flexDirection: "row",

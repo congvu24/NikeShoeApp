@@ -1,12 +1,24 @@
 import React from "react";
 import { Text, View, Image, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
 import { SharedElement } from "react-navigation-shared-element";
+import * as Animateable from "react-native-animatable";
 import BackButton from "../component/BackButton";
-import { useRoute } from "@react-navigation/native";
-import allProduct from "../data/products";
 
 const activity = [require("../images/cash-back.png"), require("../images/cash-back.png"), require("../images/gift-voucher.png")];
 const { width, height } = Dimensions.get("window");
+
+const createAnimation = (from) => ({
+  0: {
+    opacity: 0,
+    transform: [{ translateY: -90 }, { translateX: from }],
+  },
+  1: {
+    opacity: 1,
+    transform: [{ translateY: 0 }, { translateX: 0 }],
+  },
+});
+const animations = [createAnimation(100), createAnimation(0), createAnimation(-100)];
+
 export default function BigProductDetail({ route }) {
   const { item, color } = route.params;
   //   console.log(color);
@@ -29,7 +41,10 @@ export default function BigProductDetail({ route }) {
       <View style={{ position: "absolute", top: height * 0.4, padding: 10, width: width }}>
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           {activity.map((item, index) => (
-            <View
+            <Animateable.View
+              animation={animations[index]}
+              duration={1000}
+              delay={1000}
               key={`activity.${index}`}
               style={{
                 margin: 20,
@@ -42,14 +57,22 @@ export default function BigProductDetail({ route }) {
               }}
             >
               <Image source={item} />
-            </View>
+            </Animateable.View>
           ))}
         </View>
         <View>
-          <Text style={{ fontSize: 23, fontWeight: "700" }}>In stock: 99</Text>
-          <Text style={{ fontSize: 16, fontWeight: "300", opacity: 0.7 }} numberOfLines={7} adjustsFontSizeToFit>
+          <Animateable.Text animation="fadeInLeft" delay={500} style={{ fontSize: 23, fontWeight: "700" }}>
+            In stock: 99
+          </Animateable.Text>
+          <Animateable.Text
+            animation="fadeInUp"
+            delay={500}
+            style={{ fontSize: 16, fontWeight: "300", opacity: 0.7 }}
+            numberOfLines={7}
+            adjustsFontSizeToFit
+          >
             {item.description}
-          </Text>
+          </Animateable.Text>
         </View>
       </View>
       <TouchableOpacity
