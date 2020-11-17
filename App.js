@@ -70,8 +70,8 @@ class App extends React.Component {
           logoWidth={150}
         >
           <StatusBar hidden />
+          <Loading visible={this.props.general.isLoading} text="Logging in..." />
           <NavigationContainer>
-            <Loading visible={this.props.isLoading} text="Logging in..." />
             <Navigator />
           </NavigationContainer>
         </AnimatedSplash>

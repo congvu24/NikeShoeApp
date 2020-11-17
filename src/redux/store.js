@@ -5,13 +5,11 @@ import reducers from "./reducers";
 export const loadState = async () => {
   try {
     const serializedState = await AsyncStorage.getItem("state");
-    console.log("new state", JSON.parse(serializedState));
     if (serializedState === null) {
       return undefined;
     }
     return JSON.parse(serializedState);
   } catch (err) {
-    console.log(err);
     return undefined;
   }
 };

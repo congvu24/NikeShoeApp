@@ -1,15 +1,201 @@
-import React, { useRef } from "react";
-import { Image, Text, View, StyleSheet, TouchableOpacity, Dimensions, KeyboardAvoidingView } from "react-native";
+import React, { useRef, useEffect } from "react";
+import { Image, Text, View, StyleSheet, TouchableOpacity, Dimensions, KeyboardAvoidingView, FlatList, ScrollView, TextInput } from "react-native";
 import Constants from "expo-constants";
-import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
 import StickyParallaxHeader from "react-native-sticky-parallax-header";
 import { Modalize } from "react-native-modalize";
 import BackButton from "../component/BackButton";
+import { connect } from "react-redux";
+import { addCart, removeCart, clearCart } from "../redux/index";
+import allProducts from "../data/products";
 
 const { width, height } = Dimensions.get("window");
 
+function findProductById(id) {
+  let index = -1;
+  index = allProducts.findIndex((item) => item.id == id);
+  return index;
+}
+
+const Checkout = ({ navigation, cart, ...props }) => {
+  const modalizeRef = useRef(null);
+
+  const onOpen = () => {
+    modalizeRef.current?.open();
+  };
+
+  function addOneMore(id) {
+    props.addCart({ id });
+  }
+
+  function removeOne(id) {
+    props.removeCart({
+      id,
+    });
+  }
+
+  function calcTotal(data) {
+    let sum = 0;
+    data.forEach((item) => (sum = sum + item.price * item.number));
+    return sum;
+  }
+
+  useEffect(() => {}, []);
+
+  const cartList = Object.keys(cart)
+    .map((key) => {
+      return {
+        // ...cart[key].number,
+        number: cart[key].number,
+        ...allProducts[findProductById(key)],
+      };
+    })
+    .filter((item) => item.number > 0);
+
+  return (
+    <>
+      {cartList.length > 0 ? (
+        <View style={[StyleSheet.absoluteFill, styles.home]}>
+          <View style={{ paddingBottom: 50 }}>
+            <ScrollView>
+              <Text style={styles.pageTitle}>Checkout</Text>
+
+              <View style={styles.productList}>
+                <FlatList
+                  data={cartList}
+                  keyExtractor={(item) => item.id}
+                  renderItem={({ item, index }) => {
+                    return (
+                      <View style={styles.product}>
+                        <View style={[styles.productNav, StyleSheet.absoluteFill]}>
+                          <Image source={require("../images/delete.png")} style={{ marginRight: 30 }} />
+                        </View>
+                        <View style={styles.productContent}>
+                          <Image style={styles.productBackground} source={require("../images/checkout-circle.png")} />
+                          <Image style={styles.productPicture} source={item.picture} />
+                          <View style={styles.productDetail}>
+                            <Text style={styles.productName}>{item.name}</Text>
+                            <Text style={styles.productPrice}>${item.price}</Text>
+                          </View>
+                          <View style={styles.edit}>
+                            <TouchableOpacity style={styles.editSubtract} onPress={() => removeOne(item.id)}>
+                              <Text style={styles.editBtnText}>-</Text>
+                            </TouchableOpacity>
+                            <Text style={styles.editText}>{item.number}</Text>
+                            <TouchableOpacity style={styles.editAdd} onPress={() => addOneMore(item.id)}>
+                              <Text style={styles.editBtnText}>+</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </View>
+                    );
+                  }}
+                />
+              </View>
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Shipping address</Text>
+                <View style={styles.shipping}>
+                  <Image style={styles.shippingPicure} source={require("../images/delivery-truck.png")} />
+                  <Text style={styles.shippingAddress}>6/41 Pandurangan Vittal st-2, salem-6.</Text>
+                  <TouchableOpacity style={styles.shippingButton} onPress={props.clearCart}>
+                    <Text style={styles.shippingButtonText}>Change</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Coupons</Text>
+                <TouchableOpacity style={styles.coupon} onPress={onOpen}>
+                  <Image style={styles.shippingPicure} source={require("../images/coupon.png")} />
+                  <View style={styles.couponDetail}>
+                    <Text style={styles.couponTitle}>Apply coupon</Text>
+                    <Text style={styles.couponText}>SAVE UPTO $25 FOR YOUR FIRST ORDER</Text>
+                  </View>
+                  <Image style={styles.rightArrow} source={require("../images/left-arrow.png")} />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Price details</Text>
+                <View style={styles.priceList}>
+                  <FlatList
+                    data={cartList}
+                    keyExtractor={(item) => `pricelist.${item.id}`}
+                    renderItem={({ item }) => (
+                      <View style={styles.price}>
+                        <Text style={styles.priceName}>{item.name}</Text>
+                        <Text style={styles.priceNumber}>${item.price * item.number}</Text>
+                      </View>
+                    )}
+                  />
+                </View>
+                <View style={styles.priceTotal}>
+                  <Text style={styles.priceTotalText}>Total</Text>
+                  <Text style={styles.priceTotalNumber}>${calcTotal(cartList)}</Text>
+                </View>
+              </View>
+            </ScrollView>
+          </View>
+          <TouchableOpacity style={styles.nextBtn}>
+            <Text style={styles.nextBtnText}>Continue</Text>
+          </TouchableOpacity>
+          <Modalize ref={modalizeRef} modalStyle={styles.modal} adjustToContentHeight={true}>
+            <KeyboardAvoidingView>
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Coupons</Text>
+                <View style={styles.couponInput}>
+                  <TextInput placeholder="Enter coupon code" style={styles.couponInputField} />
+                  <TouchableOpacity style={styles.couponApplyBtn}>
+                    <Text style={styles.couponApplyBtnText}>Apply</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </KeyboardAvoidingView>
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Best coupon for you</Text>
+              <View style={styles.bestCoupon}>
+                <View style={styles.bestCouponDetail}>
+                  <Text style={styles.bestCouponText}>MNYU09OKLHU</Text>
+                  <TouchableOpacity style={styles.bestCouponApply}>
+                    <Text style={styles.bestCouponApplyText}>Apply</Text>
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.bestCouponMoney}>Save $25</Text>
+                <View style={styles.bestCouponExp}>
+                  <Text style={styles.bestCouponExpText}>Expires on</Text>
+                  <Text style={styles.bestCouponExpDate}>3 MAR 2020</Text>
+                </View>
+              </View>
+            </View>
+          </Modalize>
+        </View>
+      ) : (
+        <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+          <Image source={require("../images/empty-cart.png")} style={{ width: "50%", resizeMode: "contain" }} />
+          <Text style={{ marginTop: 20, fontSize: 16 }}>Your shopping cart is empty 😤 !</Text>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={{ marginVertical: 10, borderRadius: 3, borderColor: "#cccc", borderWidth: 1, paddingHorizontal: 8, paddingVertical: 4 }}
+          >
+            <Text style={{ fontWeight: "700", opacity: 0.7 }}>Go Buy</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+    </>
+  );
+};
+
+const mapStateToProps = (state) => ({
+  ...state,
+});
+
+const mapDispatchToProps = {
+  addCart,
+  removeCart,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
+
 const styles = StyleSheet.create({
   home: {
+    flex: 1,
     backgroundColor: "#F5F5F5",
   },
   navbar: {
@@ -66,7 +252,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     flex: 1,
-    transform: [{ translateX: -100 }],
+    // transform: [{ translateX: -100 }],
   },
   productNav: {
     backgroundColor: "#D9576D",
@@ -77,13 +263,14 @@ const styles = StyleSheet.create({
   productBackground: {
     position: "absolute",
     width: 150,
-    height: 130,
+    height: 120,
     left: "-25%",
     top: 0,
   },
   productPicture: {
-    width: 150,
+    width: 100,
     height: 120,
+    marginRight: 20,
     resizeMode: "contain",
   },
   productName: {
@@ -294,146 +481,3 @@ const styles = StyleSheet.create({
     color: "#282C40",
   },
 });
-
-const Checkout = ({ navigation }) => {
-  const modalizeRef = useRef(null);
-
-  const onOpen = () => {
-    modalizeRef.current?.open();
-  };
-  return (
-    <View style={[StyleSheet.absoluteFill, styles.home]}>
-      <View style={{ paddingBottom: 50 }}>
-        <ScrollView>
-          <View style={styles.navbar}>
-            <BackButton />
-          </View>
-          <Text style={styles.pageTitle}>Checkout</Text>
-          <View style={styles.productList}>
-            <View style={styles.product}>
-              <View style={[styles.productNav, StyleSheet.absoluteFill]}>
-                <Image source={require("../images/delete.png")} style={{ marginRight: 30 }} />
-              </View>
-              <View style={styles.productContent}>
-                <Image style={styles.productBackground} source={require("../images/checkout-circle.png")} />
-                <Image style={styles.productPicture} source={require("../images/product1.png")} />
-                <View style={styles.productDetail}>
-                  <Text style={styles.productName}>Nike air max 2019</Text>
-                  <Text style={styles.productPrice}>$45</Text>
-                </View>
-                <View style={styles.edit}>
-                  <TouchableOpacity style={styles.editSubtract}>
-                    <Text style={styles.editBtnText}>-</Text>
-                  </TouchableOpacity>
-                  <Text style={styles.editText}>1</Text>
-                  <TouchableOpacity style={styles.editAdd}>
-                    <Text style={styles.editBtnText}>+</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-            <View style={styles.product}>
-              <View style={[styles.productNav, StyleSheet.absoluteFill]}>
-                <Image source={require("../images/delete.png")} style={{ marginRight: 30 }} />
-              </View>
-              <View style={styles.productContent}>
-                <Image style={styles.productBackground} source={require("../images/checkout-circle.png")} />
-                <Image style={styles.productPicture} source={require("../images/product1.png")} />
-                <View style={styles.productDetail}>
-                  <Text style={styles.productName}>Nike air max 2019</Text>
-                  <Text style={styles.productPrice}>$45</Text>
-                </View>
-                <View style={styles.edit}>
-                  <TouchableOpacity style={styles.editSubtract}>
-                    <Text style={styles.editBtnText}>-</Text>
-                  </TouchableOpacity>
-                  <Text style={styles.editText}>1</Text>
-                  <TouchableOpacity style={styles.editAdd}>
-                    <Text style={styles.editBtnText}>+</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-          </View>
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Shipping address</Text>
-            <View style={styles.shipping}>
-              <Image style={styles.shippingPicure} source={require("../images/delivery-truck.png")} />
-              <Text style={styles.shippingAddress}>6/41 Pandurangan Vittal st-2, salem-6.</Text>
-              <TouchableOpacity style={styles.shippingButton} onPress={() => navigation.push("Address")}>
-                <Text style={styles.shippingButtonText}>Change</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Coupons</Text>
-            <TouchableOpacity style={styles.coupon} onPress={onOpen}>
-              <Image style={styles.shippingPicure} source={require("../images/coupon.png")} />
-              <View style={styles.couponDetail}>
-                <Text style={styles.couponTitle}>Apply coupon</Text>
-                <Text style={styles.couponText}>SAVE UPTO $25 FOR YOUR FIRST ORDER</Text>
-              </View>
-              <Image style={styles.rightArrow} source={require("../images/left-arrow.png")} />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Price details</Text>
-            <View style={styles.priceList}>
-              <View style={styles.price}>
-                <Text style={styles.priceName}>Nike Air Max</Text>
-                <Text style={styles.priceNumber}>$45</Text>
-              </View>
-              <View style={styles.price}>
-                <Text style={styles.priceName}>Nike Air Max</Text>
-                <Text style={styles.priceNumber}>$45</Text>
-              </View>
-              <View style={styles.price}>
-                <Text style={styles.priceName}>Coupon</Text>
-                <Text style={styles.priceNumber}>-$45</Text>
-              </View>
-            </View>
-            <View style={styles.priceTotal}>
-              <Text style={styles.priceTotalText}>Total</Text>
-              <Text style={styles.priceTotalNumber}>$69</Text>
-            </View>
-          </View>
-        </ScrollView>
-      </View>
-
-      <TouchableOpacity style={styles.nextBtn} onPress={() => navigation.push("PaymentMethod")}>
-        <Text style={styles.nextBtnText}>Continue</Text>
-      </TouchableOpacity>
-      <Modalize ref={modalizeRef} modalStyle={styles.modal} adjustToContentHeight={true}>
-        <KeyboardAvoidingView>
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Coupons</Text>
-            <View style={styles.couponInput}>
-              <TextInput placeholder="Enter coupon code" style={styles.couponInputField} />
-              <TouchableOpacity style={styles.couponApplyBtn}>
-                <Text style={styles.couponApplyBtnText}>Apply</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </KeyboardAvoidingView>
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Best coupon for you</Text>
-          <View style={styles.bestCoupon}>
-            <View style={styles.bestCouponDetail}>
-              <Text style={styles.bestCouponText}>MNYU09OKLHU</Text>
-              <TouchableOpacity style={styles.bestCouponApply}>
-                <Text style={styles.bestCouponApplyText}>Apply</Text>
-              </TouchableOpacity>
-            </View>
-            <Text style={styles.bestCouponMoney}>Save $25</Text>
-            <View style={styles.bestCouponExp}>
-              <Text style={styles.bestCouponExpText}>Expires on</Text>
-              <Text style={styles.bestCouponExpDate}>3 MAR 2020</Text>
-            </View>
-          </View>
-        </View>
-      </Modalize>
-    </View>
-  );
-};
-
-export default Checkout;

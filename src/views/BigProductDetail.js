@@ -3,6 +3,7 @@ import { Text, View, Image, StyleSheet, Dimensions, TouchableOpacity } from "rea
 import { SharedElement } from "react-navigation-shared-element";
 import * as Animateable from "react-native-animatable";
 import BackButton from "../component/BackButton";
+import { useNavigation } from "@react-navigation/native";
 
 const activity = [require("../images/cash-back.png"), require("../images/cash-back.png"), require("../images/gift-voucher.png")];
 const { width, height } = Dimensions.get("window");
@@ -20,6 +21,7 @@ const createAnimation = (from) => ({
 const animations = [createAnimation(100), createAnimation(0), createAnimation(-100)];
 
 export default function BigProductDetail({ route }) {
+  const navigation = useNavigation();
   const { item, color } = route.params;
   //   console.log(color);
 
@@ -76,6 +78,7 @@ export default function BigProductDetail({ route }) {
         </View>
       </View>
       <TouchableOpacity
+        onPress={() => navigation.navigate("Detail", { item })}
         style={{ position: "absolute", bottom: 10, alignSelf: "center", backgroundColor: "#4D79D7", width: width * 0.9, borderRadius: 5 }}
       >
         <Text style={{ fontWeight: "700", fontSize: 22, textAlign: "center", padding: 10, color: "white" }}>BUY NOW</Text>

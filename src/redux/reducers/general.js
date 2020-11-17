@@ -1,5 +1,5 @@
 import { handleActions } from "redux-actions";
-import * as type from "./type";
+import * as type from "../type";
 
 const initialState = {
   count: 0,

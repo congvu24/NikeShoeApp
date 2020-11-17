@@ -4,6 +4,9 @@ import BackButton from "../component/BackButton";
 import { Modalize } from "react-native-modalize";
 import { SharedElement } from "react-navigation-shared-element";
 import * as Animateable from "react-native-animatable";
+import { connect } from "react-redux";
+
+import { addCart } from "../redux/index";
 
 const { width, height } = Dimensions.get("window");
 const flip360 = {
@@ -32,7 +35,7 @@ const upAndDown = {
     transform: [{ translateY: 0 }],
   },
 };
-export default class Detail extends React.PureComponent {
+class Detail extends React.PureComponent {
   constructor(props) {
     super(props);
     const { item } = this.props.route.params;
@@ -57,6 +60,11 @@ export default class Detail extends React.PureComponent {
     this.setState({
       selectedColor: selection,
     });
+  };
+
+  addToCart = (id) => {
+    this.props.addCart({ id });
+    this.props.navigation.push("Checkout");
   };
 
   render() {
@@ -161,7 +169,7 @@ export default class Detail extends React.PureComponent {
             </View>
           </View>
         </Modalize>
-        <TouchableOpacity style={styles.nextBtn} onPress={() => navigation.push("Checkout")}>
+        <TouchableOpacity style={styles.nextBtn} onPress={() => this.addToCart(product.id)}>
           <Text style={styles.nextBtnText}>Buy now</Text>
         </TouchableOpacity>
       </View>
@@ -169,6 +177,15 @@ export default class Detail extends React.PureComponent {
   }
 }
 
+const mapStateToProps = (state) => ({
+  // ...state
+});
+
+const mapDispatchToProps = {
+  addCart,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Detail);
 // Detail.sharedElements = (route, otherRoute, showing) => {
 //   const { product } = route.params;
 //   console.log(product);

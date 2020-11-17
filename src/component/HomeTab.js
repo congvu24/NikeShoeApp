@@ -1,10 +1,7 @@
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { Image, Text, View, StyleSheet, TouchableOpacity, Dimensions, BackHandler } from "react-native";
 import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
-import StickyParallaxHeader from "react-native-sticky-parallax-header";
-import DrawerHome from "../component/DrawerHome";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SharedElement } from "react-navigation-shared-element";
 
 import Product, { Product1 } from "./Product";
@@ -29,7 +26,7 @@ export default function HomeTab({ handleClickDrawer, isOpenDrawer }) {
             <TouchableOpacity style={[styles.navbarButton, styles.navbarButtonMargin]}>
               <Image source={require("../images/bookmark.png")} />
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.navbarButton, styles.navbarButtonMargin]}>
+            <TouchableOpacity onPress={() => navigation.navigate("Checkout")} style={[styles.navbarButton, styles.navbarButtonMargin]}>
               <Image source={require("../images/bag1.png")} />
             </TouchableOpacity>
           </View>
