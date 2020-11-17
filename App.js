@@ -27,6 +27,7 @@ import AnimatedSplash from "react-native-animated-splash-screen";
 import { connect, Provider } from "react-redux";
 import store from "./src/redux/store";
 import * as actions from "./src/redux/index";
+import NumberTicker from "./src/component/NumberTicker";
 
 enableScreens();
 const Stack = createSharedElementStackNavigator();
@@ -41,6 +42,7 @@ export default class Wrap extends React.Component {
     return (
       <Provider store={store}>
         <AppWithRedux />
+        {/* <NumberTicker /> */}
       </Provider>
     );
   }

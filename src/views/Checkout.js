@@ -7,6 +7,7 @@ import BackButton from "../component/BackButton";
 import { connect } from "react-redux";
 import { addCart, removeCart, clearCart } from "../redux/index";
 import allProducts from "../data/products";
+import NumberTicker from "../component/NumberTicker";
 
 const { width, height } = Dimensions.get("window");
 
@@ -128,7 +129,19 @@ const Checkout = ({ navigation, cart, ...props }) => {
                 </View>
                 <View style={styles.priceTotal}>
                   <Text style={styles.priceTotalText}>Total</Text>
-                  <Text style={styles.priceTotalNumber}>${calcTotal(cartList)}</Text>
+                  <Text style={{ fontSize: 18, fontWeight: "bold" }}>$</Text>
+                  <NumberTicker
+                    number={calcTotal(cartList)}
+                    fontSize={18}
+                    wrapHeight={23}
+                    preFix="$"
+                    textStyle={{
+                      color: "#282C40",
+                      opacity: 1,
+                      fontWeight: "bold",
+                      borderTopColor: "#70707029",
+                    }}
+                  />
                 </View>
               </View>
             </ScrollView>
@@ -366,6 +379,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 10,
+    paddingHorizontal: 10,
   },
   priceName: {
     color: "#282C40",
