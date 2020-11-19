@@ -55,6 +55,7 @@ export default function CategoryDetail({ route }) {
 
       <View>
         <FlatList
+          // data={allProduct.filter((product) => product.category == item.id)}
           data={allProduct}
           renderItem={({ item, index }) => {
             return (
@@ -88,7 +89,7 @@ export default function CategoryDetail({ route }) {
               </TouchableOpacity>
             );
           }}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => `more-item.${item.id}`}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           snapToInterval={width * 0.8 + 20}
@@ -99,7 +100,7 @@ export default function CategoryDetail({ route }) {
       </View>
       <ScrollView>
         {allProduct.map((item) => (
-          <TouchableOpacity>
+          <TouchableOpacity key={`product-${item.id}`}>
             <View style={styles.moreItem}>
               <View style={{ width: width * 0.2, height: "100%", justifyContent: "center", alignItems: "center" }}>
                 <Image source={item.picture} resizeMode="center" style={{ alignSelf: "center" }} />

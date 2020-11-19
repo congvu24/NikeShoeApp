@@ -77,12 +77,14 @@ export default function BigProductDetail({ route }) {
           </Animateable.Text>
         </View>
       </View>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("Detail", { item })}
-        style={{ position: "absolute", bottom: 10, alignSelf: "center", backgroundColor: "#4D79D7", width: width * 0.9, borderRadius: 5 }}
-      >
-        <Text style={{ fontWeight: "700", fontSize: 22, textAlign: "center", padding: 10, color: "white" }}>BUY NOW</Text>
-      </TouchableOpacity>
+      <Animateable.View animation="fadeInUp" delay={700} style={{ position: "absolute", bottom: 10, alignSelf: "center" }}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Detail", { item })}
+          style={{ alignSelf: "center", backgroundColor: "#4D79D7", width: width * 0.9, borderRadius: 5 }}
+        >
+          <Text style={{ fontWeight: "700", fontSize: 22, textAlign: "center", padding: 10, color: "white" }}>BUY NOW</Text>
+        </TouchableOpacity>
+      </Animateable.View>
     </View>
   );
 }

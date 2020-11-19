@@ -47,7 +47,9 @@ export function Product1({ item }) {
     </TouchableOpacity>
   );
 }
+
 const TouchableOpacityAnimated = Animated.createAnimatedComponent(TouchableOpacity);
+
 export function WishlistProduct({ item, y, index }) {
   const navigation = useNavigation();
   const animation = new Animated.Value(0);

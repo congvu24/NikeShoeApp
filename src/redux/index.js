@@ -7,3 +7,6 @@ export const setLoading = createAction(type.SETLOADING);
 export const addCart = createAction(type.ADD_CART);
 export const removeCart = createAction(type.REMOVE_CART);
 export const clearCart = createAction(type.CLEAR_CART);
+export const setAddress = createAction(type.SET_ADDRESS);
+export const addAddress = createAction(type.ADD_ADDRESS);
+export const setCoupon = createAction(type.SET_COUPON);

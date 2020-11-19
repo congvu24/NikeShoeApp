@@ -27,7 +27,7 @@ import AnimatedSplash from "react-native-animated-splash-screen";
 import { connect, Provider } from "react-redux";
 import store from "./src/redux/store";
 import * as actions from "./src/redux/index";
-import NumberTicker from "./src/component/NumberTicker";
+import FlashMessage from "react-native-flash-message";
 
 enableScreens();
 const Stack = createSharedElementStackNavigator();
@@ -73,6 +73,7 @@ class App extends React.Component {
         >
           <StatusBar hidden />
           <Loading visible={this.props.general.isLoading} text="Logging in..." />
+          <FlashMessage position="top" />
           <NavigationContainer>
             <Navigator />
           </NavigationContainer>

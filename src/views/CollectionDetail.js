@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Image, View, TextInput, Text, StyleSheet, TouchableOpacity, Dimensions, FlatList } from "react-native";
 import Constants from "expo-constants";
 import { ScrollView } from "react-native-gesture-handler";
@@ -6,12 +6,14 @@ import BackButton from "../component/BackButton";
 import { useRoute } from "@react-navigation/native";
 import { SharedElement } from "react-navigation-shared-element";
 import allProduct from "../data/products";
+import { Product, Product1 } from "../component/Product";
 
 const { width, height } = Dimensions.get("window");
 
 export default function CollectionDetail({ route }) {
   // const route = useRoute();
   const { collection } = route.params;
+  const [keyword, setKeyword] = useState("");
 
   return (
     <ScrollView style={styles.home}>
@@ -29,35 +31,23 @@ export default function CollectionDetail({ route }) {
       <View style={styles.header}>
         <View style={styles.search}>
           <Image source={require("../images/search.png")} />
-          <TextInput placeholder="Search shoes" style={styles.searchInput} />
+          <TextInput placeholder="Search shoes" style={styles.searchInput} onChangeText={(text) => setKeyword(text)} />
         </View>
         <View style={styles.category}>
-          <Text style={styles.categoryName}>Man shoes</Text>
+          <Text style={styles.categoryName}>{collection.name} Collections</Text>
           <TouchableOpacity style={styles.filter}>
             <Image source={require("../images/settings.png")} />
             <Text style={styles.filterText}>Filter</Text>
           </TouchableOpacity>
         </View>
       </View>
+      <View></View>
+
       <FlatList
         data={allProduct}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={[styles.productWrap, { width: width / 2 - 20, margin: 5, marginRight: 5 }]}
-            onPress={() => navigation.push("Detail")}
-          >
-            <TouchableOpacity style={styles.productSave}>
-              <Image source={require("../images/bookmark.png")} />
-            </TouchableOpacity>
-            <Image source={item.picture} style={[styles.productImage, { width: "90%" }]} />
-            <Text style={styles.productName}>{item.name}</Text>
-            <Text style={styles.productPrice}>${item.price}</Text>
-            <TouchableOpacity style={styles.productBuy}>
-              <Image source={require("../images/addcart.png")} />
-            </TouchableOpacity>
-          </TouchableOpacity>
-        )}
-        keyExtractor={(item) => item.title}
+        columnWrapperStyle={{ paddingLeft: 5 }}
+        renderItem={({ item }) => <Product1 item={item} />}
+        keyExtractor={(item) => item.id}
         horizontal={false}
         numColumns={2}
         showsHorizontalScrollIndicator={false}

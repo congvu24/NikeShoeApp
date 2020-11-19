@@ -1,13 +1,15 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Image, Text, View, StyleSheet, TouchableOpacity, Dimensions, KeyboardAvoidingView, FlatList, ScrollView, TextInput } from "react-native";
 import Constants from "expo-constants";
 import StickyParallaxHeader from "react-native-sticky-parallax-header";
 import { Modalize } from "react-native-modalize";
 import BackButton from "../component/BackButton";
 import { connect } from "react-redux";
-import { addCart, removeCart, clearCart } from "../redux/index";
+import { addCart, removeCart, clearCart, setCoupon } from "../redux/index";
 import allProducts from "../data/products";
 import NumberTicker from "../component/NumberTicker";
+import coupons from "../data/coupons";
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 const { width, height } = Dimensions.get("window");
 
@@ -17,8 +19,9 @@ function findProductById(id) {
   return index;
 }
 
-const Checkout = ({ navigation, cart, ...props }) => {
+const Checkout = ({ navigation, cart, addresses, selectedAddress, selectedCoupon, ...props }) => {
   const modalizeRef = useRef(null);
+  const [code, setCode] = useState("");
 
   const onOpen = () => {
     modalizeRef.current?.open();
@@ -40,7 +43,23 @@ const Checkout = ({ navigation, cart, ...props }) => {
     return sum;
   }
 
-  useEffect(() => {}, []);
+  function submitCoupon(code) {
+    const index = coupons.findIndex((item) => item.key.toLocaleUpperCase() == code.toLocaleUpperCase());
+    if (index > -1) {
+      props.setCoupon(coupons[index]);
+    } else {
+      showMessage({
+        message: "Code is not valid!",
+        description: "Check your code and try again.",
+        icon: "warning",
+        type: "danger",
+        titleStyle: {
+          fontSize: 16,
+          fontWeight: "700",
+        },
+      });
+    }
+  }
 
   const cartList = Object.keys(cart)
     .map((key) => {
@@ -96,9 +115,11 @@ const Checkout = ({ navigation, cart, ...props }) => {
                 <Text style={styles.sectionTitle}>Shipping address</Text>
                 <View style={styles.shipping}>
                   <Image style={styles.shippingPicure} source={require("../images/delivery-truck.png")} />
-                  <Text style={styles.shippingAddress}>6/41 Pandurangan Vittal st-2, salem-6.</Text>
+                  <Text style={styles.shippingAddress}>{selectedAddress.address}</Text>
                   <TouchableOpacity style={styles.shippingButton} onPress={props.clearCart}>
-                    <Text style={styles.shippingButtonText}>Change</Text>
+                    <Text style={styles.shippingButtonText} onPress={() => navigation.navigate("Address")}>
+                      Change
+                    </Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -108,7 +129,7 @@ const Checkout = ({ navigation, cart, ...props }) => {
                   <Image style={styles.shippingPicure} source={require("../images/coupon.png")} />
                   <View style={styles.couponDetail}>
                     <Text style={styles.couponTitle}>Apply coupon</Text>
-                    <Text style={styles.couponText}>SAVE UPTO $25 FOR YOUR FIRST ORDER</Text>
+                    <Text style={styles.couponText}>{selectedCoupon ? selectedCoupon.name : "SAVE UPTO $25 FOR YOUR FIRST ORDER"}</Text>
                   </View>
                   <Image style={styles.rightArrow} source={require("../images/left-arrow.png")} />
                 </TouchableOpacity>
@@ -126,12 +147,18 @@ const Checkout = ({ navigation, cart, ...props }) => {
                       </View>
                     )}
                   />
+                  {selectedCoupon ? (
+                    <View style={styles.price}>
+                      <Text style={styles.priceName}>Coupon</Text>
+                      <Text style={[styles.priceNumber, { opacity: 0.7 }]}>{`-$${Math.round(calcTotal(cartList) * selectedCoupon.cost)}`}</Text>
+                    </View>
+                  ) : null}
                 </View>
                 <View style={styles.priceTotal}>
                   <Text style={styles.priceTotalText}>Total</Text>
                   <Text style={{ fontSize: 18, fontWeight: "bold" }}>$</Text>
                   <NumberTicker
-                    number={calcTotal(cartList)}
+                    number={calcTotal(cartList) - calcTotal(cartList) * selectedCoupon.cost}
                     fontSize={18}
                     wrapHeight={23}
                     preFix="$"
@@ -154,9 +181,11 @@ const Checkout = ({ navigation, cart, ...props }) => {
               <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Coupons</Text>
                 <View style={styles.couponInput}>
-                  <TextInput placeholder="Enter coupon code" style={styles.couponInputField} />
+                  <TextInput placeholder="Enter coupon code" style={styles.couponInputField} onChangeText={(text) => setCode(text)} />
                   <TouchableOpacity style={styles.couponApplyBtn}>
-                    <Text style={styles.couponApplyBtnText}>Apply</Text>
+                    <Text style={styles.couponApplyBtnText} onPress={() => submitCoupon(code)}>
+                      Apply
+                    </Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -165,15 +194,15 @@ const Checkout = ({ navigation, cart, ...props }) => {
               <Text style={styles.sectionTitle}>Best coupon for you</Text>
               <View style={styles.bestCoupon}>
                 <View style={styles.bestCouponDetail}>
-                  <Text style={styles.bestCouponText}>MNYU09OKLHU</Text>
-                  <TouchableOpacity style={styles.bestCouponApply}>
+                  <Text style={styles.bestCouponText}>{coupons[0].key}</Text>
+                  <TouchableOpacity style={styles.bestCouponApply} onPress={() => submitCoupon(coupons[0].key)}>
                     <Text style={styles.bestCouponApplyText}>Apply</Text>
                   </TouchableOpacity>
                 </View>
-                <Text style={styles.bestCouponMoney}>Save $25</Text>
+                <Text style={styles.bestCouponMoney}>{coupons[0].name}</Text>
                 <View style={styles.bestCouponExp}>
                   <Text style={styles.bestCouponExpText}>Expires on</Text>
-                  <Text style={styles.bestCouponExpDate}>3 MAR 2020</Text>
+                  <Text style={styles.bestCouponExpDate}>{coupons[0].exp}</Text>
                 </View>
               </View>
             </View>
@@ -196,12 +225,16 @@ const Checkout = ({ navigation, cart, ...props }) => {
 };
 
 const mapStateToProps = (state) => ({
-  ...state,
+  cart: state.cart,
+  selectedAddress: state.general.selectedAddress,
+  addresses: state.general.addresses,
+  selectedCoupon: state.general.selectedCoupon,
 });
 
 const mapDispatchToProps = {
   addCart,
   removeCart,
+  setCoupon,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
