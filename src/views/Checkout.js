@@ -158,7 +158,7 @@ const Checkout = ({ navigation, cart, addresses, selectedAddress, selectedCoupon
                   <Text style={styles.priceTotalText}>Total</Text>
                   <Text style={{ fontSize: 18, fontWeight: "bold" }}>$</Text>
                   <NumberTicker
-                    number={calcTotal(cartList) - calcTotal(cartList) * selectedCoupon.cost}
+                    number={selectedCoupon ? calcTotal(cartList) - calcTotal(cartList) * selectedCoupon.cost : calcTotal(cartList)}
                     fontSize={18}
                     wrapHeight={23}
                     preFix="$"

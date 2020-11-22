@@ -1,51 +1,97 @@
-import React from "react";
+import React, { useState } from "react";
 import { Image, View, TextInput, Text, StyleSheet, TouchableOpacity, Dimensions, FlatList } from "react-native";
 import Constants from "expo-constants";
 import { ScrollView } from "react-native-gesture-handler";
 import collections from "../data/collections";
+import allProduct from "../data/products";
+import { Product1 } from "../component/Product";
 
 const { width, height } = Dimensions.get("window");
 
-// const group = [
-//   { url: require("../images/group-1.jpg"), text: "Man" },
-//   { url: require("../images/group-2.jpg"), text: "Women" },
-//   { url: require("../images/group-3.jpg"), text: "Young" },
-//   { url: require("../images/group-4.jpg"), text: "Unisex" },
-// ];
-
 export default function Search() {
+  const [query, setQuery] = useState("");
+
+  const searchResult = allProduct.filter((item) => String(item.name).toLocaleLowerCase().includes(query) == true);
+
   return (
     <ScrollView style={styles.home}>
       <View style={styles.header}>
         <View style={styles.search}>
           <Image source={require("../images/search.png")} />
-          <TextInput placeholder="Search shoes" style={styles.searchInput} />
+          <TextInput placeholder="Search shoes" style={styles.searchInput} onChangeText={(text) => setQuery(text)} />
         </View>
       </View>
-      <View>
-        <View style={styles.group}>
-          <View style={styles.groupHeader}>
-            <Text style={styles.groupHeaderText}>Collection</Text>
-          </View>
-          <FlatList
-            data={collections.slice(0, 4)}
-            renderItem={({ item, index }) => (
-              <View style={styles.groupWrap}>
-                <Image source={item.picture} style={[StyleSheet.absoluteFillObject, { resizeMode: "cover" }, styles.groupImage]} />
-                <View style={[StyleSheet.absoluteFillObject, styles.groupTopLayer]}></View>
-                <Text style={styles.groupText}>{item.name}</Text>
-              </View>
+
+      {query.length > 0 ? (
+        <View>
+          <View style={styles.group}>
+            <View style={styles.groupHeader}>
+              <Text style={styles.groupHeaderText}>Results</Text>
+            </View>
+            {searchResult.length > 0 ? (
+              <FlatList
+                data={searchResult}
+                style={{ paddingLeft: 5 }}
+                renderItem={({ item, index }) => <Product1 item={item} />}
+                keyExtractor={(item) => item.id}
+                showsVerticalScrollIndicator={false}
+                decelerationRate="fast"
+                bouncesZoom={true}
+                numColumns={2}
+                // horizontal={true}
+              />
+            ) : (
+              <Text>{`Can't find any product contain "${query}"`}</Text>
             )}
-            keyExtractor={(item) => item.id}
-            showsHorizontalScrollIndicator={false}
-            decelerationRate="fast"
-            bouncesZoom={true}
-            alwaysBounceHorizontal={true}
-            numColumns={2}
-            // horizontal={true}
-          />
+          </View>
         </View>
-      </View>
+      ) : (
+        <>
+          <View>
+            <View style={styles.group}>
+              <View style={styles.groupHeader}>
+                <Text style={styles.groupHeaderText}>Collection</Text>
+              </View>
+              <FlatList
+                data={collections.slice(0, 4)}
+                renderItem={({ item, index }) => (
+                  <View style={styles.groupWrap}>
+                    <Image source={item.picture} style={[StyleSheet.absoluteFillObject, { resizeMode: "cover" }, styles.groupImage]} />
+                    <View style={[StyleSheet.absoluteFillObject, styles.groupTopLayer]}></View>
+                    <Text style={styles.groupText}>{item.name}</Text>
+                  </View>
+                )}
+                keyExtractor={(item) => item.id}
+                showsHorizontalScrollIndicator={false}
+                decelerationRate="fast"
+                bouncesZoom={true}
+                alwaysBounceHorizontal={true}
+                numColumns={2}
+                // horizontal={true}
+              />
+            </View>
+          </View>
+
+          <View>
+            <View style={styles.group}>
+              <View style={styles.groupHeader}>
+                <Text style={styles.groupHeaderText}>New product</Text>
+              </View>
+              <FlatList
+                data={allProduct}
+                style={{ paddingLeft: 5 }}
+                renderItem={({ item, index }) => <Product1 item={item} />}
+                keyExtractor={(item) => item.id}
+                showsVerticalScrollIndicator={false}
+                decelerationRate="fast"
+                bouncesZoom={true}
+                numColumns={2}
+                // horizontal={true}
+              />
+            </View>
+          </View>
+        </>
+      )}
     </ScrollView>
   );
 }
@@ -73,6 +119,7 @@ const styles = StyleSheet.create({
     color: "#8F919B80",
     fontWeight: "100",
     marginLeft: 20,
+    width: "100%",
   },
   groupWrap: {
     width: width * 0.5 - 10,

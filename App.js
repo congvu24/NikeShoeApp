@@ -154,11 +154,7 @@ const Navigator = () => {
       // }}
     >
       <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen
-        name="Detail"
-        component={Detail}
-        // options={option}
-      />
+      <Stack.Screen name="Detail" component={Detail} />
       <Stack.Screen name="Checkout" component={Checkout} />
       <Stack.Screen name="Address" component={AddressManage} />
       <Stack.Screen name="AddressEdit" component={AddressEdit} />

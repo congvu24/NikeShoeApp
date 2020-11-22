@@ -2,18 +2,20 @@ import React, { useEffect } from "react";
 import { Image, Text, View, StyleSheet, TouchableOpacity, Dimensions, BackHandler } from "react-native";
 import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
 import StickyParallaxHeader from "react-native-sticky-parallax-header";
+import { connect } from "react-redux";
+import allCategories from "../data/categories";
 
 const { width, height } = Dimensions.get("window");
 
-export default function DrawerHome() {
+function DrawerHome({ user, ...props }) {
   return (
     <View style={[StyleSheet.absoluteFill, styles.wrapDrawer]}>
       <View style={styles.draw}>
         <View style={styles.header}>
           <Image source={require("../images/avatar.png")} style={styles.avatar} />
           <View style={styles.user}>
-            <Text style={styles.userName}>Elayanmi</Text>
-            <Text style={styles.userEmail}>@congvu24</Text>
+            <Text style={styles.userName}>{user.name}</Text>
+            <Text style={styles.userEmail}>@{user.username}</Text>
           </View>
         </View>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -27,77 +29,43 @@ export default function DrawerHome() {
                 </TouchableOpacity>
               </View>
               <View style={styles.sectionBody}>
-                <TouchableOpacity style={styles.sectionItem}>
-                  <Text style={styles.sectionItemText}>Casual shoes</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.sectionItem}>
-                  <Text style={styles.sectionItemText}>Casual shoes</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.sectionItem}>
-                  <Text style={styles.sectionItemText}>Casual shoes</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.sectionItem}>
-                  <Text style={styles.sectionItemText}>Casual shoes</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.sectionItem}>
-                  <Text style={styles.sectionItemText}>Casual shoes</Text>
-                </TouchableOpacity>
+                {allCategories.slice(0, 5).map((item) => (
+                  <TouchableOpacity style={styles.sectionItem} key={`category.${item.id}`}>
+                    <Text style={styles.sectionItemText}>{item.name}</Text>
+                  </TouchableOpacity>
+                ))}
               </View>
             </View>
-          </View>
-          <View styles={styles.body}>
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
-                <Image source={require("../images/men.png")} />
-                <Text style={styles.categoryName}>Men</Text>
+                <Image source={require("../images/women.png")} />
+                <Text style={styles.categoryName}>Women</Text>
                 <TouchableOpacity style={styles.dropdown}>
                   <Image source={require("../images/bottom-arrow.png")} />
                 </TouchableOpacity>
               </View>
               <View style={styles.sectionBody}>
-                <TouchableOpacity style={styles.sectionItem}>
-                  <Text style={styles.sectionItemText}>Casual shoes</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.sectionItem}>
-                  <Text style={styles.sectionItemText}>Casual shoes</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.sectionItem}>
-                  <Text style={styles.sectionItemText}>Casual shoes</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.sectionItem}>
-                  <Text style={styles.sectionItemText}>Casual shoes</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.sectionItem}>
-                  <Text style={styles.sectionItemText}>Casual shoes</Text>
-                </TouchableOpacity>
+                {allCategories.slice(5, 7).map((item) => (
+                  <TouchableOpacity style={styles.sectionItem} key={`category.${item.id}`}>
+                    <Text style={styles.sectionItemText}>{item.name}</Text>
+                  </TouchableOpacity>
+                ))}
               </View>
             </View>
-          </View>
-          <View styles={styles.body}>
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
-                <Image source={require("../images/men.png")} />
-                <Text style={styles.categoryName}>Men</Text>
+                <Image source={require("../images/kids.png")} />
+                <Text style={styles.categoryName}>Kids</Text>
                 <TouchableOpacity style={styles.dropdown}>
                   <Image source={require("../images/bottom-arrow.png")} />
                 </TouchableOpacity>
               </View>
               <View style={styles.sectionBody}>
-                <TouchableOpacity style={styles.sectionItem}>
-                  <Text style={styles.sectionItemText}>Casual shoes</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.sectionItem}>
-                  <Text style={styles.sectionItemText}>Casual shoes</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.sectionItem}>
-                  <Text style={styles.sectionItemText}>Casual shoes</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.sectionItem}>
-                  <Text style={styles.sectionItemText}>Casual shoes</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.sectionItem}>
-                  <Text style={styles.sectionItemText}>Casual shoes</Text>
-                </TouchableOpacity>
+                {allCategories.slice(8, 10).map((item) => (
+                  <TouchableOpacity style={styles.sectionItem} key={`category.${item.id}`}>
+                    <Text style={styles.sectionItemText}>{item.name}</Text>
+                  </TouchableOpacity>
+                ))}
               </View>
             </View>
           </View>
@@ -106,6 +74,14 @@ export default function DrawerHome() {
     </View>
   );
 }
+
+const mapStateToProps = (state) => ({
+  user: state.general.user,
+});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DrawerHome);
 
 const styles = StyleSheet.create({
   wrapDrawer: {

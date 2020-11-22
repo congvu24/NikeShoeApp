@@ -2,8 +2,10 @@ import React, { useState, useEffect, createRef, useRef } from "react";
 import { View, Text, Image, StyleSheet, Animated, TouchableOpacity, TextInput, ScrollView } from "react-native";
 import * as Animateable from "react-native-animatable";
 import { Easing } from "react-native-reanimated";
-import { login } from "../utils/api";
+import { connect } from "react-redux";
+// import { login } from "../utils/api";
 import api from "../utils/fakeApi";
+import { login } from "../redux/index";
 
 function UnderLine({ measure, animation }) {
   // console.log(measure, "ben trong");
@@ -16,6 +18,7 @@ function UnderLine({ measure, animation }) {
     inputRange: [0, 1],
     outputRange: measure.length > 0 ? measure.map((item) => item.width) : [0, 0.01],
   });
+
   return (
     <Animated.View
       duration={500}
@@ -34,7 +37,7 @@ function UnderLine({ measure, animation }) {
   );
 }
 
-export default function Login() {
+function Login({ navigation, user, ...props }) {
   const [isLogin, setLogin] = useState(true);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -46,22 +49,15 @@ export default function Login() {
   const [animation] = useState(new Animated.Value(0));
 
   useEffect(() => {
-    // console.log(containerRef.current);
-    // if (isWorked == false && containerRef.current != null) {
-    // console.log("vo", measure);
-
     const m = [];
     [loginRef, regisRef].forEach((ref) =>
       ref.current.measureLayout(containerRef.current, (x, y, width, height) => {
         m.push({ x, y, width, height });
         if (m.length == 2) {
           setMeasure(m);
-          // console.log(measure, "mesure ne");
         }
       })
     );
-    // setWorker(true);
-    // }
   }, []);
 
   function handleClick(now) {
@@ -71,8 +67,6 @@ export default function Login() {
       Animated.timing(animation, {
         toValue: isLogin == true ? 1 : 0,
         duration: 1000,
-        // easing: Easing.ease,
-        // useNativeDriver: true,
       }).start();
     }
   }
@@ -80,18 +74,15 @@ export default function Login() {
   async function hanndleLogin() {
     try {
       if ((username, password)) {
-        const isLogin = login({ username, password });
-        console.log(isLogin);
-        if (isLogin == true) {
-          saveData("user", { username, password });
-          navigation.navigate("Home");
-        }
-
-        // console.log(isLogin);
+        props.login({ username, password });
       }
     } catch (e) {
       return false;
     }
+  }
+  if (user) {
+    navigation.navigate("Home");
+    return null;
   }
   return (
     <ScrollView style={styles.home}>
@@ -200,6 +191,16 @@ const SignUpView = () => {
   );
 };
 
+const mapStateToProps = (state) => ({
+  user: state.general.user,
+});
+
+const mapDispatchToProps = {
+  login,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
+
 const styles = StyleSheet.create({
   home: {
     backgroundColor: "#F5F5F5",
@@ -261,6 +262,7 @@ const styles = StyleSheet.create({
   },
   inputField: {
     paddingVertical: 5,
+    width: "90%",
   },
   inputLabel: {
     marginRight: 10,

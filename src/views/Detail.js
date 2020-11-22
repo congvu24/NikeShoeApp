@@ -6,7 +6,7 @@ import { SharedElement } from "react-navigation-shared-element";
 import * as Animateable from "react-native-animatable";
 import { connect } from "react-redux";
 
-import { addCart } from "../redux/index";
+import { addCart, addHistory, addBookmark } from "../redux/index";
 
 const { width, height } = Dimensions.get("window");
 const flip360 = {
@@ -67,15 +67,25 @@ class Detail extends React.PureComponent {
     this.props.navigation.push("Checkout");
   };
 
+  componentDidMount() {
+    const { item } = this.props.route.params;
+    this.props.addHistory(item.id);
+  }
+
   render() {
     const { item: product } = this.state;
+    const { bookmark } = this.props;
 
     return (
       <View style={[StyleSheet.absoluteFill, styles.home]}>
         <View style={styles.navbar}>
           <BackButton />
-          <TouchableOpacity style={[styles.navbarButton, styles.navbarButtonMargin]}>
-            <Image source={require("../images/bookmark.png")} />
+          <TouchableOpacity style={[styles.navbarButton, styles.navbarButtonMargin]} onPress={() => this.props.addBookmark(product.id)}>
+            {bookmark[product.id] == true ? (
+              <Image source={require("../images/bookmarked.png")} />
+            ) : (
+              <Image source={require("../images/bookmark.png")} />
+            )}
           </TouchableOpacity>
         </View>
         <View style={styles.product}>
@@ -179,10 +189,13 @@ class Detail extends React.PureComponent {
 
 const mapStateToProps = (state) => ({
   // ...state
+  bookmark: state.general.bookmark,
 });
 
 const mapDispatchToProps = {
   addCart,
+  addHistory,
+  addBookmark,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Detail);

@@ -1,17 +1,19 @@
 import React from "react";
 import { Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
+import { connect } from "react-redux";
 import allProduct from "../data/products";
 import { Product1, WishlistProduct } from "./Product";
 
-const HistoryTab = () => {
+const HistoryTab = ({ history, ...props }) => {
+  const historyProduct = allProduct.filter((item) => history.includes(item.id));
   return (
     <View>
       <View style={{ paddingVertical: 5 }}>
         <Text style={{ textAlign: "center", fontWeight: "700", fontSize: 18, color: "#2A5CC8" }}>Lịch sử</Text>
       </View>
       <FlatList
-        data={allProduct}
+        data={historyProduct}
         renderItem={({ item }) => <Product1 item={item} />}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
@@ -22,4 +24,10 @@ const HistoryTab = () => {
   );
 };
 
-export default HistoryTab;
+const mapStateToProps = (state) => ({
+  history: state.general.history,
+});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HistoryTab);

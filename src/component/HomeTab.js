@@ -9,6 +9,7 @@ import Animated from "react-native-reanimated";
 import category from "../data/categories";
 import collection from "../data/collections";
 import product from "../data/products";
+import AdsBanner from "./AdsBanner";
 
 const { width, height } = Dimensions.get("window");
 
@@ -42,23 +43,7 @@ export default function HomeTab({ handleClickDrawer, isOpenDrawer }) {
               <TextInput placeholder='"New autumn jacket..."' style={styles.searchInput} />
             </View>
           </View>
-          <View>
-            <View style={styles.slide}>
-              <Image source={require("../images/slideBackground.png")} style={[StyleSheet.absoluteFillObject, styles.slideImage]} />
-              <Text style={styles.slideText}>Year end promotion</Text>
-              <Text style={styles.slideTextLight}>All goods are for your winter</Text>
-              <Text style={styles.slideTextLight}>your winter</Text>
-              <Image source={require("../images/shoe1.png")} style={styles.slideItem} />
-              <TouchableOpacity style={styles.slideButton}>
-                <Image source={require("../images/nextSlide.png")} />
-              </TouchableOpacity>
-              <View style={styles.slideNavWrap}>
-                <View style={styles.slideNav}></View>
-                <View style={[styles.slideNav, styles.slideNavActive]}></View>
-                <View style={styles.slideNav}></View>
-              </View>
-            </View>
-          </View>
+          <AdsBanner />
           <View style={styles.listType}>
             {category.slice(0, 8).map((item, index) => (
               <TouchableOpacity style={styles.listTypeBox} key={`category.${index}`} onPress={() => navigation.navigate("CategoryDetail", { item })}>
@@ -137,23 +122,7 @@ export default function HomeTab({ handleClickDrawer, isOpenDrawer }) {
               decelerationRate="fast"
             />
           </View>
-          <View>
-            <View style={styles.slide}>
-              <Image source={require("../images/slideBackground.png")} style={[StyleSheet.absoluteFillObject, styles.slideImage]} />
-              <Text style={styles.slideText}>Year end promotion</Text>
-              <Text style={styles.slideTextLight}>All goods are for your winter</Text>
-              <Text style={styles.slideTextLight}>your winter</Text>
-              <Image source={require("../images/shoe1.png")} style={styles.slideItem} />
-              <TouchableOpacity style={styles.slideButton}>
-                <Image source={require("../images/nextSlide.png")} />
-              </TouchableOpacity>
-              <View style={styles.slideNavWrap}>
-                <View style={styles.slideNav}></View>
-                <View style={[styles.slideNav, styles.slideNavActive]}></View>
-                <View style={styles.slideNav}></View>
-              </View>
-            </View>
-          </View>
+          <AdsBanner />
           <FlatList
             data={product}
             renderItem={({ item }) => <Product1 item={item} />}
@@ -219,66 +188,6 @@ const styles = StyleSheet.create({
   },
   searchButton: {
     padding: 5,
-  },
-  slide: {
-    color: "#fff",
-    width: "100%",
-    height: 200,
-  },
-  slideImage: {
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-    top: 0,
-    left: 0,
-    borderRadius: 10,
-  },
-  slideText: {
-    fontSize: 20,
-    fontWeight: "700",
-    top: 20,
-    left: 20,
-    color: "#fff",
-  },
-  slideTextLight: {
-    fontSize: 18,
-    fontWeight: "500",
-    top: 20,
-    left: 20,
-    color: "#fff",
-    opacity: 0.7,
-  },
-  slideItem: {
-    top: 50,
-    right: 20,
-    position: "absolute",
-  },
-  slideButton: {
-    position: "absolute",
-    justifyContent: "center",
-    alignItems: "center",
-    bottom: 10,
-    left: 20,
-    width: 30,
-    height: 30,
-  },
-  slideNav: {
-    width: 20,
-    height: 4,
-    borderRadius: 10,
-    backgroundColor: "#fff",
-  },
-  slideNavActive: {
-    width: 4,
-  },
-  slideNavWrap: {
-    position: "absolute",
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    bottom: 20,
-    right: 20,
-    width: 60,
   },
   listType: {
     flexDirection: "row",

@@ -7,3 +7,7 @@ export const CLEAR_CART = "clear_cart";
 export const SET_ADDRESS = "set_address";
 export const ADD_ADDRESS = "add_address";
 export const SET_COUPON = "set_coupon";
+export const LOGIN = "login";
+export const ADD_HISTORY = "add_history";
+export const ADD_BOOKMARK = "add_bookmark";
+export const REMOVE_BOOKMARK = "remove_bookmark";

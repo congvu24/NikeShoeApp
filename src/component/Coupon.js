@@ -3,6 +3,23 @@ import { Dimensions, StyleSheet, TouchableOpacity, Image, Text, View } from "rea
 
 const { width, height } = Dimensions.get("window");
 
+export default function Coupon({ item }) {
+  return (
+    <View style={styles.couponWrap} onPress={() => navigation.push("Detail")}>
+      <View style={styles.couponDetail}>
+        <Image source={require("../images/voucher.png")} />
+        <View style={styles.couponGroup}>
+          <Text style={styles.couponName}>{item.name}</Text>
+          <Text style={styles.couponExp}>{item.exp}</Text>
+        </View>
+      </View>
+      <TouchableOpacity style={styles.couponUse}>
+        <Text style={styles.couponUseText}>Use</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   couponWrap: { marginVertical: 10, flexDirection: "row", marginHorizontal: 20 },
   couponDetail: {
@@ -45,20 +62,3 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
 });
-
-export default function Coupon({ item }) {
-  return (
-    <View style={styles.couponWrap} onPress={() => navigation.push("Detail")}>
-      <View style={styles.couponDetail}>
-        <Image source={require("../images/voucher.png")} />
-        <View style={styles.couponGroup}>
-          <Text style={styles.couponName}>{item.name}</Text>
-          <Text style={styles.couponExp}>{item.exp}</Text>
-        </View>
-      </View>
-      <TouchableOpacity style={styles.couponUse}>
-        <Text style={styles.couponUseText}>Use</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
