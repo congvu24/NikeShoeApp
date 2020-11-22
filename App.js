@@ -13,6 +13,7 @@ import Profile from "./src/views/Profile";
 import Search from "./src/views/Search";
 import Splash from "./src/views/Splash";
 import Login from "./src/views/Login";
+import Introduce from "./src/views/Introduce";
 import Loading from "./src/component/Loading";
 import CategoryDetail from "./src/views/CategoryDetail";
 import CollectionDetail from "./src/views/CollectionDetail";
@@ -115,9 +116,10 @@ const option = () => ({
 const Navigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Home"
+      initialRouteName="Introduce"
       screenOptions={{
         headerShown: false,
+        gestureEnabled: false,
       }}
       // initialRouteName="Home"
       // headerMode="none"
@@ -165,6 +167,7 @@ const Navigator = () => {
       <Stack.Screen name="Search" component={Search} />
       <Stack.Screen name="Splash" component={Splash} />
       <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Introduce" component={Introduce} />
       <Stack.Screen
         name="CategoryDetail"
         component={CategoryDetail}

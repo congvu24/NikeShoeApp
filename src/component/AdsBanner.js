@@ -30,9 +30,12 @@ const FULL_SIZE = ITEM_WIDTH + 10;
 
 function AdsBanner() {
   const scrollX = useRef(new Animated.Value(0)).current;
-
+  const backgroundColor = scrollX.interpolate({
+    inputRange: [0, 1 * width, 2 * width, 3 * width],
+    outputRange: ["black", "red", "blue", "green"],
+  });
   return (
-    <View>
+    <View style={{ backgroundColor }}>
       <Animated.FlatList
         data={allAds}
         horizontal={true}
@@ -66,7 +69,7 @@ function AdsBanner() {
                 />
               </View>
               <Animated.Text style={[styles.slideText, { transform: [{ translateX }] }]}>{item.name}</Animated.Text>
-              <TouchableOpacity style={styles.moreBtn}>
+              <TouchableOpacity style={[styles.moreBtn, { backgroundColor }]}>
                 <Text style={styles.moreBtnText}>See more</Text>
               </TouchableOpacity>
             </Animated.View>
