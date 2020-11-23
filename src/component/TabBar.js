@@ -86,7 +86,11 @@ export default class TabBar extends Component {
           </AnimatedSvg> */}
           <View style={styles.list}>
             {this.state.tabs.map((item, index) => (
-              <TouchableOpacity onPress={() => this.changeTab(item.name, index, this.state.activeTab, item.screenName)} style={[styles.tab]}>
+              <TouchableOpacity
+                key={`item-${index}`}
+                onPress={() => this.changeTab(item.name, index, this.state.activeTab, item.screenName)}
+                style={[styles.tab]}
+              >
                 <View style={styles.tabContent}>
                   <Icon name={item.name} size={20} style={[{ alignSelf: "center" }, styles.tabIcon, item.active ? styles.tabIconActive : {}]} />
                   <Text style={[styles.tabText, item.active ? styles.tabTextActive : {}]}>{item.text}</Text>

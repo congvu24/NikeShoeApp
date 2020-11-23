@@ -1,8 +1,6 @@
 import { handleActions } from "redux-actions";
 import * as type from "../type";
 import addresses from "../../data/address";
-import coupons from "../../data/coupons";
-import { act } from "react-test-renderer";
 import users from "../../data/users";
 
 const initialState = {
@@ -15,6 +13,7 @@ const initialState = {
   user: "",
   history: [],
   bookmark: {},
+  isViewIntroduce: false,
 };
 
 const reducer = handleActions(
@@ -71,6 +70,15 @@ const reducer = handleActions(
     [type.ADD_BOOKMARK]: (state, action) => {
       const id = action.payload;
       return { ...state, bookmark: { ...state.bookmark, [id]: state.bookmark[id] ? !state.bookmark[id] : true } };
+    },
+    [type.SET_VIEW_INTRODUCE]: (state, action) => {
+      return { ...state, isViewIntroduce: true };
+    },
+    [type.RESET]: (state, action) => {
+      return initialState;
+    },
+    [type.LOGOUT]: (state, action) => {
+      return { ...state, user: "" };
     },
   },
   initialState

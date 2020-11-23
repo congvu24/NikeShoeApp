@@ -31,11 +31,11 @@ function Home({ navigation, user, ...props }) {
   //   return () => backHandler.remove();
   // }, []);
   // const navigation = useNavigation();
-  useEffect(() => {
-    if (!user) {
-      navigation.navigate("Login");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!user) {
+  //     navigation.navigate("Login");
+  //   }
+  // }, []);
   return (
     <>
       <DrawerHome />

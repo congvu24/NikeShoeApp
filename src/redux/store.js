@@ -1,31 +1,18 @@
 import { createStore, applyMiddleware } from "redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { persistStore, persistReducer } from "redux-persist";
+import { createLogger } from "redux-logger";
 import reducers from "./reducers";
 
-export const loadState = async () => {
-  try {
-    const serializedState = await AsyncStorage.getItem("state");
-    if (serializedState === null) {
-      return undefined;
-    }
-    return JSON.parse(serializedState);
-  } catch (err) {
-    return undefined;
-  }
+const persistConfig = {
+  key: "root",
+  storage: AsyncStorage,
 };
+const persistedReducer = persistReducer(persistConfig, reducers);
 
-export const saveState = (state) => {
-  try {
-    const serializedState = JSON.stringify(state);
-    AsyncStorage.setItem("state", serializedState);
-  } catch (e) {
-    console.log(e);
-    // ignore write errors
-  }
-};
-// const persistedState = loadState();
-// console.log("persis:", persistedState);
-const store = createStore(reducers);
+const store = createStore(persistedReducer, applyMiddleware(createLogger()));
+
+export const persistor = persistStore(store);
 
 // store.subscribe(() => {
 //   saveState(store.getState());

@@ -24,11 +24,11 @@ export default function HomeTab({ handleClickDrawer, isOpenDrawer }) {
           </TouchableOpacity>
           <Image source={require("../images/logo.png")} style={[styles.navbarButton, styles.navbarLogo]} />
           <View style={styles.navbarGroup}>
-            <TouchableOpacity style={[styles.navbarButton, styles.navbarButtonMargin]}>
-              <Image source={require("../images/bookmark.png")} />
-            </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate("Checkout")} style={[styles.navbarButton, styles.navbarButtonMargin]}>
               <Image source={require("../images/bag1.png")} />
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.navbarButton, styles.navbarButtonMargin]} onPress={() => navigation.push("Profile")}>
+              <Image source={require("../images/user.png")} style={{ width: 25, height: 25, resizeMode: "contain" }} />
             </TouchableOpacity>
           </View>
         </View>

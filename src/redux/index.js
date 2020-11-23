@@ -14,3 +14,6 @@ export const login = createAction(type.LOGIN);
 export const addHistory = createAction(type.ADD_HISTORY);
 export const addBookmark = createAction(type.ADD_BOOKMARK);
 export const removeBookmark = createAction(type.REMOVE_BOOKMARK);
+export const setViewIntroduce = createAction(type.SET_VIEW_INTRODUCE);
+export const reset = createAction(type.RESET);
+export const logout = createAction(type.LOGOUT);

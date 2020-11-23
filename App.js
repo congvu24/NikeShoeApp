@@ -1,5 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
+import { PersistGate } from "redux-persist/integration/react";
 
 import Home from "./src/views/Home";
 import Detail from "./src/views/Detail";
@@ -23,10 +24,9 @@ import { enableScreens } from "react-native-screens";
 import BigProductDetail from "./src/views/BigProductDetail";
 import { Easing, View, Text } from "react-native";
 import allCategories from "./src/data/categories";
-import { checkLogined } from "./src/utils/utils";
 import AnimatedSplash from "react-native-animated-splash-screen";
 import { connect, Provider } from "react-redux";
-import store from "./src/redux/store";
+import store, { persistor } from "./src/redux/store";
 import * as actions from "./src/redux/index";
 import FlashMessage from "react-native-flash-message";
 
@@ -42,8 +42,10 @@ export default class Wrap extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <AppWithRedux />
-        {/* <NumberTicker /> */}
+        <PersistGate loading={null} persistor={persistor}>
+          <AppWithRedux />
+          {/* <NumberTicker /> */}
+        </PersistGate>
       </Provider>
     );
   }
@@ -54,12 +56,17 @@ class App extends React.Component {
     isLoaded: false,
   };
   async componentDidMount() {
-    console.log(this.props);
     this.props.counterIncrease();
 
     await setTimeout(() => {
       this.setState({ isLoaded: true });
     }, 500);
+
+    // console.log(this.props.general.isViewIntroduce);
+    if (!this.props.general.isViewIntroduce) {
+      this.props.setViewIntroduce();
+    }
+    // this.props.reset();
   }
   render() {
     return (
@@ -76,7 +83,7 @@ class App extends React.Component {
           <Loading visible={this.props.general.isLoading} text="Logging in..." />
           <FlashMessage position="top" />
           <NavigationContainer>
-            <Navigator />
+            <Navigator isViewIntroduce={this.props.general.isViewIntroduce} />
           </NavigationContainer>
         </AnimatedSplash>
       </>
@@ -113,10 +120,10 @@ const option = () => ({
   },
 });
 
-const Navigator = () => {
+const Navigator = ({ isViewIntroduce }) => {
   return (
     <Stack.Navigator
-      initialRouteName="Introduce"
+      initialRouteName={isViewIntroduce ? "Home" : "Introduce"}
       screenOptions={{
         headerShown: false,
         gestureEnabled: false,

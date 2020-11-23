@@ -23,6 +23,9 @@ const reducer = handleActions(
     [type.CLEAR_CART]: (state, action) => {
       return {};
     },
+    [type.RESET]: (state, action) => {
+      return initialState;
+    },
   },
   initialState
 );

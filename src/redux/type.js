@@ -11,3 +11,6 @@ export const LOGIN = "login";
 export const ADD_HISTORY = "add_history";
 export const ADD_BOOKMARK = "add_bookmark";
 export const REMOVE_BOOKMARK = "remove_bookmark";
+export const SET_VIEW_INTRODUCE = "set_view_introduce";
+export const RESET = "set_reset";
+export const LOGOUT = "logout";

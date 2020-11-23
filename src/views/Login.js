@@ -47,18 +47,22 @@ function Login({ navigation, user, ...props }) {
   const containerRef = useRef();
   const [measure, setMeasure] = useState([]);
   const [animation] = useState(new Animated.Value(0));
+  const [isRender, setRender] = useState(false);
 
   useEffect(() => {
-    const m = [];
-    [loginRef, regisRef].forEach((ref) =>
-      ref.current.measureLayout(containerRef.current, (x, y, width, height) => {
-        m.push({ x, y, width, height });
-        if (m.length == 2) {
-          setMeasure(m);
-        }
-      })
-    );
-  }, []);
+    if (isRender == false && loginRef.current != null && regisRef.current != null) {
+      const m = [];
+      [loginRef, regisRef].forEach((ref) =>
+        ref.current.measureLayout(containerRef.current, (x, y, width, height) => {
+          m.push({ x, y, width, height });
+          if (m.length == 2) {
+            setMeasure(m);
+          }
+        })
+      );
+      setRender(true);
+    }
+  }, [loginRef, regisRef]);
 
   function handleClick(now) {
     if (now !== isLogin) {

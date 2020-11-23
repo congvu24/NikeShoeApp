@@ -12,11 +12,21 @@ function DrawerHome({ user, ...props }) {
     <View style={[StyleSheet.absoluteFill, styles.wrapDrawer]}>
       <View style={styles.draw}>
         <View style={styles.header}>
-          <Image source={require("../images/avatar.png")} style={styles.avatar} />
-          <View style={styles.user}>
-            <Text style={styles.userName}>{user.name}</Text>
-            <Text style={styles.userEmail}>@{user.username}</Text>
-          </View>
+          {user ? (
+            <>
+              <Image source={require("../images/avatar.png")} style={styles.avatar} />
+              <View style={styles.user}>
+                <Text style={styles.userName}>{user.name}</Text>
+                <Text style={styles.userEmail}>@{user.username}</Text>
+              </View>
+            </>
+          ) : (
+            <View style={{ justifyContent: "center", alignItems: "center", width: "100%" }}>
+              <TouchableOpacity style={{ borderRadius: 30, borderWidth: 1, borderColor: "white" }}>
+                <Text style={{ color: "white", paddingHorizontal: 8, paddingVertical: 4 }}>Login</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View styles={styles.body}>

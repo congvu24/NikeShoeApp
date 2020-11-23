@@ -1,19 +1,22 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity, Image, Text } from "react-native";
-import BackButton from "../component/BackButton";
+import { connect } from "react-redux";
+import { logout } from "../redux/index";
 
-export default function Profile() {
+function Profile({ user, navigation, ...props }) {
+  if (!user) {
+    navigation.navigate("Login");
+    return null;
+  }
   return (
     <View style={styles.home}>
       <View style={styles.header}>
-        <BackButton />
-
         <View style={styles.headerUser}>
           <View style={styles.user}>
             <Image source={require("../images/avatar.png")} style={styles.userAvatar} />
             <View style={styles.userInfo}>
-              <Text style={styles.userName}>Elaynami</Text>
-              <Text style={styles.userId}>@id0082i</Text>
+              <Text style={styles.userName}>{user.name}</Text>
+              <Text style={styles.userId}>@{user.username}</Text>
             </View>
           </View>
           <TouchableOpacity style={styles.editBtn}>
@@ -42,7 +45,7 @@ export default function Profile() {
           <Text style={styles.buttonText}>Wishlist</Text>
           <Image source={require("../images/right-arrow.png")} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => props.logout()}>
           <Image source={require("../images/exit.png")} />
           <Text style={styles.buttonText}>Log out</Text>
           <Image source={require("../images/right-arrow.png")} />
@@ -52,6 +55,15 @@ export default function Profile() {
   );
 }
 
+const mapStateToProps = (state) => ({
+  user: state.general.user,
+});
+
+const mapDispatchToProps = {
+  logout,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
 const styles = StyleSheet.create({
   home: {
     backgroundColor: "#F5F5F5",
@@ -78,6 +90,7 @@ const styles = StyleSheet.create({
   user: {
     flexDirection: "row",
     alignItems: "center",
+    marginTop: 20,
   },
   userAvatar: {
     width: 60,

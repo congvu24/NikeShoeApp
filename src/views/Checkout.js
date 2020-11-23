@@ -19,7 +19,7 @@ function findProductById(id) {
   return index;
 }
 
-const Checkout = ({ navigation, cart, addresses, selectedAddress, selectedCoupon, ...props }) => {
+const Checkout = ({ navigation, cart, addresses, selectedAddress, selectedCoupon, user, ...props }) => {
   const modalizeRef = useRef(null);
   const [code, setCode] = useState("");
 
@@ -71,6 +71,10 @@ const Checkout = ({ navigation, cart, addresses, selectedAddress, selectedCoupon
     })
     .filter((item) => item.number > 0);
 
+  if (!user) {
+    navigation.navigate("Login");
+    return null;
+  }
   return (
     <>
       {cartList.length > 0 ? (
@@ -229,6 +233,7 @@ const mapStateToProps = (state) => ({
   selectedAddress: state.general.selectedAddress,
   addresses: state.general.addresses,
   selectedCoupon: state.general.selectedCoupon,
+  user: state.general.user,
 });
 
 const mapDispatchToProps = {
