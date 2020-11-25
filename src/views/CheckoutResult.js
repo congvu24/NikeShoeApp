@@ -1,9 +1,45 @@
-import React, { useRef } from "react";
-import { Image, Text, View, StyleSheet, TouchableOpacity, Dimensions, KeyboardAvoidingView, ImageBackground } from "react-native";
+import React, { useRef, useEffect } from "react";
+import { Image, Text, View, StyleSheet, TouchableOpacity, Dimensions, KeyboardAvoidingView, ImageBackground, BackHandler } from "react-native";
 import Constants from "expo-constants";
 import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
+import { CommonActions, StackActions } from "@react-navigation/native";
+
+const resetAction = CommonActions.reset({
+  index: 1,
+  routes: [{ name: "Home" }],
+});
 
 const { width, height } = Dimensions.get("window");
+
+const CheckoutResult = ({ navigation, ...props }) => {
+  useEffect(() => {
+    const backAction = () => {
+      navigation.dispatch(resetAction);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
+
+    return () => backHandler.remove();
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      <ImageBackground style={styles.image} source={require("../images/background-result.png")} />
+      <TouchableOpacity style={styles.closeBtn} onPress={() => navigation.dispatch(resetAction)}>
+        <Image source={require("../images/close.png")} />
+      </TouchableOpacity>
+      <View style={styles.content}>
+        <Image source={require("../images/checkout-success.png")} />
+        <Text style={styles.title}>Order Placed</Text>
+        <View style={styles.message}>
+          <Text style={styles.messageTitle}>Expected delivery</Text>
+          <Text style={styles.messageValue}>10 DEC</Text>
+        </View>
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -56,24 +92,5 @@ const styles = StyleSheet.create({
     right: 20,
   },
 });
-
-const CheckoutResult = ({ navigation }) => {
-  return (
-    <View style={styles.container}>
-      <ImageBackground style={styles.image} source={require("../images/background-result-fail.png")} />
-      <TouchableOpacity style={styles.closeBtn}>
-        <Image source={require("../images/close.png")} />
-      </TouchableOpacity>
-      <View style={styles.content}>
-        <Image source={require("../images/checkout-success.png")} />
-        <Text style={styles.title}>Order Placed</Text>
-        <View style={styles.message}>
-          <Text style={styles.messageTitle}>Expected delivery</Text>
-          <Text style={styles.messageValue}>10 DEC</Text>
-        </View>
-      </View>
-    </View>
-  );
-};
 
 export default CheckoutResult;

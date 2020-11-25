@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect } from "react";
 import { Image, Text, View, StyleSheet, TouchableOpacity, Dimensions, BackHandler } from "react-native";
 import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
@@ -8,6 +9,7 @@ import allCategories from "../data/categories";
 const { width, height } = Dimensions.get("window");
 
 function DrawerHome({ user, ...props }) {
+  const navigation = useNavigation();
   return (
     <View style={[StyleSheet.absoluteFill, styles.wrapDrawer]}>
       <View style={styles.draw}>
@@ -22,7 +24,7 @@ function DrawerHome({ user, ...props }) {
             </>
           ) : (
             <View style={{ justifyContent: "center", alignItems: "center", width: "100%" }}>
-              <TouchableOpacity style={{ borderRadius: 30, borderWidth: 1, borderColor: "white" }}>
+              <TouchableOpacity onPress={() => navigation.push("Login")} style={{ borderRadius: 30, borderWidth: 1, borderColor: "white" }}>
                 <Text style={{ color: "white", paddingHorizontal: 8, paddingVertical: 4 }}>Login</Text>
               </TouchableOpacity>
             </View>

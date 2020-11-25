@@ -45,7 +45,7 @@ export default function BigProductDetail({ route }) {
           {activity.map((item, index) => (
             <Animateable.View
               animation={animations[index]}
-              duration={1000}
+              duration={700}
               delay={1000}
               key={`activity.${index}`}
               style={{

@@ -1,5 +1,12 @@
 import React, { Component, useRef } from "react";
 import { View, Text, FlatList, Image, Dimensions, StyleSheet, Animated, TouchableOpacity } from "react-native";
+import { CommonActions, StackActions } from "@react-navigation/native";
+import auth from "@react-native-firebase/auth";
+
+const resetAction = CommonActions.reset({
+  index: 1,
+  routes: [{ name: "Home" }],
+});
 
 const introduces = [
   {
@@ -84,6 +91,25 @@ const Square = ({ scrollX }) => {
 };
 const Introduce = ({ navigation }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
+
+  const test = () => {
+    auth()
+      .signInWithEmailAndPassword("jane.doe@example.com", "SuperSecretPassword!")
+      .then(() => {
+        console.log("User account created & signed in!");
+      })
+      .catch((error) => {
+        if (error.code === "auth/email-already-in-use") {
+          console.log("That email address is already in use!");
+        }
+
+        if (error.code === "auth/invalid-email") {
+          console.log("That email address is invalid!");
+        }
+
+        console.error(error);
+      });
+  };
   return (
     <View style={{ flex: 1 }}>
       <Backdrop scrollX={scrollX} />
@@ -112,12 +138,13 @@ const Introduce = ({ navigation }) => {
       <View style={{ flexDirection: "row", flex: 0.2, justifyContent: "center", alignItems: "center" }}>
         <TouchableOpacity
           style={{ backgroundColor: "#ffffff99", borderRadius: 5, alignSelf: "center", marginHorizontal: 10 }}
-          onPress={() => navigation.navigate("Login")}
+          // onPress={() => navigation.navigate("Login")}
+          onPress={test}
         >
           <Text style={{ paddingHorizontal: 16, paddingVertical: 8, fontWeight: "bold", opacity: 0.8 }}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate("Home")}
+          onPress={() => navigation.dispatch(resetAction)}
           style={{ backgroundColor: "#ffffff99", borderRadius: 5, alignSelf: "center", marginHorizontal: 10 }}
         >
           <Text style={{ paddingHorizontal: 16, paddingVertical: 8, fontWeight: "bold", opacity: 0.8 }}>Shop Now</Text>

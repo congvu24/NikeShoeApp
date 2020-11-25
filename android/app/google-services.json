@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1026652352005",
+    "firebase_url": "https://my-assistant-5bafe.firebaseio.com",
+    "project_id": "my-assistant-5bafe",
+    "storage_bucket": "my-assistant-5bafe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1026652352005:android:d1c0589a21361e81abf66c",
+        "android_client_info": {
+          "package_name": "com.doanmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1026652352005-8icgf4q1aljb7rg0hjn4bl1vinb0fal2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBow2POC5mgOWvCAsWkDYPD-vCzs0zLW_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1026652352005-7ka00nt7n4il8duc7sji6r86n9lotdd9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

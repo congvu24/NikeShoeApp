@@ -3,13 +3,16 @@ import { View, Text, Image, StyleSheet, Animated, TouchableOpacity, TextInput, S
 import * as Animateable from "react-native-animatable";
 import { Easing } from "react-native-reanimated";
 import { connect } from "react-redux";
-// import { login } from "../utils/api";
 import api from "../utils/fakeApi";
-import { login } from "../redux/index";
+import { login, register } from "../redux/index";
+import { CommonActions, StackActions } from "@react-navigation/native";
+
+const resetAction = CommonActions.reset({
+  index: 1,
+  routes: [{ name: "Home" }],
+});
 
 function UnderLine({ measure, animation }) {
-  // console.log(measure, "ben trong");
-  // console.log(animation, "animation");
   const translateX = animation.interpolate({
     inputRange: [0, 1],
     outputRange: measure.length > 0 ? measure.map((item) => item.x) : [0, 0.01],
@@ -78,16 +81,24 @@ function Login({ navigation, user, ...props }) {
   async function hanndleLogin() {
     try {
       if ((username, password)) {
-        props.login({ username, password });
+        props.login({ username, password, callback: () => navigation.dispatch(resetAction) });
       }
     } catch (e) {
       return false;
     }
   }
+
+  const handleRegister = ({ mail, password, rePassword }) => {
+    if (mail && password && rePassword && password == rePassword) {
+      props.register({ username, password });
+    }
+  };
+
   if (user) {
     navigation.navigate("Home");
     return null;
   }
+
   return (
     <ScrollView style={styles.home}>
       <Image source={require("../images/account-image.png")} style={styles.image} />
@@ -104,7 +115,11 @@ function Login({ navigation, user, ...props }) {
           </Text>
         </TouchableOpacity>
       </View>
-      {isLogin == false ? <SignUpView /> : <LoginView hanndleLogin={hanndleLogin} setUsername={setUsername} setPassword={setPassword} />}
+      {isLogin == false ? (
+        <SignUpView handleRegister={handleRegister} />
+      ) : (
+        <LoginView hanndleLogin={hanndleLogin} setUsername={setUsername} setPassword={setPassword} />
+      )}
     </ScrollView>
   );
 }
@@ -126,6 +141,7 @@ const LoginView = ({ hanndleLogin, setPassword, setUsername }) => {
         <Image source={require("../images/lock.png")} style={styles.inputLabel} />
         <TextInput
           placeholder="Password"
+          secureTextEntry={true}
           style={styles.inputField}
           onChangeText={(e) => {
             setPassword(e);
@@ -156,23 +172,30 @@ const LoginView = ({ hanndleLogin, setPassword, setUsername }) => {
   );
 };
 
-const SignUpView = () => {
+const SignUpView = ({ ...props }) => {
+  const [mail, setMail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rePassword, setRePassword] = useState("");
+
+  const handleSubmit = () => {
+    props.handleRegister({ mail, password, rePassword });
+  };
   return (
     <View style={styles.form}>
       <Animateable.View style={styles.input} animation="fadeInUp" delay={0} duration={500}>
         <Image source={require("../images/email.png")} style={styles.inputLabel} />
-        <TextInput placeholder="Email address" style={styles.inputField} />
+        <TextInput placeholder="Email address" style={styles.inputField} onChangeText={(text) => setMail(text)} />
       </Animateable.View>
       <Animateable.View style={styles.input} animation="fadeInUp" delay={100} duration={500}>
         <Image source={require("../images/lock.png")} style={styles.inputLabel} />
-        <TextInput placeholder="Password" style={styles.inputField} />
+        <TextInput placeholder="Password" style={styles.inputField} onChangeText={(text) => setPassword(text)} />
       </Animateable.View>
       <Animateable.View style={styles.input} animation="fadeInUp" delay={150} duration={500}>
         <Image source={require("../images/lock.png")} style={styles.inputLabel} />
-        <TextInput placeholder="Re password" style={styles.inputField} />
+        <TextInput placeholder="Re password" style={styles.inputField} onChangeText={(text) => setRePassword(text)} />
       </Animateable.View>
       <Animateable.View animation="fadeInUp" delay={200}>
-        <TouchableOpacity style={styles.submitBtn}>
+        <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit}>
           <Text style={styles.submitBtnText}>Sign up</Text>
         </TouchableOpacity>
       </Animateable.View>
@@ -201,6 +224,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   login,
+  register,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

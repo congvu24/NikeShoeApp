@@ -5,7 +5,7 @@ import StickyParallaxHeader from "react-native-sticky-parallax-header";
 import { Modalize } from "react-native-modalize";
 import BackButton from "../component/BackButton";
 import { connect } from "react-redux";
-import { addCart, removeCart, clearCart, setCoupon } from "../redux/index";
+import { addCart, removeCart, clearCart, setCoupon, checkout } from "../redux/index";
 import allProducts from "../data/products";
 import NumberTicker from "../component/NumberTicker";
 import coupons from "../data/coupons";
@@ -177,7 +177,12 @@ const Checkout = ({ navigation, cart, addresses, selectedAddress, selectedCoupon
               </View>
             </ScrollView>
           </View>
-          <TouchableOpacity style={styles.nextBtn}>
+          <TouchableOpacity
+            style={styles.nextBtn}
+            onPress={() => {
+              props.checkout(() => navigation.navigate("CheckoutResult"));
+            }}
+          >
             <Text style={styles.nextBtnText}>Continue</Text>
           </TouchableOpacity>
           <Modalize ref={modalizeRef} modalStyle={styles.modal} adjustToContentHeight={true}>
@@ -240,6 +245,7 @@ const mapDispatchToProps = {
   addCart,
   removeCart,
   setCoupon,
+  checkout,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Checkout);

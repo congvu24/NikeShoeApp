@@ -14,3 +14,5 @@ export const REMOVE_BOOKMARK = "remove_bookmark";
 export const SET_VIEW_INTRODUCE = "set_view_introduce";
 export const RESET = "set_reset";
 export const LOGOUT = "logout";
+export const CHECKOUT = "checkout";
+export const REGISTER = "register";

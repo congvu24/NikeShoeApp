@@ -66,7 +66,7 @@ class App extends React.Component {
     if (!this.props.general.isViewIntroduce) {
       this.props.setViewIntroduce();
     }
-    // this.props.reset();
+    this.props.reset();
   }
   render() {
     return (
@@ -80,7 +80,7 @@ class App extends React.Component {
           logoWidth={150}
         >
           <StatusBar hidden />
-          <Loading visible={this.props.general.isLoading} text="Logging in..." />
+          <Loading visible={this.props.general.isLoading} text={this.props.general.loadingText} />
           <FlashMessage position="top" />
           <NavigationContainer>
             <Navigator isViewIntroduce={this.props.general.isViewIntroduce} />

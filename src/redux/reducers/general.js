@@ -6,6 +6,7 @@ import users from "../../data/users";
 const initialState = {
   count: 0,
   isLoading: false,
+  loadingText: "Loging in",
   selectedAddress: addresses[0],
   addresses,
   selectedCoupon: "",
@@ -26,6 +27,13 @@ const reducer = handleActions(
       ...state,
       count: state.count - 1,
     }),
+    [type.SETLOADING]: (state, action) => {
+      return {
+        ...state,
+        isLoading: !state.isLoading,
+        loadingText: action.payload,
+      };
+    },
     [type.SET_ADDRESS]: (state, action) => ({
       ...state,
       selectedAddress: action.payload,
