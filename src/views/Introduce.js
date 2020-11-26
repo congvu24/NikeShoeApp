@@ -1,7 +1,6 @@
-import React, { Component, useRef } from "react";
+import React, { Component, useEffect, useRef } from "react";
 import { View, Text, FlatList, Image, Dimensions, StyleSheet, Animated, TouchableOpacity } from "react-native";
 import { CommonActions, StackActions } from "@react-navigation/native";
-import auth from "@react-native-firebase/auth";
 
 const resetAction = CommonActions.reset({
   index: 1,
@@ -92,24 +91,6 @@ const Square = ({ scrollX }) => {
 const Introduce = ({ navigation }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
 
-  const test = () => {
-    auth()
-      .signInWithEmailAndPassword("jane.doe@example.com", "SuperSecretPassword!")
-      .then(() => {
-        console.log("User account created & signed in!");
-      })
-      .catch((error) => {
-        if (error.code === "auth/email-already-in-use") {
-          console.log("That email address is already in use!");
-        }
-
-        if (error.code === "auth/invalid-email") {
-          console.log("That email address is invalid!");
-        }
-
-        console.error(error);
-      });
-  };
   return (
     <View style={{ flex: 1 }}>
       <Backdrop scrollX={scrollX} />
@@ -139,7 +120,7 @@ const Introduce = ({ navigation }) => {
         <TouchableOpacity
           style={{ backgroundColor: "#ffffff99", borderRadius: 5, alignSelf: "center", marginHorizontal: 10 }}
           // onPress={() => navigation.navigate("Login")}
-          onPress={test}
+          onPress={() => navigation.navigate("Login")}
         >
           <Text style={{ paddingHorizontal: 16, paddingVertical: 8, fontWeight: "bold", opacity: 0.8 }}>Login</Text>
         </TouchableOpacity>

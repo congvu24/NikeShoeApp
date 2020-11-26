@@ -29,6 +29,7 @@ import { connect, Provider } from "react-redux";
 import store, { persistor } from "./src/redux/store";
 import * as actions from "./src/redux/index";
 import FlashMessage from "react-native-flash-message";
+import MyOrder from "./src/views/MyOrder";
 
 enableScreens();
 const Stack = createSharedElementStackNavigator();
@@ -66,7 +67,7 @@ class App extends React.Component {
     if (!this.props.general.isViewIntroduce) {
       this.props.setViewIntroduce();
     }
-    this.props.reset();
+    // this.props.reset();
   }
   render() {
     return (
@@ -175,6 +176,7 @@ const Navigator = ({ isViewIntroduce }) => {
       <Stack.Screen name="Splash" component={Splash} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Introduce" component={Introduce} />
+      <Stack.Screen name="MyOrder" component={MyOrder} />
       <Stack.Screen
         name="CategoryDetail"
         component={CategoryDetail}

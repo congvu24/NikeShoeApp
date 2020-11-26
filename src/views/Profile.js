@@ -15,8 +15,8 @@ function Profile({ user, navigation, ...props }) {
           <View style={styles.user}>
             <Image source={require("../images/avatar.png")} style={styles.userAvatar} />
             <View style={styles.userInfo}>
-              <Text style={styles.userName}>{user.name}</Text>
-              <Text style={styles.userId}>@{user.username}</Text>
+              <Text style={styles.userName}>User</Text>
+              <Text style={styles.userId}>{user.email}</Text>
             </View>
           </View>
           <TouchableOpacity style={styles.editBtn}>
@@ -25,7 +25,7 @@ function Profile({ user, navigation, ...props }) {
         </View>
       </View>
       <View style={styles.menu}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity onPress={() => navigation.navigate("MyOrder")} style={styles.button}>
           <Image source={require("../images/order.png")} />
           <Text style={styles.buttonText}>My orders</Text>
           <Image source={require("../images/right-arrow.png")} />
@@ -120,7 +120,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 12,
     fontWeight: "500",
-    textTransform: "uppercase",
     lineHeight: 20,
   },
   button: {

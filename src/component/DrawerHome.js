@@ -18,8 +18,9 @@ function DrawerHome({ user, ...props }) {
             <>
               <Image source={require("../images/avatar.png")} style={styles.avatar} />
               <View style={styles.user}>
-                <Text style={styles.userName}>{user.name}</Text>
-                <Text style={styles.userEmail}>@{user.username}</Text>
+                {/* <Text style={styles.userName}>{user.name}</Text> */}
+                <Text style={styles.userName}>User</Text>
+                <Text style={styles.userEmail}>{user.email}</Text>
               </View>
             </>
           ) : (

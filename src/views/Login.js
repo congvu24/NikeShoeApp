@@ -90,7 +90,7 @@ function Login({ navigation, user, ...props }) {
 
   const handleRegister = ({ mail, password, rePassword }) => {
     if (mail && password && rePassword && password == rePassword) {
-      props.register({ username, password });
+      props.register({ username: mail, password });
     }
   };
 
@@ -188,11 +188,11 @@ const SignUpView = ({ ...props }) => {
       </Animateable.View>
       <Animateable.View style={styles.input} animation="fadeInUp" delay={100} duration={500}>
         <Image source={require("../images/lock.png")} style={styles.inputLabel} />
-        <TextInput placeholder="Password" style={styles.inputField} onChangeText={(text) => setPassword(text)} />
+        <TextInput secureTextEntry={true} placeholder="Password" style={styles.inputField} onChangeText={(text) => setPassword(text)} />
       </Animateable.View>
       <Animateable.View style={styles.input} animation="fadeInUp" delay={150} duration={500}>
         <Image source={require("../images/lock.png")} style={styles.inputLabel} />
-        <TextInput placeholder="Re password" style={styles.inputField} onChangeText={(text) => setRePassword(text)} />
+        <TextInput secureTextEntry={true} placeholder="Re password" style={styles.inputField} onChangeText={(text) => setRePassword(text)} />
       </Animateable.View>
       <Animateable.View animation="fadeInUp" delay={200}>
         <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit}>

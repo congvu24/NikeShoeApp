@@ -22,6 +22,7 @@
     "expo-splash-screen": "~0.6.2",
     "expo-status-bar": "~1.0.2",
     "expo-updates": "~0.3.2",
+    "firebase": "^8.1.1",
     "flubber": "^0.4.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",

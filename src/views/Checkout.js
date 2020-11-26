@@ -180,7 +180,15 @@ const Checkout = ({ navigation, cart, addresses, selectedAddress, selectedCoupon
           <TouchableOpacity
             style={styles.nextBtn}
             onPress={() => {
-              props.checkout(() => navigation.navigate("CheckoutResult"));
+              props.checkout(
+                {
+                  cart,
+                  selectedCoupon,
+                  selectedAddress,
+                  total: selectedCoupon ? calcTotal(cartList) - calcTotal(cartList) * selectedCoupon.cost : calcTotal(cartList),
+                },
+                () => navigation.navigate("CheckoutResult")
+              );
             }}
           >
             <Text style={styles.nextBtnText}>Continue</Text>

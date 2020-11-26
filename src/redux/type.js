@@ -16,3 +16,4 @@ export const RESET = "set_reset";
 export const LOGOUT = "logout";
 export const CHECKOUT = "checkout";
 export const REGISTER = "register";
+export const GET_ORDER = "get_order";

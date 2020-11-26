@@ -15,6 +15,7 @@ const initialState = {
   history: [],
   bookmark: {},
   isViewIntroduce: false,
+  order: "",
 };
 
 const reducer = handleActions(
@@ -51,14 +52,11 @@ const reducer = handleActions(
       };
     },
     [type.LOGIN]: (state, action) => {
-      if (action.payload.username == "congvu24" && action.payload.password == "congvu24") {
-        console.log(action.payload.username, action.payload.password);
-        return {
-          ...state,
-          isLogin: true,
-          user: users,
-        };
-      } else return { ...state };
+      return {
+        ...state,
+        isLogin: true,
+        user: { ...action.payload },
+      };
     },
     [type.ADD_HISTORY]: (state, action) => {
       const id = action.payload;
@@ -68,10 +66,6 @@ const reducer = handleActions(
           history: [...state.history, id],
         };
       } else {
-        // const index = state.history.indexOf(id);
-        // let newHistory = state.history;
-        // newHistory.splice(index, 1);
-        // return { ...state, history: [...newHistory] };
         return { ...state };
       }
     },
@@ -86,7 +80,10 @@ const reducer = handleActions(
       return initialState;
     },
     [type.LOGOUT]: (state, action) => {
-      return { ...state, user: "" };
+      return { ...initialState, user: "" };
+    },
+    [type.GET_ORDER]: (state, action) => {
+      return { ...state, order: action.payload };
     },
   },
   initialState
