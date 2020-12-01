@@ -26,6 +26,12 @@ const reducer = handleActions(
     [type.RESET]: (state, action) => {
       return initialState;
     },
+    [type.REMOVE_ITEM_FROM_CART]: (state, action) => {
+      return {
+        ...state,
+        [action.payload]: { number: 0 },
+      };
+    },
   },
   initialState
 );

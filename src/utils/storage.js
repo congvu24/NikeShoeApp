@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AsyncStorage } from "react-native";
 
 export async function saveData(key, data) {
   const value = JSON.stringify(data);

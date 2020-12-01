@@ -16,6 +16,7 @@ const initialState = {
   bookmark: {},
   isViewIntroduce: false,
   order: "",
+  selectedCard: 1,
 };
 
 const reducer = handleActions(
@@ -84,6 +85,12 @@ const reducer = handleActions(
     },
     [type.GET_ORDER]: (state, action) => {
       return { ...state, order: action.payload };
+    },
+    [type.SET_CARD]: (state, action) => {
+      return {
+        ...state,
+        selectedCard: action.payload,
+      };
     },
   },
   initialState

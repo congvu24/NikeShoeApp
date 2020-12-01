@@ -6,9 +6,15 @@
     "slug": "doAnMobile",
     "version": "1.0.0",
     "assetBundlePatterns": ["**/*"],
+    "icon": "./src/images/logo-nikeshop.png",
     "android": {
       "package": "com.yourcompany.yourappname",
       "versionCode": 1
+    },
+    "splash": {
+      "image": "./src/images/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#2970AC"
     }
   }
 }

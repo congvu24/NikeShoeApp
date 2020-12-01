@@ -1,12 +1,88 @@
 import React, { useRef } from "react";
 import { Image, Text, View, StyleSheet, TouchableOpacity, Dimensions, KeyboardAvoidingView } from "react-native";
-import Constants from "expo-constants";
 import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
-import StickyParallaxHeader from "react-native-sticky-parallax-header";
-import { Modalize } from "react-native-modalize";
 import BackButton from "../component/BackButton";
+import { connect } from "react-redux";
+import { checkout } from "../redux/index";
+import PriceDetail from "../component/PriceDetail";
+import allProducts from "../data/products";
 
 const { width, height } = Dimensions.get("window");
+
+function findProductById(id) {
+  let index = -1;
+  index = allProducts.findIndex((item) => item.id == id);
+  return index;
+}
+
+const PaymentMethod = ({ navigation, cart, selectedCoupon, selectedCard }) => {
+  const cartList = Object.keys(cart)
+    .map((key) => {
+      return {
+        // ...cart[key].number,
+        number: cart[key].number,
+        ...allProducts[findProductById(key)],
+      };
+    })
+    .filter((item) => item.number > 0);
+  let cardSource;
+  switch (selectedCard) {
+    case 1:
+      cardSource = require("../images/card1.png");
+      break;
+    case 2:
+      cardSource = require("../images/card2.png");
+      break;
+    case 3:
+      cardSource = require("../images/card3.png");
+      break;
+    case 4:
+      cardSource = require("../images/card4.png");
+      break;
+    case 5:
+      cardSource = require("../images/card5.png");
+      break;
+    case 6:
+      cardSource = require("../images/card6.png");
+      break;
+    default:
+      cardSource = require("../images/card6.png");
+  }
+  return (
+    <View style={[StyleSheet.absoluteFill, styles.home]}>
+      <View style={{ paddingBottom: 50 }}>
+        <ScrollView>
+          <View style={styles.navbar}>
+            <BackButton />
+          </View>
+          <Text style={styles.pageTitle}>Payment method</Text>
+          <View style={styles.card} elevation={5}>
+            <Image style={[StyleSheet.absoluteFillObject, { resizeMode: "contain" }, styles.cardBackground]} source={cardSource} />
+          </View>
+          <TouchableOpacity style={styles.addBtn} onPress={() => navigation.push("AddCard")}>
+            <Text style={styles.addBtnText}>Select other card</Text>
+          </TouchableOpacity>
+          <PriceDetail cartList={cartList} selectedCoupon={selectedCoupon} />
+        </ScrollView>
+      </View>
+      <TouchableOpacity style={styles.nextBtn} onPress={() => navigation.push("CheckoutResult")}>
+        <Text style={styles.nextBtnText}>Pay Now</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+const mapStateToProps = (state) => ({
+  cart: state.cart,
+  selectedCoupon: state.general.selectedCoupon,
+  selectedCard: state.general.selectedCard,
+});
+
+const mapDispatchToProps = {
+  checkout,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PaymentMethod);
 
 const styles = StyleSheet.create({
   home: {
@@ -169,69 +245,3 @@ const styles = StyleSheet.create({
     letterSpacing: 5,
   },
 });
-
-const PaymentMethod = ({ navigation }) => {
-  return (
-    <View style={[StyleSheet.absoluteFill, styles.home]}>
-      <View style={{ paddingBottom: 50 }}>
-        <ScrollView>
-          <View style={styles.navbar}>
-            <BackButton />
-          </View>
-          <Text style={styles.pageTitle}>Payment method</Text>
-          <View style={styles.card} elevation={5}>
-            <Image
-              style={[StyleSheet.absoluteFillObject, { resizeMode: "contain" }, styles.cardBackground]}
-              source={require("../images/card-background.png")}
-            />
-            <Image style={styles.cardCompany} source={require("../images/visa-pay-logo.png")} />
-            <Text style={styles.cardNumber}>**** **** **** 4554</Text>
-            <View style={styles.cardDetail}>
-              <View style={styles.cardDetailGroup}>
-                <Text style={styles.cardDetailTitle}>Card holder</Text>
-                <Text style={styles.cardDetailValue}>Vu D Cong</Text>
-              </View>
-              <View style={styles.cardDetailGroup}>
-                <Text style={styles.cardDetailTitle}>Expires</Text>
-                <Text style={styles.cardDetailValue}>3 March</Text>
-              </View>
-              <View style={styles.cardDetailGroup}>
-                <Text style={styles.cardDetailTitle}>CVV</Text>
-                <Text style={styles.cardDetailValue}>449</Text>
-              </View>
-            </View>
-          </View>
-          <TouchableOpacity style={styles.addBtn} onPress={() => navigation.push("AddCard")}>
-            <Text style={styles.addBtnText}>+ Add new card</Text>
-          </TouchableOpacity>
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Price details</Text>
-            <View style={styles.priceList}>
-              <View style={styles.price}>
-                <Text style={styles.priceName}>Nike Air Max</Text>
-                <Text style={styles.priceNumber}>$45</Text>
-              </View>
-              <View style={styles.price}>
-                <Text style={styles.priceName}>Nike Air Max</Text>
-                <Text style={styles.priceNumber}>$45</Text>
-              </View>
-              <View style={styles.price}>
-                <Text style={styles.priceName}>Coupon</Text>
-                <Text style={styles.priceNumber}>-$45</Text>
-              </View>
-            </View>
-            <View style={styles.priceTotal}>
-              <Text style={styles.priceTotalText}>Total</Text>
-              <Text style={styles.priceTotalNumber}>$69</Text>
-            </View>
-          </View>
-        </ScrollView>
-      </View>
-      <TouchableOpacity style={styles.nextBtn} onPress={() => navigation.push("CheckoutResult")}>
-        <Text style={styles.nextBtnText}>Pay</Text>
-      </TouchableOpacity>
-    </View>
-  );
-};
-
-export default PaymentMethod;

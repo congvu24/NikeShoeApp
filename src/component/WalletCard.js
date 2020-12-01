@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const WalletCard = ({ type, y, index }) => {
+const WalletCard = ({ handleSetCard, type, y, index }) => {
   const position = Animated.subtract(index * CARD_HEIGHT, y);
   const isDisappearing = -CARD_HEIGHT;
   const isTop = 0;
@@ -47,7 +47,7 @@ const WalletCard = ({ type, y, index }) => {
   });
   return (
     <Animated.View style={[styles.card, { opacity, transform: [{ translateY }, { scale }] }]} key={index}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => handleSetCard(type)}>
         <Card type={type} />
       </TouchableOpacity>
     </Animated.View>

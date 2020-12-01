@@ -75,7 +75,7 @@ class App extends React.Component {
         <AnimatedSplash
           translucent={true}
           isLoaded={this.state.isLoaded}
-          logoImage={require("./src/images/logo.png")}
+          logoImage={require("./src/images/splash-icon.png")}
           backgroundColor={"#2A5CC8"}
           logoHeight={150}
           logoWidth={150}

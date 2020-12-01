@@ -1,19 +1,25 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Animated, FlatList, View, Text } from "react-native";
-import BackButton from "../component/BackButton";
-
-import { Cards } from "../component/Cards";
+import { connect } from "react-redux";
 import WalletCard from "../component/WalletCard";
+import { setCard } from "../redux/index";
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 const cards = [1, 2, 3, 4, 5, 6];
 
-const Wallet = () => {
+const Wallet = ({ ...props }) => {
   const y = new Animated.Value(0);
   const onScroll = Animated.event([{ nativeEvent: { contentOffset: { y } } }], {
     useNativeDriver: true,
   });
+  const navigation = useNavigation();
+
+  function handleSetCard(num) {
+    props.setCard(num);
+    navigation.navigate("PaymentMethod");
+  }
   return (
     <>
       <View>
@@ -25,7 +31,7 @@ const Wallet = () => {
         showsVerticalScrollIndicator={false}
         bounces={false}
         data={cards}
-        renderItem={({ index }) => <WalletCard {...{ index, y }} type={index} />}
+        renderItem={({ index }) => <WalletCard handleSetCard={handleSetCard} {...{ index, y }} type={index} />}
         keyExtractor={(item) => item.index}
         {...{ onScroll }}
       />
@@ -33,4 +39,8 @@ const Wallet = () => {
   );
 };
 
-export default Wallet;
+const mapDispatchToProps = {
+  setCard,
+};
+
+export default connect(null, mapDispatchToProps)(Wallet);

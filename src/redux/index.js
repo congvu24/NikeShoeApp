@@ -1,6 +1,7 @@
 import { createAction } from "redux-actions";
 import * as type from "./type";
 import * as firebase from "firebase";
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCAkaukFgDHVtoeR0EyCuOe5R80RbopkyE",
@@ -34,6 +35,8 @@ export const reset = createAction(type.RESET);
 export const logout = createAction(type.LOGOUT);
 export const checkoutSuccess = createAction(type.CHECKOUT);
 export const getOrder = createAction(type.GET_ORDER);
+export const setCard = createAction(type.SET_CARD);
+export const removeItemFromCart = createAction(type.REMOVE_ITEM_FROM_CART);
 
 export const checkout = (data, callback) => {
   return (dispatch) => {
@@ -67,7 +70,7 @@ export const checkout = (data, callback) => {
         dispatch(clearCart());
         dispatch(setLoading(""));
       })
-      .catch((err) => console.log(err));
+      .catch((err) => dispatch(setLoading("")));
   };
 };
 
@@ -94,7 +97,17 @@ export const login = ({ username, password, callback }) => {
         callback();
       })
       .catch((error) => {
-        console.error(error);
+        dispatch(setLoading(""));
+        showMessage({
+          message: "Login Failed",
+          description: "Check your password and try again.",
+          icon: "warning",
+          type: "danger",
+          titleStyle: {
+            fontSize: 16,
+            fontWeight: "700",
+          },
+        });
       });
   };
 };
@@ -120,14 +133,14 @@ export const register = ({ username, password }) => {
         callback();
       })
       .catch((error) => {
-        console.error(error);
+        dispatch(setLoading(""));
       });
   };
 };
 
 export const getMyCart = () => {
   return (dispatch) => {
-    dispatch(setLoading("Signing up"));
+    dispatch(setLoading("Loading..."));
     const user = firebase.auth().currentUser;
     let uid;
     if (user != null) {
@@ -146,7 +159,8 @@ export const getMyCart = () => {
           });
           dispatch(getOrder(order));
           dispatch(setLoading(""));
-        });
+        })
+        .catch(() => dispatch(setLoading("")));
     }
   };
 };

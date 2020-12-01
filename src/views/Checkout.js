@@ -5,11 +5,13 @@ import StickyParallaxHeader from "react-native-sticky-parallax-header";
 import { Modalize } from "react-native-modalize";
 import BackButton from "../component/BackButton";
 import { connect } from "react-redux";
-import { addCart, removeCart, clearCart, setCoupon, checkout } from "../redux/index";
+import { addCart, removeCart, clearCart, setCoupon, checkout, removeItemFromCart } from "../redux/index";
 import allProducts from "../data/products";
 import NumberTicker from "../component/NumberTicker";
 import coupons from "../data/coupons";
 import { showMessage, hideMessage } from "react-native-flash-message";
+import PriceDetail from "../component/PriceDetail";
+import CheckoutProduct from "../component/CheckoutProduct";
 
 const { width, height } = Dimensions.get("window");
 
@@ -37,12 +39,6 @@ const Checkout = ({ navigation, cart, addresses, selectedAddress, selectedCoupon
     });
   }
 
-  function calcTotal(data) {
-    let sum = 0;
-    data.forEach((item) => (sum = sum + item.price * item.number));
-    return sum;
-  }
-
   function submitCoupon(code) {
     const index = coupons.findIndex((item) => item.key.toLocaleUpperCase() == code.toLocaleUpperCase());
     if (index > -1) {
@@ -59,6 +55,10 @@ const Checkout = ({ navigation, cart, addresses, selectedAddress, selectedCoupon
         },
       });
     }
+  }
+
+  function handleRemoveItemFromCart(id) {
+    props.removeItemFromCart(id);
   }
 
   const cartList = Object.keys(cart)
@@ -89,28 +89,12 @@ const Checkout = ({ navigation, cart, addresses, selectedAddress, selectedCoupon
                   keyExtractor={(item) => item.id}
                   renderItem={({ item, index }) => {
                     return (
-                      <View style={styles.product}>
-                        <View style={[styles.productNav, StyleSheet.absoluteFill]}>
-                          <Image source={require("../images/delete.png")} style={{ marginRight: 30 }} />
-                        </View>
-                        <View style={styles.productContent}>
-                          <Image style={styles.productBackground} source={require("../images/checkout-circle.png")} />
-                          <Image style={styles.productPicture} source={item.picture} />
-                          <View style={styles.productDetail}>
-                            <Text style={styles.productName}>{item.name}</Text>
-                            <Text style={styles.productPrice}>${item.price}</Text>
-                          </View>
-                          <View style={styles.edit}>
-                            <TouchableOpacity style={styles.editSubtract} onPress={() => removeOne(item.id)}>
-                              <Text style={styles.editBtnText}>-</Text>
-                            </TouchableOpacity>
-                            <Text style={styles.editText}>{item.number}</Text>
-                            <TouchableOpacity style={styles.editAdd} onPress={() => addOneMore(item.id)}>
-                              <Text style={styles.editBtnText}>+</Text>
-                            </TouchableOpacity>
-                          </View>
-                        </View>
-                      </View>
+                      <CheckoutProduct
+                        handleRemoveItemFromCart={handleRemoveItemFromCart}
+                        item={item}
+                        removeOne={removeOne}
+                        addOneMore={addOneMore}
+                      />
                     );
                   }}
                 />
@@ -138,57 +122,22 @@ const Checkout = ({ navigation, cart, addresses, selectedAddress, selectedCoupon
                   <Image style={styles.rightArrow} source={require("../images/left-arrow.png")} />
                 </TouchableOpacity>
               </View>
-              <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Price details</Text>
-                <View style={styles.priceList}>
-                  <FlatList
-                    data={cartList}
-                    keyExtractor={(item) => `pricelist.${item.id}`}
-                    renderItem={({ item }) => (
-                      <View style={styles.price}>
-                        <Text style={styles.priceName}>{item.name}</Text>
-                        <Text style={styles.priceNumber}>${item.price * item.number}</Text>
-                      </View>
-                    )}
-                  />
-                  {selectedCoupon ? (
-                    <View style={styles.price}>
-                      <Text style={styles.priceName}>Coupon</Text>
-                      <Text style={[styles.priceNumber, { opacity: 0.7 }]}>{`-$${Math.round(calcTotal(cartList) * selectedCoupon.cost)}`}</Text>
-                    </View>
-                  ) : null}
-                </View>
-                <View style={styles.priceTotal}>
-                  <Text style={styles.priceTotalText}>Total</Text>
-                  <Text style={{ fontSize: 18, fontWeight: "bold" }}>$</Text>
-                  <NumberTicker
-                    number={selectedCoupon ? calcTotal(cartList) - calcTotal(cartList) * selectedCoupon.cost : calcTotal(cartList)}
-                    fontSize={18}
-                    wrapHeight={23}
-                    preFix="$"
-                    textStyle={{
-                      color: "#282C40",
-                      opacity: 1,
-                      fontWeight: "bold",
-                      borderTopColor: "#70707029",
-                    }}
-                  />
-                </View>
-              </View>
+              <PriceDetail cartList={cartList} selectedCoupon={selectedCoupon} />
             </ScrollView>
           </View>
           <TouchableOpacity
             style={styles.nextBtn}
             onPress={() => {
-              props.checkout(
-                {
-                  cart,
-                  selectedCoupon,
-                  selectedAddress,
-                  total: selectedCoupon ? calcTotal(cartList) - calcTotal(cartList) * selectedCoupon.cost : calcTotal(cartList),
-                },
-                () => navigation.navigate("CheckoutResult")
-              );
+              // props.checkout(
+              //   {
+              //     cart,
+              //     selectedCoupon,
+              //     selectedAddress,
+              //     total: selectedCoupon ? calcTotal(cartList) - calcTotal(cartList) * selectedCoupon.cost : calcTotal(cartList),
+              //   },
+              //   () => navigation.navigate("CheckoutResult")
+              // );
+              navigation.navigate("PaymentMethod");
             }}
           >
             <Text style={styles.nextBtnText}>Continue</Text>
@@ -254,6 +203,7 @@ const mapDispatchToProps = {
   removeCart,
   setCoupon,
   checkout,
+  removeItemFromCart,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
@@ -307,85 +257,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     textTransform: "uppercase",
   },
-  product: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: 10,
-  },
-  productContent: {
-    backgroundColor: "#E8EBF2",
-    flexDirection: "row",
-    alignItems: "center",
-    flex: 1,
-    // transform: [{ translateX: -100 }],
-  },
-  productNav: {
-    backgroundColor: "#D9576D",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    flexDirection: "row",
-  },
-  productBackground: {
-    position: "absolute",
-    width: 150,
-    height: 120,
-    left: "-25%",
-    top: 0,
-  },
-  productPicture: {
-    width: 100,
-    height: 120,
-    marginRight: 20,
-    resizeMode: "contain",
-  },
-  productName: {
-    color: "#282C40",
-    fontWeight: "bold",
-    fontSize: 18,
-    opacity: 0.7,
-  },
-  productPrice: {
-    color: "#282C40",
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  edit: {
-    position: "absolute",
-    width: 100,
-    right: 10,
-    bottom: 10,
-    flexDirection: "row",
-    backgroundColor: "white",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 5,
-    borderRadius: 3,
-  },
-  editAdd: {
-    backgroundColor: "#4D79D7",
-    width: 30,
-    height: 30,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 3,
-  },
-  editSubtract: {
-    backgroundColor: "#BECEF0",
-    width: 30,
-    height: 30,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 3,
-  },
-  editBtnText: {
-    color: "#fff",
-    fontSize: 20,
-  },
-  editText: {
-    color: "#282C40",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
+
   sectionTitle: {
     color: "#282C40",
     fontSize: 16,

@@ -2,7 +2,7 @@ const allProduct = [
   {
     id: 1,
     name: "Cthrine",
-    picture: require("../images/product1.png"),
+    picture: require("../images/product11.png"),
     price: 32,
     category: 8,
     description: "In hac habitasse platea dictumst. Etiam faucibus cursus urna.",
@@ -13,7 +13,7 @@ const allProduct = [
   {
     id: 2,
     name: "Gilbert",
-    picture: require("../images/product2.png"),
+    picture: require("../images/product12.png"),
     price: 76,
     category: 3,
     description:
@@ -25,7 +25,7 @@ const allProduct = [
   {
     id: 3,
     name: "Manfred",
-    picture: require("../images/product3.png"),
+    picture: require("../images/product13.png"),
     price: 36,
     category: 6,
     description: "Aenean auctor gravida sem.",
@@ -36,7 +36,7 @@ const allProduct = [
   {
     id: 4,
     name: "Katerine",
-    picture: require("../images/product4.png"),
+    picture: require("../images/product14.png"),
     price: 93,
     category: 8,
     description:
@@ -48,7 +48,7 @@ const allProduct = [
   {
     id: 5,
     name: "Marjie",
-    picture: require("../images/product5.png"),
+    picture: require("../images/product15.png"),
     price: 63,
     category: 8,
     description: "Curabitur convallis.",
@@ -59,7 +59,7 @@ const allProduct = [
   {
     id: 6,
     name: "Becky",
-    picture: require("../images/product6.png"),
+    picture: require("../images/product16.png"),
     price: 81,
     category: 7,
     description: "Donec posuere metus vitae ipsum.",
