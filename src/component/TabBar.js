@@ -6,11 +6,11 @@ import { Feather as Icon } from "@expo/vector-icons";
 const { width } = Dimensions.get("window");
 const AnimatedSvg = Animated.createAnimatedComponent(Svg);
 const tabs = [
-  { name: "clock", text: "Lịch sử", screenName: "HistoryTab" },
-  { name: "search", text: "Tìm kiếm", screenName: "Search" },
-  { name: "home", active: true, text: "Trang chủ", screenName: "HomeTab" },
+  { name: "clock", text: "History", screenName: "HistoryTab" },
+  { name: "search", text: "Search", screenName: "Search" },
+  { name: "home", active: true, text: "Home", screenName: "HomeTab" },
   { name: "bookmark", text: "Bookmark", screenName: "BookMarkTab" },
-  { name: "gift", text: "Ưu đãi", screenName: "DealTab" },
+  { name: "gift", text: "Coupon", screenName: "DealTab" },
 ];
 const tabWidth = width / tabs.length;
 
@@ -63,27 +63,6 @@ export default class TabBar extends Component {
     return (
       <>
         <View style={styles.wrapper} pointerEvents={!this.state.animating ? "auto" : "none"}>
-          {/* <AnimatedSvg
-            height="50"
-            width="100%"
-            viewBox={`0 0 ${tabWidth} 30`}
-            style={[
-              styles.chop,
-              {
-                width: width,
-                transform: [
-                  {
-                    translateX: this.state.animation.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [this.state.lastTab * tabWidth, this.state.activeTab * tabWidth],
-                    }),
-                  },
-                ],
-              },
-            ]}
-          >
-            <Path fill="white" d="M72.8,21.4C59.1,21.4,52,0.8,36.3,0.8C21.4,0.8,12.5,21.4,0,21.4H72.8z" />
-          </AnimatedSvg> */}
           <View style={styles.list}>
             {this.state.tabs.map((item, index) => (
               <TouchableOpacity

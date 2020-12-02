@@ -7,7 +7,7 @@ const DealTab = () => {
   return (
     <View>
       <View style={{ paddingVertical: 5 }}>
-        <Text style={{ textAlign: "center", fontWeight: "700", fontSize: 18, color: "#2A5CC8" }}>Mã giảm giá</Text>
+        <Text style={{ textAlign: "center", fontWeight: "700", fontSize: 18, color: "#2A5CC8" }}>Coupons</Text>
       </View>
       <FlatList
         data={coupons}

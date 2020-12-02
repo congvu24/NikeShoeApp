@@ -10,7 +10,7 @@ const HistoryTab = ({ history, ...props }) => {
   return (
     <View>
       <View style={{ paddingVertical: 5 }}>
-        <Text style={{ textAlign: "center", fontWeight: "700", fontSize: 18, color: "#2A5CC8" }}>Lịch sử</Text>
+        <Text style={{ textAlign: "center", fontWeight: "700", fontSize: 18, color: "#2A5CC8" }}>History</Text>
       </View>
       <FlatList
         data={historyProduct}

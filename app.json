@@ -12,9 +12,9 @@
       "versionCode": 1
     },
     "splash": {
-      "image": "./src/images/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#2970AC"
+      "image": "./src/images/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#2871AD"
     }
   }
 }

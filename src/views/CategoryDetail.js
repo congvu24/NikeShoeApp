@@ -56,7 +56,7 @@ export default function CategoryDetail({ route }) {
       <View>
         <FlatList
           // data={allProduct.filter((product) => product.category == item.id)}
-          data={allProduct}
+          data={allProduct.slice(0, 5)}
           renderItem={({ item, index }) => {
             return (
               <TouchableOpacity

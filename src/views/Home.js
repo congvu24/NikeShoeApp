@@ -31,9 +31,7 @@ function Home({ navigation, user, ...props }) {
   //   return () => backHandler.remove();
   // }, []);
   // const navigation = useNavigation();
-  useEffect(() => {
-    console.log(user);
-  }, []);
+  useEffect(() => {}, []);
   return (
     <>
       <DrawerHome />

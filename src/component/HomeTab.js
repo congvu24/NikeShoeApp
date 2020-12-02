@@ -98,7 +98,7 @@ export default function HomeTab({ handleClickDrawer, isOpenDrawer }) {
               </TouchableOpacity>
             </View>
             <FlatList
-              data={product}
+              data={product.slice(0, 5)}
               renderItem={({ item }) => <Product item={item} />}
               keyExtractor={(item) => item.id}
               horizontal={true}
@@ -114,7 +114,7 @@ export default function HomeTab({ handleClickDrawer, isOpenDrawer }) {
               </TouchableOpacity>
             </View>
             <FlatList
-              data={product}
+              data={product.slice(6, 11)}
               renderItem={({ item }) => <Product item={item} />}
               keyExtractor={(item) => item.id}
               horizontal={true}
@@ -124,7 +124,7 @@ export default function HomeTab({ handleClickDrawer, isOpenDrawer }) {
           </View>
           <AdsBanner />
           <FlatList
-            data={product}
+            data={product.slice(0, 15)}
             renderItem={({ item }) => <Product1 item={item} />}
             keyExtractor={(item) => item.id}
             horizontal={false}

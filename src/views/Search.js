@@ -5,14 +5,15 @@ import { ScrollView } from "react-native-gesture-handler";
 import collections from "../data/collections";
 import allProduct from "../data/products";
 import { Product1 } from "../component/Product";
+import { useNavigation } from "@react-navigation/native";
+import { SharedElement } from "react-navigation-shared-element";
 
 const { width, height } = Dimensions.get("window");
 
 export default function Search() {
   const [query, setQuery] = useState("");
-
-  const searchResult = allProduct.filter((item) => String(item.name).toLocaleLowerCase().includes(query) == true);
-
+  const navigation = useNavigation();
+  const searchResult = allProduct.filter((item) => String(item.name).toLocaleLowerCase().includes(String(query).toLocaleLowerCase()) == true);
   return (
     <ScrollView style={styles.home}>
       <View style={styles.header}>
@@ -55,11 +56,18 @@ export default function Search() {
               <FlatList
                 data={collections.slice(0, 4)}
                 renderItem={({ item, index }) => (
-                  <View style={styles.groupWrap}>
-                    <Image source={item.picture} style={[StyleSheet.absoluteFillObject, { resizeMode: "cover" }, styles.groupImage]} />
+                  <TouchableOpacity onPress={() => navigation.push("CollectionDetail", { collection: item })} style={styles.groupWrap}>
+                    <SharedElement
+                      id={`collection.${item.name}.picture`}
+                      style={[StyleSheet.absoluteFillObject, { resizeMode: "cover" }, styles.groupImage]}
+                    >
+                      <Image source={item.picture} style={[StyleSheet.absoluteFillObject, { resizeMode: "cover" }, styles.groupImage]} />
+                    </SharedElement>
                     <View style={[StyleSheet.absoluteFillObject, styles.groupTopLayer]}></View>
-                    <Text style={styles.groupText}>{item.name}</Text>
-                  </View>
+                    <SharedElement id={`collection.${item.name}.text`}>
+                      <Text style={styles.groupText}>{item.name}</Text>
+                    </SharedElement>
+                  </TouchableOpacity>
                 )}
                 keyExtractor={(item) => item.id}
                 showsHorizontalScrollIndicator={false}
@@ -75,10 +83,10 @@ export default function Search() {
           <View>
             <View style={styles.group}>
               <View style={styles.groupHeader}>
-                <Text style={styles.groupHeaderText}>New product</Text>
+                <Text style={styles.groupHeaderText}>You might like</Text>
               </View>
               <FlatList
-                data={allProduct}
+                data={allProduct.slice(6, 11)}
                 style={{ paddingLeft: 5 }}
                 renderItem={({ item, index }) => <Product1 item={item} />}
                 keyExtractor={(item) => item.id}
@@ -127,7 +135,6 @@ const styles = StyleSheet.create({
     marginRight: 10,
     marginVertical: 5,
     borderRadius: 10,
-    backgroundColor: "red",
     justifyContent: "center",
     overflow: "hidden",
   },
@@ -135,6 +142,8 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     position: "absolute",
+    top: 0,
+    left: 0,
   },
   group: {
     paddingBottom: 20,

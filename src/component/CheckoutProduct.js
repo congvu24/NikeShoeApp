@@ -11,6 +11,7 @@ function clamp(value, min, max) {
 
 export default function CheckoutProduct({ item, removeOne, addOneMore, handleRemoveItemFromCart }) {
   const animation = useRef(new Animated.ValueXY(0)).current;
+  const animation2 = useRef(new Animated.Value(1)).current;
 
   const panResponder = useRef(
     PanResponder.create({
@@ -32,7 +33,13 @@ export default function CheckoutProduct({ item, removeOne, addOneMore, handleRem
           Animated.timing(animation, {
             toValue: { x: -width, y: 0 },
             useNativeDriver: true,
-          }).start(() => handleRemoveItemFromCart(item.id));
+          }).start(() =>
+            Animated.timing(animation2, {
+              toValue: 0,
+              duration: 500,
+              useNativeDriver: true,
+            }).start(() => handleRemoveItemFromCart(item.id))
+          );
         } else {
           Animated.timing(animation, {
             toValue: {
@@ -51,11 +58,17 @@ export default function CheckoutProduct({ item, removeOne, addOneMore, handleRem
     outputRange: [-width, 0],
     extrapolate: "clamp",
   });
+  const disappearStyle = {
+    opacity: animation2.interpolate({
+      inputRange: [0, 1],
+      outputRange: [1, 0],
+    }),
+  };
   return (
     <Animated.View style={[styles.product]}>
-      <View style={[styles.productNav, StyleSheet.absoluteFill]}>
+      <Animated.View style={[styles.productNav, StyleSheet.absoluteFill, { opacity: animation2 }]}>
         <Image source={require("../images/delete.png")} style={{ marginRight: 30 }} />
-      </View>
+      </Animated.View>
       <Animated.View {...panHandlers} style={[styles.productContent, { transform: [{ translateX }] }]}>
         <Animated.Image style={[styles.productBackground]} source={require("../images/checkout-circle.png")} />
         <Image style={styles.productPicture} source={item.picture} />

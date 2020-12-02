@@ -7,14 +7,22 @@ import { useRoute } from "@react-navigation/native";
 import { SharedElement } from "react-navigation-shared-element";
 import allProduct from "../data/products";
 import { Product, Product1 } from "../component/Product";
+import collections from "../data/collections";
 
 const { width, height } = Dimensions.get("window");
+
+function findProductById(id) {
+  let index = -1;
+  index = allProduct.findIndex((item) => item.id == id);
+  return index;
+}
 
 export default function CollectionDetail({ route }) {
   // const route = useRoute();
   const { collection } = route.params;
   const [keyword, setKeyword] = useState("");
 
+  const data = collection.products.map((id) => allProduct[findProductById(id)]);
   return (
     <ScrollView style={styles.home}>
       <View style={[styles.banner, { width: width, height: 200, position: "relative", justifyContent: "center", alignItems: "center" }]}>
@@ -44,7 +52,7 @@ export default function CollectionDetail({ route }) {
       <View></View>
 
       <FlatList
-        data={allProduct}
+        data={data}
         columnWrapperStyle={{ paddingLeft: 5 }}
         renderItem={({ item }) => <Product1 item={item} />}
         keyExtractor={(item) => item.id}
