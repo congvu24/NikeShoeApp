@@ -19,3 +19,4 @@ export const REGISTER = "register";
 export const GET_ORDER = "get_order";
 export const SET_CARD = "set_cart";
 export const REMOVE_ITEM_FROM_CART = "remove_item_from_cart";
+export const OFF_LOADING = "off_loading";

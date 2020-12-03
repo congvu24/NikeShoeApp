@@ -37,6 +37,7 @@ export const checkoutSuccess = createAction(type.CHECKOUT);
 export const getOrder = createAction(type.GET_ORDER);
 export const setCard = createAction(type.SET_CARD);
 export const removeItemFromCart = createAction(type.REMOVE_ITEM_FROM_CART);
+export const offLoading = createAction(type.OFF_LOADING);
 
 export const checkout = (data, callback) => {
   return (dispatch) => {
@@ -158,8 +159,9 @@ export const getMyCart = () => {
             order.push({ ...childData });
           });
           dispatch(getOrder(order));
-          dispatch(setLoading(""));
+          console.log("xong");
         })
+        .then(() => dispatch(setLoading("")))
         .catch(() => dispatch(setLoading("")));
     }
   };

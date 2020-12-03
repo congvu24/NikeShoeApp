@@ -68,6 +68,8 @@ class App extends React.Component {
       this.props.setViewIntroduce();
     }
     // this.props.reset();
+    // console.log(this.props.actions.offLoading);
+    this.props.offLoading();
   }
   render() {
     return (

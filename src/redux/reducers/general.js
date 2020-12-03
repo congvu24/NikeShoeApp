@@ -36,6 +36,14 @@ const reducer = handleActions(
         loadingText: action.payload,
       };
     },
+    [type.OFF_LOADING]: (state, action) => {
+      console.log("off");
+      return {
+        ...state,
+        isLoading: false,
+        loadingText: "",
+      };
+    },
     [type.SET_ADDRESS]: (state, action) => ({
       ...state,
       selectedAddress: action.payload,

@@ -99,13 +99,13 @@ export default function CategoryDetail({ route }) {
         />
       </View>
       <ScrollView>
-        {allProduct.map((item) => (
+        {allProduct.slice(0, 5).map((item) => (
           <TouchableOpacity key={`product-${item.id}`}>
             <View style={styles.moreItem}>
-              <View style={{ width: width * 0.2, height: "100%", justifyContent: "center", alignItems: "center" }}>
+              <View style={{ width: width * 0.3, height: "100%", justifyContent: "center", alignItems: "center" }}>
                 <Image source={item.picture} resizeMode="center" style={{ alignSelf: "center" }} />
               </View>
-              <View style={{ flex: 1, justifyContent: "center" }}>
+              <View style={{ flex: 1, justifyContent: "center", marginLeft: 10 }}>
                 <Text style={{ fontWeight: "700", fontSize: 16 }}>{item.name}</Text>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <Image source={require("../images/good-star.png")} />

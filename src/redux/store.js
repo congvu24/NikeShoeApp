@@ -15,8 +15,4 @@ const store = createStore(persistedReducer, applyMiddleware(thunk));
 
 export const persistor = persistStore(store);
 
-// store.subscribe(() => {
-//   saveState(store.getState());
-//   console.log("thay doi", store.getState());
-// });
 export default store;
