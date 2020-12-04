@@ -13,7 +13,7 @@ export default function Product({ item }) {
       <TouchableOpacity style={styles.productSave}>
         <Image source={require("../images/bookmark.png")} />
       </TouchableOpacity>
-      <SharedElement id={`product.${item.id}.picture`}>
+      <SharedElement id={`product.${item.id}.picture`} style={[StyleSheet.absoluteFillObject]}>
         <Image source={item.picture} style={styles.productImage} />
       </SharedElement>
       <Text style={styles.productName}>{item.name}</Text>
@@ -36,7 +36,7 @@ export function Product1({ item }) {
       <TouchableOpacity style={styles.productSave}>
         <Image source={require("../images/bookmark.png")} />
       </TouchableOpacity>
-      <SharedElement id={`product.${item.name}.picture`}>
+      <SharedElement id={`product.${item.name}.picture`} style={[StyleSheet.absoluteFillObject]}>
         <Image source={item.picture} style={[styles.productImage, { width: "90%" }]} />
       </SharedElement>
       <Text style={styles.productName}>{item.name}</Text>
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     resizeMode: "contain",
     position: "absolute",
-    top: 50,
+    bottom: 100,
   },
   productSave: {
     position: "absolute",

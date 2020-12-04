@@ -2,11 +2,11 @@ import React from "react";
 import { Image, Text, View, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 import BackButton from "../component/BackButton";
 import { Modalize } from "react-native-modalize";
-import { SharedElement } from "react-navigation-shared-element";
 import * as Animateable from "react-native-animatable";
 import { connect } from "react-redux";
 
 import { addCart, addHistory, addBookmark } from "../redux/index";
+import { showMessage } from "react-native-flash-message";
 
 const { width, height } = Dimensions.get("window");
 const flip360 = {
@@ -67,6 +67,20 @@ class Detail extends React.PureComponent {
     this.props.navigation.push("Checkout");
   };
 
+  addToBag = (id) => {
+    this.props.addCart({ id });
+    showMessage({
+      message: "Successful",
+      description: "Item was added to your cart.",
+      icon: "success",
+      type: "success",
+      titleStyle: {
+        fontSize: 16,
+        fontWeight: "700",
+      },
+    });
+  };
+
   componentDidMount() {
     const { item } = this.props.route.params;
     this.props.addHistory(item.id);
@@ -80,13 +94,18 @@ class Detail extends React.PureComponent {
       <View style={[StyleSheet.absoluteFill, styles.home]}>
         <View style={styles.navbar}>
           <BackButton />
-          <TouchableOpacity style={[styles.navbarButton, styles.navbarButtonMargin]} onPress={() => this.props.addBookmark(product.id)}>
-            {bookmark[product.id] == true ? (
-              <Image source={require("../images/bookmarked.png")} />
-            ) : (
-              <Image source={require("../images/bookmark.png")} />
-            )}
-          </TouchableOpacity>
+          <View style={{ flexDirection: "row" }}>
+            <TouchableOpacity style={[styles.navbarButton, styles.navbarButtonMargin]} onPress={() => this.props.addBookmark(product.id)}>
+              {bookmark[product.id] == true ? (
+                <Image source={require("../images/bookmarked.png")} />
+              ) : (
+                <Image source={require("../images/bookmark.png")} />
+              )}
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate("Checkout")} style={[styles.navbarButton, styles.navbarButtonMargin]}>
+              <Image source={require("../images/bag1.png")} />
+            </TouchableOpacity>
+          </View>
         </View>
         <View style={styles.product}>
           <Animateable.Image animation="fadeInLeft" style={styles.productBackground} source={require("../images/circle.png")} />
@@ -110,7 +129,7 @@ class Detail extends React.PureComponent {
         <Modalize alwaysOpen={height * 0.4} modalStyle={styles.modal}>
           <View style={styles.name}>
             <Text style={styles.nameText}>{product.name}</Text>
-            <TouchableOpacity style={styles.addCart}>
+            <TouchableOpacity style={styles.addCart} onPress={() => this.addToBag(product.id)}>
               <Text style={styles.addCartText}>ADD TO BAG</Text>
               <Image source={require("../images/small-bag.png")} />
             </TouchableOpacity>
@@ -231,7 +250,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   navbarButtonMargin: {
-    marginHorizontal: 0,
+    marginLeft: 20,
   },
   navbarGroup: {
     flexDirection: "row",

@@ -128,15 +128,6 @@ const Checkout = ({ navigation, cart, addresses, selectedAddress, selectedCoupon
           <TouchableOpacity
             style={styles.nextBtn}
             onPress={() => {
-              // props.checkout(
-              //   {
-              //     cart,
-              //     selectedCoupon,
-              //     selectedAddress,
-              //     total: selectedCoupon ? calcTotal(cartList) - calcTotal(cartList) * selectedCoupon.cost : calcTotal(cartList),
-              //   },
-              //   () => navigation.navigate("CheckoutResult")
-              // );
               navigation.navigate("PaymentMethod");
             }}
           >

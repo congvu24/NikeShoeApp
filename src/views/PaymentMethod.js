@@ -15,7 +15,13 @@ function findProductById(id) {
   return index;
 }
 
-const PaymentMethod = ({ navigation, cart, selectedCoupon, selectedCard }) => {
+function calcTotal(data) {
+  let sum = 0;
+  data.forEach((item) => (sum = sum + item.price * item.number));
+  return sum;
+}
+
+const PaymentMethod = ({ navigation, cart, selectedCoupon, selectedCard, selectedAddress, ...props }) => {
   const cartList = Object.keys(cart)
     .map((key) => {
       return {
@@ -65,7 +71,20 @@ const PaymentMethod = ({ navigation, cart, selectedCoupon, selectedCard }) => {
           <PriceDetail cartList={cartList} selectedCoupon={selectedCoupon} />
         </ScrollView>
       </View>
-      <TouchableOpacity style={styles.nextBtn} onPress={() => navigation.push("CheckoutResult")}>
+      <TouchableOpacity
+        style={styles.nextBtn}
+        onPress={() =>
+          props.checkout(
+            {
+              cart,
+              selectedCoupon,
+              selectedAddress,
+              total: selectedCoupon ? calcTotal(cartList) - calcTotal(cartList) * selectedCoupon.cost : calcTotal(cartList),
+            },
+            () => navigation.navigate("CheckoutResult")
+          )
+        }
+      >
         <Text style={styles.nextBtnText}>Pay Now</Text>
       </TouchableOpacity>
     </View>
@@ -76,6 +95,7 @@ const mapStateToProps = (state) => ({
   cart: state.cart,
   selectedCoupon: state.general.selectedCoupon,
   selectedCard: state.general.selectedCard,
+  selectedAddress: state.general.selectedAddress,
 });
 
 const mapDispatchToProps = {

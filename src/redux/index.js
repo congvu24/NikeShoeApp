@@ -42,36 +42,62 @@ export const offLoading = createAction(type.OFF_LOADING);
 export const checkout = (data, callback) => {
   return (dispatch) => {
     dispatch(setLoading("Checking out"));
-    const user = firebase.auth().currentUser;
-    let uid;
-    if (user != null) {
-      uid = user.uid;
-    }
-    const cart = Object.keys(data.cart)
-      .map((key) => ({ ...data.cart[key], id: key }))
-      .filter((item) => item.number > 0 == true);
-    const deal = data.selectedCoupon ? data.selectedCoupon.cost : 0;
-    const address = data.selectedAddress;
+    try {
+      const user = firebase.auth().currentUser;
+      let uid;
+      if (user != null) {
+        uid = user.uid;
+      }
+      const cart = Object.keys(data.cart)
+        .map((key) => ({ ...data.cart[key], id: key }))
+        .filter((item) => item.number > 0 == true);
+      const deal = data.selectedCoupon ? data.selectedCoupon.cost : 0;
+      const address = data.selectedAddress;
 
-    var cartList = firebase.database().ref("/");
-    var newCartRef = cartList.push();
-    newCartRef
-      .set({
-        uid,
-        cart,
-        deal,
-        address,
-        total: data.total,
-        createAt: new Date().getTime(),
-        key: Math.floor(Math.random() * 100000 * 100) + 100000,
-      })
-      .then(() => {
-        dispatch(checkoutSuccess());
-        callback();
-        dispatch(clearCart());
-        dispatch(setLoading(""));
-      })
-      .catch((err) => dispatch(setLoading("")));
+      var cartList = firebase.database().ref("/");
+      var newCartRef = cartList.push();
+      newCartRef
+        .set({
+          uid,
+          cart,
+          deal,
+          address,
+          total: data.total,
+          createAt: new Date().getTime(),
+          key: Math.floor(Math.random() * 100000 * 100) + 100000,
+        })
+        .then(() => {
+          dispatch(checkoutSuccess());
+          callback();
+          dispatch(clearCart());
+          dispatch(setLoading(""));
+        })
+        .catch((err) => {
+          dispatch(setLoading(""));
+          showMessage({
+            message: "Checkout Failed",
+            description: "Check your network and try again.",
+            icon: "warning",
+            type: "danger",
+            titleStyle: {
+              fontSize: 16,
+              fontWeight: "700",
+            },
+          });
+        });
+    } catch {
+      dispatch(setLoading(""));
+      showMessage({
+        message: "Checkout Failed",
+        description: "Check your network and try again.",
+        icon: "warning",
+        type: "danger",
+        titleStyle: {
+          fontSize: 16,
+          fontWeight: "700",
+        },
+      });
+    }
   };
 };
 
@@ -159,7 +185,6 @@ export const getMyCart = () => {
             order.push({ ...childData });
           });
           dispatch(getOrder(order));
-          console.log("xong");
         })
         .then(() => dispatch(setLoading("")))
         .catch(() => dispatch(setLoading("")));

@@ -21,7 +21,7 @@ const reducer = handleActions(
       [action.payload.id]: { number: state[action.payload.id].number > 1 ? state[action.payload.id].number - 1 : 0 },
     }),
     [type.CLEAR_CART]: (state, action) => {
-      return {};
+      return initialState;
     },
     [type.RESET]: (state, action) => {
       return initialState;
