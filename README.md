@@ -5,7 +5,9 @@
 ## THÔNG TIN NHÓM:
    ### Thành viên nhóm:
    - [*Dương Công Vũ*](fb.com/duongcongvu93) 19521110
-   ### Giảng viên hướng dẫn: *Phan Nguyệt Minh*
+     ### Giảng viên hướng dẫn: *Phan Nguyệt Minh*
+   ## CÀI ĐẶT:
+   - [*Tải file Apk tại đây*](https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40luffy3qvietnam/NikeShop-e88d35a003ea4a5c9156c18788adc909-signed.apk)
 ## ĐẶT VẤN ĐỀ
  - Cùng với sự phát triển của các mô hình kinh tế khác, mô hình thương mại điện tử hiện nay cũng được chú trong phát triển rất mạnh mẽ. Đặc biệt trong giai đoạn dịch bệnh hoành hành, gây ảnh hưởng nặng nề tới nền kinh tế, cụ thể là các ngành kinh tế truyền thống như bán lẻ, siêu thị, tạp hóa, các store, showroom,..
  - Tình hình dịch bệnh Covid19 đang diễn biến ngày càng phức tạp, ảnh hưởng tới mọi mặt của đời sống và nên kinh tế. Trong đó các hệ thống bán lẻ chịu nhiều thiệt thòi nhất và có nguy cơ dẫn tới phá sản nếu không có biện pháp khắc phục.
@@ -16,7 +18,7 @@
   - Ngôn ngữ: ReactNative
   - Cơ sở dữ liệu: Firebase realtime database
 
-  ## CÀI ĐẶT:
+  ## CÀI ĐẶT
   - `sudo npm install --global expo-cli`
   - `npm install`
   - `expo start`
