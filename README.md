@@ -11,7 +11,7 @@
 ## ĐẶT VẤN ĐỀ
  - Cùng với sự phát triển của các mô hình kinh tế khác, mô hình thương mại điện tử hiện nay cũng được chú trong phát triển rất mạnh mẽ. Đặc biệt trong giai đoạn dịch bệnh hoành hành, gây ảnh hưởng nặng nề tới nền kinh tế, cụ thể là các ngành kinh tế truyền thống như bán lẻ, siêu thị, tạp hóa, các store, showroom,..
  - Tình hình dịch bệnh Covid19 đang diễn biến ngày càng phức tạp, ảnh hưởng tới mọi mặt của đời sống và nên kinh tế. Trong đó các hệ thống bán lẻ chịu nhiều thiệt thòi nhất và có nguy cơ dẫn tới phá sản nếu không có biện pháp khắc phục.
- - Việc cần thiếết phải tạo ra một trào lưu trong dịch chuyển từ buôn bán tại cửa hàng sang kinh doanh trực tuyến, trên các nền tảng thương mại điện tử.
+ - Việc cần thiết phải tạo ra một trào lưu trong dịch chuyển từ buôn bán tại cửa hàng sang kinh doanh trực tuyến, trên các nền tảng thương mại điện tử.
 ## CÔNG CỤ SỬ DỤNG ĐỂ THIẾT KẾ
   - AbodeXD
   - Expo
