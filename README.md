@@ -35,7 +35,7 @@
  ## MÔI TRƯỜNG CÀI ĐẶT
  - Hệ điều hành Android 10.0
  ## GIAO DIỆN CỦA ỨNG DỤNG  
- <div style='display: flex; flex-wrap: wrap; justify-content: "space-between", flex-direction: "row"'>
+ <div style='display: flex; flex-wrap: wrap; justify-content: "space-between"; flex-direction: "row"'>
     <img src="/PreviewImage/1.jpg" width="300" style='margin: 5px; display: block'/>
     <img src="/PreviewImage/2.jpg" width="300" style='margin: 5px; display: block'/>
     <img src="/PreviewImage/3.jpg" width="300" style='margin: 5px; display: block'/>
