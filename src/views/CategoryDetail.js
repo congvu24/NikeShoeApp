@@ -124,14 +124,14 @@ export default function CategoryDetail({ route }) {
   );
 }
 
-CategoryDetail.sharedElements = (route, otherRoute, showing) => {
-  const { item } = route.params;
-  return [
-    {
-      id: `type.${item.id}.name`,
-    },
-  ];
-};
+// CategoryDetail.sharedElements = (route, otherRoute, showing) => {
+//   const { item } = route.params;
+//   return [
+//     {
+//       id: `type.${item.id}.name`,
+//     },
+//   ];
+// };
 
 const styles = StyleSheet.create({
   groupWrap: {
