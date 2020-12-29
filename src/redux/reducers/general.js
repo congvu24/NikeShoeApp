@@ -64,7 +64,7 @@ const reducer = handleActions(
       return {
         ...state,
         isLogin: true,
-        user: { ...action.payload },
+        user: { ...action.payload},
       };
     },
     [type.ADD_HISTORY]: (state, action) => {
@@ -80,7 +80,13 @@ const reducer = handleActions(
     },
     [type.ADD_BOOKMARK]: (state, action) => {
       const id = action.payload;
-      return { ...state, bookmark: { ...state.bookmark, [id]: state.bookmark[id] ? !state.bookmark[id] : true } };
+      return {
+        ...state,
+        bookmark: {
+          ...state.bookmark,
+          [id]: state.bookmark[id] ? !state.bookmark[id] : true,
+        },
+      };
     },
     [type.SET_VIEW_INTRODUCE]: (state, action) => {
       return { ...state, isViewIntroduce: true };
@@ -98,6 +104,14 @@ const reducer = handleActions(
       return {
         ...state,
         selectedCard: action.payload,
+      };
+    },
+    [type.GET_PROFILE]: (state, action) => {
+      // console.log(action.payload)
+      return {
+        ...state,
+        selectedCard: action.payload,
+        user: {...action.payload}
       };
     },
   },

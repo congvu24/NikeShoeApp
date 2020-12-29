@@ -12,6 +12,7 @@ import { checkLogined } from "../utils/utils";
 const { width, height } = Dimensions.get("window");
 
 function Home({ navigation, user, ...props }) {
+  
   // useEffect(() => {
   //   const backAction = () => {
   //     Alert.alert("Hold on!", "Are you sure you want to go back?", [

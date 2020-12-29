@@ -13,19 +13,34 @@ function Profile({ user, navigation, ...props }) {
       <View style={styles.header}>
         <View style={styles.headerUser}>
           <View style={styles.user}>
-            <Image source={require("../images/avatar.png")} style={styles.userAvatar} />
+            <Image
+              source={
+                user.photoUrl
+                  ? {
+                      uri: user.photoUrl,
+                    }
+                  : require("../images/ads-banner-1.jpg")
+              }
+              style={styles.userAvatar}
+            />
             <View style={styles.userInfo}>
-              <Text style={styles.userName}>User</Text>
+              <Text style={styles.userName}>{user.name ? user.name : "USER"}</Text>
               <Text style={styles.userId}>{user.email}</Text>
             </View>
           </View>
-          <TouchableOpacity style={styles.editBtn}>
+          <TouchableOpacity
+            style={styles.editBtn}
+            onPress={() => navigation.push("EditProfile")}
+          >
             <Text style={styles.editText}>edit</Text>
           </TouchableOpacity>
         </View>
       </View>
       <View style={styles.menu}>
-        <TouchableOpacity onPress={() => navigation.navigate("MyOrder")} style={styles.button}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("MyOrder")}
+          style={styles.button}
+        >
           <Image source={require("../images/order.png")} />
           <Text style={styles.buttonText}>My orders</Text>
           <Image source={require("../images/right-arrow.png")} />
@@ -95,7 +110,7 @@ const styles = StyleSheet.create({
   userAvatar: {
     width: 60,
     height: 60,
-    borderRadius: 10,
+    borderRadius: 30,
     marginRight: 20,
   },
   editBtn: {

@@ -1,9 +1,9 @@
 {
-  "name": "doAnMobile",
-  "displayName": "doAnMobile",
+  "name": "NikeShop",
+  "displayName": "NikeShop",
   "expo": {
-    "name": "doAnMobile",
-    "slug": "doAnMobile",
+    "name": "NikeShop",
+    "slug": "NikeShop",
     "version": "1.0.0",
     "assetBundlePatterns": ["**/*"],
     "icon": "./src/images/logo-nikeshop.png",

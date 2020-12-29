@@ -43,6 +43,7 @@ const Checkout = ({ navigation, cart, addresses, selectedAddress, selectedCoupon
     const index = coupons.findIndex((item) => item.key.toLocaleUpperCase() == code.toLocaleUpperCase());
     if (index > -1) {
       props.setCoupon(coupons[index]);
+      setCode(String(code).toUpperCase());
     } else {
       showMessage({
         message: "Code is not valid!",

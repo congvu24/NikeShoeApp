@@ -5,16 +5,23 @@ import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
 import { SharedElement } from "react-navigation-shared-element";
 
 import Product, { Product1 } from "./Product";
-import Animated from "react-native-reanimated";
 import category from "../data/categories";
 import collection from "../data/collections";
 import product from "../data/products";
 import AdsBanner from "./AdsBanner";
+import {addCart} from "../redux/index";
+import { connect } from "react-redux";
 
 const { width, height } = Dimensions.get("window");
 
-export default function HomeTab({ handleClickDrawer, isOpenDrawer }) {
-  const navigation = useNavigation();
+function HomeTab({ handleClickDrawer, isOpenDrawer,navigation, ...props }) {
+  const [q, setQ] = useState("");
+
+  addToCart = (id) => {
+    props.addCart({ id });
+    navigation.push("Checkout");
+  };
+
   return (
     <View>
       <ScrollView showsVerticalScrollIndicator={false} scrollEnabled={isOpenDrawer == true ? false : true}>
@@ -40,7 +47,7 @@ export default function HomeTab({ handleClickDrawer, isOpenDrawer }) {
               <TouchableOpacity style={styles.searchButton}>
                 <Image source={require("../images/search.png")} />
               </TouchableOpacity>
-              <TextInput placeholder='"New autumn jacket..."' style={styles.searchInput} />
+              <TextInput placeholder='"New autumn shoes..."' style={styles.searchInput} onChangeText={(text)=>setQ(text)} value={q} onSubmitEditing={()=>navigation.push("Search", {q})}/>
             </View>
           </View>
           <AdsBanner />
@@ -99,7 +106,7 @@ export default function HomeTab({ handleClickDrawer, isOpenDrawer }) {
             </View>
             <FlatList
               data={product.slice(0, 5)}
-              renderItem={({ item }) => <Product item={item} />}
+              renderItem={({ item }) => <Product item={item} addToCart={addToCart} />}
               keyExtractor={(item) => item.id}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
@@ -115,7 +122,7 @@ export default function HomeTab({ handleClickDrawer, isOpenDrawer }) {
             </View>
             <FlatList
               data={product.slice(6, 11)}
-              renderItem={({ item }) => <Product item={item} />}
+              renderItem={({ item }) => <Product item={item} addToCart={addToCart} />}
               keyExtractor={(item) => item.id}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
@@ -125,7 +132,7 @@ export default function HomeTab({ handleClickDrawer, isOpenDrawer }) {
           <AdsBanner />
           <FlatList
             data={product.slice(0, 15)}
-            renderItem={({ item }) => <Product1 item={item} />}
+            renderItem={({ item }) => <Product1 item={item} addToCart={addToCart} />}
             keyExtractor={(item) => item.id}
             horizontal={false}
             numColumns={2}
@@ -136,6 +143,14 @@ export default function HomeTab({ handleClickDrawer, isOpenDrawer }) {
     </View>
   );
 }
+const mapStateToProps = (state) => ({
+
+});
+
+const mapDispatchToProps = {
+  addCart,
+};
+export default connect(mapStateToProps, mapDispatchToProps)(HomeTab)
 
 const styles = StyleSheet.create({
   navbar: {

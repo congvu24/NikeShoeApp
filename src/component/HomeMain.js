@@ -164,7 +164,7 @@ export default class MainHome extends React.PureComponent {
           <Tab.Navigator initialRouteName="HomeTab" headerMode="none">
             <Tab.Screen
               name="HomeTab"
-              children={() => <HomeTab handleClickDrawer={this.handleClickDrawer} isOpenDrawer={this.state.isOpenDrawer} />}
+              children={() => <HomeTab handleClickDrawer={this.handleClickDrawer} isOpenDrawer={this.state.isOpenDrawer} navigation={this.props.navigation} />}
             />
             <Tab.Screen
               name="HistoryTab"

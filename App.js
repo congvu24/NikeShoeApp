@@ -30,6 +30,7 @@ import store, { persistor } from "./src/redux/store";
 import * as actions from "./src/redux/index";
 import FlashMessage from "react-native-flash-message";
 import MyOrder from "./src/views/MyOrder";
+import EditProfile from "./src/views/EditProfile";
 
 enableScreens();
 const Stack = createSharedElementStackNavigator();
@@ -131,39 +132,39 @@ const Navigator = ({ isViewIntroduce }) => {
         headerShown: false,
         gestureEnabled: false,
       }}
-      // initialRouteName="Home"
-      // headerMode="none"
-      // screenOptions={{
-      //   gestureEnabled: true,
-      //   gestureDirection: "horizontal",
-      //   gestureResponseDistance: {
-      //     horizontal: 300,
-      //   },
-      //   cardStyleInterpolator: ({ current, next, layouts }) => {
-      //     return {
-      //       // cardStyle: {
-      //       //   transform: [
-      //       //     {
-      //       //       translateX: current.progress.interpolate({
-      //       //         inputRange: [0, 1],
-      //       //         outputRange: [layouts.screen.width, 0],
-      //       //       }),
-      //       //     },
-      //       //   ],
-      //       //   // opacity: current.progress,
-      //       // },
-      //       cardStyle: {
-      //         opacity: current.progress,
-      //       },
-      //       // overlayStyle: {
-      //       //   opacity: current.progress.interpolate({
-      //       //     inputRange: [0, 1],
-      //       //     outputRange: [0, 0.5],
-      //       //   }),
-      //       // },
-      //     };
-      //   },
-      // }}
+      initialRouteName="Home"
+      headerMode="none"
+      screenOptions={{
+        gestureEnabled: true,
+        gestureDirection: "horizontal",
+        gestureResponseDistance: {
+          horizontal: 300,
+        },
+        cardStyleInterpolator: ({ current, next, layouts }) => {
+          return {
+            // cardStyle: {
+            //   transform: [
+            //     {
+            //       translateX: current.progress.interpolate({
+            //         inputRange: [0, 1],
+            //         outputRange: [layouts.screen.width, 0],
+            //       }),
+            //     },
+            //   ],
+            //   // opacity: current.progress,
+            // },
+            cardStyle: {
+              opacity: current.progress,
+            },
+            // overlayStyle: {
+            //   opacity: current.progress.interpolate({
+            //     inputRange: [0, 1],
+            //     outputRange: [0, 0.5],
+            //   }),
+            // },
+          };
+        },
+      }}
     >
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Detail" component={Detail} />
@@ -179,6 +180,7 @@ const Navigator = ({ isViewIntroduce }) => {
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Introduce" component={Introduce} />
       <Stack.Screen name="MyOrder" component={MyOrder} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen
         name="CategoryDetail"
         component={CategoryDetail}

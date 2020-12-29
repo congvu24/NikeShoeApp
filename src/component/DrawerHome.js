@@ -1,8 +1,15 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect } from "react";
-import { Image, Text, View, StyleSheet, TouchableOpacity, Dimensions, BackHandler } from "react-native";
-import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
-import StickyParallaxHeader from "react-native-sticky-parallax-header";
+import {
+  Image,
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  BackHandler,
+  ScrollView,
+} from "react-native";
 import { connect } from "react-redux";
 import allCategories from "../data/categories";
 
@@ -16,17 +23,49 @@ function DrawerHome({ user, ...props }) {
         <View style={styles.header}>
           {user ? (
             <>
-              <Image source={require("../images/avatar.png")} style={styles.avatar} />
+              <Image
+                source={
+                  user.photoUrl
+                    ? {
+                        uri: user.photoUrl,
+                      }
+                    : require("../images/ads-banner-1.jpg")
+                }
+                style={styles.avatar}
+              />
               <View style={styles.user}>
                 {/* <Text style={styles.userName}>{user.name}</Text> */}
-                <Text style={styles.userName}>User</Text>
+                <Text style={styles.userName}>
+                  {user.name ? user.name : "USER"}
+                </Text>
                 <Text style={styles.userEmail}>{user.email}</Text>
               </View>
             </>
           ) : (
-            <View style={{ justifyContent: "center", alignItems: "center", width: "100%" }}>
-              <TouchableOpacity onPress={() => navigation.push("Login")} style={{ borderRadius: 30, borderWidth: 1, borderColor: "white" }}>
-                <Text style={{ color: "white", paddingHorizontal: 8, paddingVertical: 4 }}>Login</Text>
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => navigation.push("Login")}
+                style={{
+                  borderRadius: 30,
+                  borderWidth: 1,
+                  borderColor: "white",
+                }}
+              >
+                <Text
+                  style={{
+                    color: "white",
+                    paddingHorizontal: 8,
+                    paddingVertical: 4,
+                  }}
+                >
+                  Login
+                </Text>
               </TouchableOpacity>
             </View>
           )}
@@ -43,7 +82,13 @@ function DrawerHome({ user, ...props }) {
               </View>
               <View style={styles.sectionBody}>
                 {allCategories.slice(0, 5).map((item) => (
-                  <TouchableOpacity style={styles.sectionItem} key={`category.${item.id}`}>
+                  <TouchableOpacity
+                    style={styles.sectionItem}
+                    key={`category.${item.id}`}
+                    onPress={() =>
+                      navigation.navigate("CategoryDetail", { item })
+                    }
+                  >
                     <Text style={styles.sectionItemText}>{item.name}</Text>
                   </TouchableOpacity>
                 ))}
@@ -59,7 +104,10 @@ function DrawerHome({ user, ...props }) {
               </View>
               <View style={styles.sectionBody}>
                 {allCategories.slice(5, 7).map((item) => (
-                  <TouchableOpacity style={styles.sectionItem} key={`category.${item.id}`}>
+                  <TouchableOpacity
+                    style={styles.sectionItem}
+                    key={`category.${item.id}`}
+                  >
                     <Text style={styles.sectionItemText}>{item.name}</Text>
                   </TouchableOpacity>
                 ))}
@@ -75,7 +123,13 @@ function DrawerHome({ user, ...props }) {
               </View>
               <View style={styles.sectionBody}>
                 {allCategories.slice(8, 10).map((item) => (
-                  <TouchableOpacity style={styles.sectionItem} key={`category.${item.id}`}>
+                  <TouchableOpacity
+                    style={styles.sectionItem}
+                    key={`category.${item.id}`}
+                    onPress={() =>
+                      navigation.navigate("CategoryDetail", { item })
+                    }
+                  >
                     <Text style={styles.sectionItemText}>{item.name}</Text>
                   </TouchableOpacity>
                 ))}
@@ -149,5 +203,11 @@ const styles = StyleSheet.create({
     borderTopColor: "#FFFFFF17",
     paddingTop: 30,
     marginBottom: 30,
+  },
+  avatar: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginRight: 20,
   },
 });

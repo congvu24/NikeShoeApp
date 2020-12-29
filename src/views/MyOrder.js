@@ -7,7 +7,6 @@ function MyOrder({ order, ...props }) {
   useEffect(() => {
     props.getMyCart();
   }, []);
-  console.log(order);
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <View style={{ backgroundColor: "white", marginBottom: 20 }}>
@@ -35,10 +34,14 @@ function MyOrder({ order, ...props }) {
           order.map((item, index) => (
             <View style={styles.order} key={`order-${index}`}>
               <View style={styles.headerCol}>
-                <Text style={[styles.orderText, { color: "rgb(0, 127, 240)" }]}>#{item.key}</Text>
+                <Text style={[styles.orderText, { color: "rgb(0, 127, 240)" }]}>
+                  #{item.key}
+                </Text>
               </View>
               <View style={styles.headerCol}>
-                <Text style={styles.orderText}>{new Date(item.createAt).toLocaleDateString()}</Text>
+                <Text style={styles.orderText}>
+                  {new Date(item.createAt).toLocaleDateString()}
+                </Text>
               </View>
               <View style={styles.headerCol}>
                 <Text style={styles.orderText}>{item.cart.length}</Text>
@@ -47,7 +50,9 @@ function MyOrder({ order, ...props }) {
                 <Text style={styles.orderText}>${item.total}</Text>
               </View>
               <View style={styles.headerCol}>
-                <Text style={[styles.orderText, { opacity: 0.5 }]}>Pending</Text>
+                <Text style={[styles.orderText, { opacity: 0.5 }]}>
+                  Pending
+                </Text>
               </View>
             </View>
           ))}

@@ -12,12 +12,13 @@ const resetAction = CommonActions.reset({
 const { width, height } = Dimensions.get("window");
 
 const CheckoutResult = ({ navigation, ...props }) => {
-  useEffect(() => {
-    const backAction = () => {
-      navigation.dispatch(resetAction);
-      return true;
-    };
 
+  const backAction = () => {
+    navigation.dispatch(resetAction);
+    return true;
+  };
+  useEffect(() => {
+    
     const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
 
     return () => backHandler.remove();
@@ -36,6 +37,11 @@ const CheckoutResult = ({ navigation, ...props }) => {
           <Text style={styles.messageTitle}>Expected delivery</Text>
           <Text style={styles.messageValue}>10 DEC</Text>
         </View>
+        <TouchableOpacity style={{backgroundColor: "#ffffff66", paddingHorizontal: 8, paddingVertical: 4, borderRadius: 5}}
+          onPress={()=>backAction()}
+        >
+          <Text style={{color: "white", fontSize: 18}}>🏠 Home</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

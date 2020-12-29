@@ -6,7 +6,7 @@ import { SharedElement } from "react-navigation-shared-element";
 
 const { width, height } = Dimensions.get("window");
 
-export default function Product({ item }) {
+export default function Product({ item, addToCart }) {
   const navigation = useNavigation();
   return (
     <TouchableOpacity style={styles.productWrap} onPress={() => navigation.push("Detail", { item })}>
@@ -18,15 +18,16 @@ export default function Product({ item }) {
       </SharedElement>
       <Text style={styles.productName}>{item.name}</Text>
       <Text style={styles.productPrice}>${item.price}</Text>
-      <TouchableOpacity style={styles.productBuy}>
+      <TouchableOpacity style={styles.productBuy} onPress={()=>addToCart ? addToCart(item.id) : {}}>
         <Image source={require("../images/addcart.png")} />
       </TouchableOpacity>
     </TouchableOpacity>
   );
 }
 
-export function Product1({ item }) {
+export function Product1({ item, addToCart }) {
   const navigation = useNavigation();
+  
 
   return (
     <TouchableOpacity
@@ -41,7 +42,7 @@ export function Product1({ item }) {
       </SharedElement>
       <Text style={styles.productName}>{item.name}</Text>
       <Text style={styles.productPrice}>${item.price}</Text>
-      <TouchableOpacity style={styles.productBuy}>
+      <TouchableOpacity style={styles.productBuy} onPress={()=>addToCart ? addToCart(item.id) : {}}>
         <Image source={require("../images/addcart.png")} />
       </TouchableOpacity>
     </TouchableOpacity>

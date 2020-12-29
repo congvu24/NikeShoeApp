@@ -5,13 +5,15 @@ import { ScrollView } from "react-native-gesture-handler";
 import collections from "../data/collections";
 import allProduct from "../data/products";
 import { Product1 } from "../component/Product";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { SharedElement } from "react-navigation-shared-element";
 
 const { width, height } = Dimensions.get("window");
 
 export default function Search() {
-  const [query, setQuery] = useState("");
+  const route = useRoute();
+  const q = route.params ? route.params.q : "";
+  const [query, setQuery] = useState(q ? q : "");
   const navigation = useNavigation();
   const searchResult = allProduct.filter((item) => String(item.name).toLocaleLowerCase().includes(String(query).toLocaleLowerCase()) == true);
   return (
@@ -19,7 +21,7 @@ export default function Search() {
       <View style={styles.header}>
         <View style={styles.search}>
           <Image source={require("../images/search.png")} />
-          <TextInput placeholder="Search shoes" style={styles.searchInput} onChangeText={(text) => setQuery(text)} />
+          <TextInput placeholder="Search shoes" style={styles.searchInput} value={query} onChangeText={(text) => setQuery(text)} />
         </View>
       </View>
 
