@@ -18,7 +18,7 @@
   - Ngôn ngữ: ReactNative
   - Cơ sở dữ liệu: Firebase realtime database
 
-  ## CÀI ĐẶT
+  ## DEBUG
   - `sudo npm install --global expo-cli`
   - `npm install`
   - `expo start`
