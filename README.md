@@ -36,14 +36,14 @@
  - Hệ điều hành Android 10.0
  ## GIAO DIỆN CỦA ỨNG DỤNG  
  <div style='display: flex; flex-wrap: wrap; justify-content: "space-between", flex-direction: "row"'>
-    <img src="/PreviewImage/1.jpg"/>
-    <img src="/PreviewImage/2.jpg"/>
-    <img src="/PreviewImage/3.jpg"/>
-    <img src="/PreviewImage/4.jpg"/>
-    <img src="/PreviewImage/5.jpg"/>
-    <img src="/PreviewImage/6.jpg"/>
-    <img src="/PreviewImage/7.jpg"/>
-    <img src="/PreviewImage/8.jpg"/>
+    <img src="/PreviewImage/1.jpg" width="300"/>
+    <img src="/PreviewImage/2.jpg" width="300"/>
+    <img src="/PreviewImage/3.jpg" width="300"/>
+    <img src="/PreviewImage/4.jpg" width="300"/>
+    <img src="/PreviewImage/5.jpg" width="300"/>
+    <img src="/PreviewImage/6.jpg" width="300"/>
+    <img src="/PreviewImage/7.jpg" width="300"/>
+    <img src="/PreviewImage/8.jpg" width="300"/>
 </div>
  
   ### Tài liệu tham khảo
