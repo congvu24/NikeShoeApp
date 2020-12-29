@@ -4,11 +4,11 @@
   "expo": {
     "name": "NikeShop",
     "slug": "NikeShop",
-    "version": "1.0.0",
+    "version": "1.2.1",
     "assetBundlePatterns": ["**/*"],
     "icon": "./src/images/logo-nikeshop.png",
     "android": {
-      "package": "com.yourcompany.yourappname",
+      "package": "com.congvu",
       "versionCode": 1
     },
     "splash": {
