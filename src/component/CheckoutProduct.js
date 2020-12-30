@@ -16,7 +16,7 @@ export default function CheckoutProduct({ item, removeOne, addOneMore, handleRem
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: () => false,
       onPanResponderGrant: () => {
         //bat dau click vao de hanh dong
         animation.flattenOffset();

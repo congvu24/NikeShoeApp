@@ -30,6 +30,7 @@ const Checkout = ({ navigation, cart, addresses, selectedAddress, selectedCoupon
   };
 
   function addOneMore(id) {
+    console.log(id);
     props.addCart({ id });
   }
 
