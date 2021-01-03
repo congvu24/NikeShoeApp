@@ -37,7 +37,7 @@ const reducer = handleActions(
       };
     },
     [type.OFF_LOADING]: (state, action) => {
-      console.log("off");
+      // console.log("off");
       return {
         ...state,
         isLoading: false,

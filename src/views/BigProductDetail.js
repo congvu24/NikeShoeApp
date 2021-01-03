@@ -2,7 +2,7 @@ import React from "react";
 import { Text, View, Image, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
 import { SharedElement } from "react-navigation-shared-element";
 import * as Animateable from "react-native-animatable";
-import BackButton from "../component/BackButton";
+// import BackButton from "../component/BackButton";
 import { useNavigation } from "@react-navigation/native";
 
 const activity = [require("../images/cash-back.png"), require("../images/cash-back.png"), require("../images/gift-voucher.png")];
